@@ -1,0 +1,19 @@
+{
+  "name": "email-users-lists",
+  "version": "0.0.1",
+  "description": "Users and lists matching",
+  "main": "server.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Financial-Times/email-users-lists.git"
+  },
+  "author": "Daniele Zanni",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Financial-Times/email-users-lists/issues"
+  },
+  "homepage": "https://github.com/Financial-Times/email-users-lists#readme"
+}
