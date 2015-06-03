@@ -1,0 +1,8 @@
+# Directories
+coverage
+node_modules
+.idea
+
+# Files
+.DS_Store
+.env
