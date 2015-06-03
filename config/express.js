@@ -17,7 +17,9 @@ module.exports = () => {
         limit:'10mb'
     }));
 
-    require('../app/routes/hooks.server.routes.js')(app);
+    require('../app/routes/users.server.routes.js')(app);
+    require('../app/routes/lists.server.routes.js')(app);
+
 
     app.use(express.static('./public'));
 
