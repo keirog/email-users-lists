@@ -4,7 +4,8 @@
   "description": "Users and lists matching",
   "main": "server.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "start": "node --harmony server.js"
   },
   "repository": {
     "type": "git",
