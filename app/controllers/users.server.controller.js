@@ -4,8 +4,8 @@
 const mongoose = require('mongoose');
 const extend = require('extend');
 
-// Internal modules
-const User = require('mongoose').model('User');
+// Models
+const User = mongoose.model('User');
 
 exports.create = (req, res) => {
     let user = new User(req.body);
