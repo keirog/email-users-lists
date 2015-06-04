@@ -2,8 +2,8 @@
 
 // External modules
 const mongoose = require('mongoose');
-const extend = require('extend');
 
+// Internal modules
 const listCtrl = require('./lists.server.controller');
 
 // Models

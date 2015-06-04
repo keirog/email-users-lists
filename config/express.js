@@ -20,8 +20,7 @@ module.exports = () => {
     require('../app/routes/users.server.routes.js')(app);
     require('../app/routes/lists.server.routes.js')(app);
     require('../app/routes/listsByUser.server.routes.js')(app);
-
-
+    require('../app/routes/usersByList.server.routes.js')(app);
 
     app.use(express.static('./public'));
 
