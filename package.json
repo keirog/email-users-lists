@@ -4,7 +4,7 @@
   "description": "Users and lists matching",
   "main": "server.js",
   "scripts": {
-    "test": "gulp test",
+    "test": "gulp --harmony test",
     "start": "node --harmony server.js"
   },
   "repository": {
@@ -21,6 +21,7 @@
     "body-parser": "^1.12.4",
     "dotenv": "^1.1.0",
     "express": "^4.12.4",
+    "mongoose": "^4.0.4",
     "winston": "^1.0.0"
   },
   "devDependencies": {

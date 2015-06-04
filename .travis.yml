@@ -1,11 +1,12 @@
 language: node_js
 node_js:
   - "0.12"
+services:
+  - mongodb
 before_install:
   - npm install --global gulp
   - npm install -g codeclimate-test-reporter
 install:
   - npm install
-
 after_success:
   - codeclimate < coverage/lcov.info
