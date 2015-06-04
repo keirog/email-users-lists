@@ -20,8 +20,8 @@ process.on('SIGTERM', () => {
     shutdown(loggerId);
 });
 
-let app = express();
 let db = mongoose();
+let app = express();
 
 app.listen(config.port);
 

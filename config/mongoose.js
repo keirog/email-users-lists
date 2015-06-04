@@ -7,9 +7,6 @@ module.exports = function() {
 
     var db = mongoose.connect(config.db);
 
-    console.log('HERE!')
-
-
     require('../app/models/lists.server.model');
     require('../app/models/users.server.model');
 
