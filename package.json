@@ -23,6 +23,7 @@
     "express": "^4.12.4",
     "extend": "^2.0.1",
     "mongoose": "^4.0.4",
+    "mongoose-encryption": "^1.1.0",
     "winston": "^1.0.0"
   },
   "devDependencies": {

@@ -1,9 +1,12 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+// External modules
+const mongoose = require('mongoose');
+const encrypt = require('mongoose-encryption');
 
-var UserSchema = new Schema({
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
     uuid: {
         type: String,
         trim: true,
@@ -30,5 +33,7 @@ var UserSchema = new Schema({
         ref: 'List'
     }]
 });
+
+UserSchema.plugin(encrypt, { encryptionKey: process.env.EMAIL_ENCRYPTION_KEY, signingKey: process.env.EMAIL_SIGNING_KEY, encryptedFields: ['email'] });
 
 mongoose.model('User', UserSchema);

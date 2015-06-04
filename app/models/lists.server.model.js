@@ -1,9 +1,10 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-var ListSchema = new Schema({
+const Schema = mongoose.Schema;
+
+const ListSchema = new Schema({
     name: {
         type: String,
         trim: true,
