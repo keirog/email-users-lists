@@ -9,6 +9,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 // Our modules
 const config = require('./config/config');
 const express = require('./config/express');
+const mongoose = require('./config/mongoose');
 const shutdown = require('./app/utils/shutdown.server.utils');
 const logger = require('./config/logger');
 
@@ -20,6 +21,7 @@ process.on('SIGTERM', () => {
 });
 
 let app = express();
+let db = mongoose();
 
 app.listen(config.port);
 
