@@ -24,15 +24,15 @@ let user;
 /**
  * Unit tests
  */
-describe('User Model Unit Tests:', function() {
-    beforeEach(function(done) {
+describe('User Model Unit Tests:', () => {
+    beforeEach((done) => {
 
         list = new List ({
             name:   'An Example List',
             description: 'A description for the list list'
         });
 
-        list.save(function (err, res) {
+        list.save((err, res) => {
             user = new User ({
                 uuid:     '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
                 name:     'User Name',
@@ -41,45 +41,45 @@ describe('User Model Unit Tests:', function() {
                     allowFt: true,
                     allow3dParty: false
                 },
-                lists: [list._id]
+                lists: [res._id]
             });
             done();
         });
 
     });
 
-    describe('Method Save', function() {
+    describe('Method Save', () => {
 
-        it('should be able to save without problems', function(done) {
-            return user.save(function(err) {
+        it('should be able to save without problems', (done) => {
+            return user.save((err) => {
                 should.not.exist(err);
                 done();
             });
         });
 
-        it('should throw an error trying to save without name', function(done) {
+        it('should throw an error trying to save without name', (done) => {
             user.name = '';
 
-            return user.save(function(err) {
+            return user.save((err) => {
                 should.exist(err);
                 done();
             });
         });
 
-        it('should throw an error trying to save without email', function(done) {
+        it('should throw an error trying to save without email', (done) => {
             user.email = '';
 
-            return user.save(function(err) {
+            return user.save((err) => {
                 should.exist(err);
                 done();
             });
         });
 
-        it('should throw an error trying to save without uuid', function(done) {
+        it('should throw an error trying to save without uuid', (done) => {
 
             user.uuid = '';
 
-            return user.save(function(err) {
+            return user.save((err) => {
                 should.exist(err);
                 done();
             });
@@ -87,9 +87,9 @@ describe('User Model Unit Tests:', function() {
 
     });
 
-    afterEach(function(done) {
+    afterEach((done) => {
         User.remove()
-            .exec(function () {
+            .exec(() => {
                 List.remove().exec(done);
             });
     });
