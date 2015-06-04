@@ -125,7 +125,7 @@ describe('The lists by user methods', () => {
             });
     });
 
-    it('should be return a proper error if the wrong user uuid is provided', (done) => {
+    it('should be return a proper error if the wrong user uuid is provided when deleting', (done) => {
         // Save a new user
         agent.post('/users')
             .send(user)
@@ -219,6 +219,113 @@ describe('The lists by user methods', () => {
                         done();
                     });
             });
+    });
+
+
+    it('should be able to add a user to a list', (done) => {
+        // Create new user model instance
+        let userObj = new User(user);
+
+        userObj.save(() => {
+            agent.post('/users/' + user.uuid + '/lists')
+                .send(list2)
+                //.expect(200)
+                .end((listSaveErr) => {
+
+                    // Handle list save error
+                    if (listSaveErr) {
+                        done(listSaveErr);
+                    }
+
+                    // Get a list of lists
+                    agent.get('/users/' + user.uuid + '/lists')
+                        .end((listGetErr, listGetRes) => {
+
+                            // Handle lists get error
+                            if (listGetErr) {
+                                done(listGetErr);
+                            }
+
+                            // Get lists list
+                            let lists = listGetRes.body;
+
+                            // Set assertions
+                            lists.should.be.an.Array.with.lengthOf(2);
+                            // Call the assertion callback
+                            done();
+
+                        });
+                });
+        });
+    });
+
+    it('should be return a proper error if the wrong user uuid is provided when adding', (done) => {
+        // Save a new user
+        agent.post('/users')
+            .send(user)
+            .expect(200)
+            .end((userSaveErr, userSaveRes) => {
+
+                // Handle list save error
+                if (userSaveErr) {
+                    return done(userSaveErr);
+                }
+
+                // Provide the wrong user uuid
+                agent.post('/users/' + 'wrongUuid' + '/lists')
+                    .send(list2)
+                    .expect(400)
+                    .end((listDeleteErr, listDeleteRes) => {
+
+                        // Handle list error
+                        if (listDeleteErr) {
+                            return done(listDeleteErr);
+                        }
+
+                        // Set assertions
+                        listDeleteRes.body.should.be.an.Object.with.property('message', 'Invalid user uuid provided');
+
+                        // Call the assertion callback
+                        done();
+                    });
+            });
+    });
+
+    it('should not throw an error if the user is already a member of the list provided', (done) => {
+        // Create new user model instance
+        let userObj = new User(user);
+
+        userObj.save(() => {
+            agent.post('/users/' + user.uuid + '/lists')
+                .send(list1)
+                //.expect(200)
+                .end((listSaveErr) => {
+
+                    // Handle list save error
+                    if (listSaveErr) {
+                        done(listSaveErr);
+                    }
+
+                    // Get a list of lists
+                    agent.get('/users/' + user.uuid + '/lists')
+                        .end((listGetErr, listGetRes) => {
+
+                            // Handle lists get error
+                            if (listGetErr) {
+                                done(listGetErr);
+                            }
+
+                            // Get lists list
+                            let lists = listGetRes.body;
+
+                            // Set assertions
+                            lists.should.be.an.Array.with.lengthOf(1);
+                            // Call the assertion callback
+                            done();
+
+                        });
+                });
+        });
     });
 
     afterEach((done) => {
