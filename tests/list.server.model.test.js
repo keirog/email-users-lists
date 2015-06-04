@@ -21,7 +21,7 @@ describe('List Model Unit Tests:', function() {
     beforeEach(function(done) {
         list = new List ({
             name:   'An Example List',
-            description: 'A description for the example list'
+            description: 'A description for the list list'
         });
         done();
     });

@@ -7,6 +7,8 @@ var UserSchema = new Schema({
     uuid: {
         type: String,
         trim: true,
+        // TODO: test for unique uuid
+        index: { unique: true },
         required: 'uuid cannot be blank'
     },
     name: {

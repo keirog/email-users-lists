@@ -29,14 +29,14 @@ describe('User Model Unit Tests:', function() {
 
         list = new List ({
             name:   'An Example List',
-            description: 'A description for the example list'
+            description: 'A description for the list list'
         });
 
         list.save(function (err, res) {
             user = new User ({
                 uuid:     '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
                 name:     'User Name',
-                email:    'email@example.com',
+                email:    'email@list.com',
                 marketingPreferences: {
                     allowFt: true,
                     allow3dParty: false
