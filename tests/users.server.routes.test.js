@@ -26,7 +26,7 @@ describe('User CRUD tests:', () => {
         // Create new list
         list = new List({
             name: 'An Example List',
-            description: 'A description for the list list'
+            description: 'A description for the example list'
         });
 
         list.save((err, res) => {

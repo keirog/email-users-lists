@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const extend = require('extend');
 
 // Internal modules
-const List = require('mongoose').model('List');
+const List = mongoose.model('List');
 
 exports.create = (req, res) => {
     let list = new List(req.body);
