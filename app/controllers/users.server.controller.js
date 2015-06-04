@@ -42,7 +42,14 @@ exports.list = (req, res) => {
 };
 
 exports.read = (req, res) => {
-    res.json(req.user);
+    if (req.user) {
+        return res.json(req.user);
+    }
+    else {
+        return res.status(404).send({
+            message: 'User not found'
+        });
+    }
 };
 
 exports.update = (req, res, next) => {
@@ -79,18 +86,12 @@ exports.delete = (req, res, next) => {
     });
 };
 
-exports.userById = (req, res, next, id) => {
+exports.userByUuid = (req, res, next, uuid) => {
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).send({
-            message: 'User is invalid'
-        });
-    }
-
-    User.findOne({ _id: id }, (err, user) => {
+    User.findOne({ uuid: uuid }, (findErr, user) => {
         /* istanbul ignore next */
-        if (err) {
-            return next(err);
+        if (findErr) {
+            return next(findErr);
         }
         else {
             req.user = user;

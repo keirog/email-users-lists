@@ -129,7 +129,7 @@ describe('User CRUD tests:', () => {
                 user.name = newName;
 
                 // Update an existing user
-                agent.put('/users/' + userSaveRes.body._id)
+                agent.put('/users/' + userSaveRes.body.uuid)
                     .send(user)
                     .expect(200)
                     .end((userUpdateErr, userUpdateRes) => {
@@ -141,6 +141,7 @@ describe('User CRUD tests:', () => {
 
                         // Set assertions
                         (userUpdateRes.body._id).should.equal(userSaveRes.body._id);
+                        (userUpdateRes.body.uuid).should.equal(userSaveRes.body.uuid);
                         (userUpdateRes.body.name).should.match(newName);
 
                         // Call the assertion callback
@@ -167,7 +168,7 @@ describe('User CRUD tests:', () => {
                 user.name = newName;
 
                 // Update an existing user
-                agent.put('/users/' + userSaveRes.body._id)
+                agent.put('/users/' + userSaveRes.body.uuid)
                     .send(user)
                     .expect(400)
                     .end((userUpdateErr, userUpdateRes) => {
@@ -216,7 +217,7 @@ describe('User CRUD tests:', () => {
         // Save the user
         userObj.save(() => {
 
-            request(app).get('/users/' + userObj._id)
+            request(app).get('/users/' + userObj.uuid)
                 .end((req, res) => {
 
                     // Set assertion
@@ -229,11 +230,11 @@ describe('User CRUD tests:', () => {
         });
     });
 
-    it('should return proper error for single user if an invalid _id is provided', (done) => {
+    it('should return a 404 for single user if an invalid uuid is provided', (done) => {
         request(app).get('/users/test')
             .end((req, res) => {
                 // Set assertion
-                res.body.should.be.an.Object.with.property('message', 'User is invalid');
+                res.body.should.be.an.Object.with.property('message', 'User not found');
 
                 // Call the assertion callback
                 done();
@@ -254,7 +255,7 @@ describe('User CRUD tests:', () => {
                 }
 
                 // Delete an existing user
-                agent.delete('/users/' + userSaveRes.body._id)
+                agent.delete('/users/' + userSaveRes.body.uuid)
                     .send()
                     .expect(200)
                     .end((userDeleteErr, userDeleteRes) => {
@@ -266,6 +267,7 @@ describe('User CRUD tests:', () => {
 
                         // Set assertions
                         (userDeleteRes.body._id).should.equal(userSaveRes.body._id);
+                        (userDeleteRes.body.uuid).should.equal(userSaveRes.body.uuid);
 
                         // Call the assertion callback
                         done();
