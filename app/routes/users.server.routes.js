@@ -7,10 +7,10 @@ module.exports = (app) => {
         .post(users.create)
         .get(users.list);
 
-    app.route('/users/:userId')
+    app.route('/users/:userUuid')
         .get(users.read)
         .put(users.update)
         .delete(users.delete);
 
-    app.param('userId', users.userById);
+    app.param('userUuid', users.userByUuid);
 };
