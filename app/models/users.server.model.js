@@ -30,7 +30,8 @@ const UserSchema = new Schema({
     },
     lists: [{
         type: Schema.Types.ObjectId,
-        ref: 'List'
+        ref: 'List',
+        index: true
     }]
 });
 
