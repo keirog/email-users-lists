@@ -74,7 +74,7 @@ describe('The lists by user methods', () => {
         });
     });
 
-    it('should be return a proper error if the wrong user uuid is provided', (done) => {
+    it('should return a proper error if the wrong user uuid is provided', (done) => {
         // Create new user model instance
         let userObj = new User(user);
 
@@ -125,7 +125,7 @@ describe('The lists by user methods', () => {
             });
     });
 
-    it('should be return a proper error if the wrong user uuid is provided when deleting', (done) => {
+    it('should return a proper error if the wrong user uuid is provided when deleting', (done) => {
         // Save a new user
         agent.post('/users')
             .send(user)
@@ -157,7 +157,7 @@ describe('The lists by user methods', () => {
             });
     });
 
-    it('should be return a proper error if the wrong list id is provided', (done) => {
+    it('should return a proper error if the wrong list id is provided', (done) => {
         // Save a new user
         agent.post('/users')
             .send(user)
@@ -189,7 +189,7 @@ describe('The lists by user methods', () => {
             });
     });
 
-    it('should be return a proper error if the user is not linked to the list', (done) => {
+    it('should return a proper error if the user is not linked to the list', (done) => {
         // Save a new user
         agent.post('/users')
             .send(user)
@@ -259,7 +259,7 @@ describe('The lists by user methods', () => {
         });
     });
 
-    it('should be return a proper error if the wrong user uuid is provided when adding', (done) => {
+    it('should return a proper error if the wrong user uuid is provided when adding', (done) => {
         // Save a new user
         agent.post('/users')
             .send(user)

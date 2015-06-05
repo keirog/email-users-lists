@@ -61,15 +61,23 @@ exports.add = (req, res) => {
             return res.json(user);
         }
         else {
+            // Add the list to the user
             user.lists.push(listId);
 
-            user.save((saveErr) => {
+            // Create updated user
+            let  updatedUser = user.toObject();
+
+            // Delete _id property
+            delete updatedUser._id;
+
+            // Update
+            User.update({uuid: updatedUser.uuid}, updatedUser, { runValidators: true }, (updateErr) => {
 
                 /* istanbul ignore if */
-                if (saveErr) {
+                if (updateErr) {
                     return res.status(400).send({
                         //TODO: errorHandler.getErrorMessage(err)
-                        message: saveErr
+                        message: updateErr
                     });
                 }
                 else {
@@ -102,13 +110,23 @@ exports.delete = (req, res) => {
         }
         else {
 
+            // Remove the list from the user
             user.lists.splice(listIndex, 1);
-            user.save((saveErr) => {
+
+            // Create updated user
+            let  updatedUser = user.toObject();
+
+            // Delete _id property
+            delete updatedUser._id;
+
+            // Update
+            User.update({uuid: updatedUser.uuid}, updatedUser, { runValidators: true }, (updateErr) => {
+
                 /* istanbul ignore if */
-                if (saveErr) {
+                if (updateErr) {
                     return res.status(400).send({
-                        //TODO: errorHandler.getErrorMessage(saveErr)
-                        message: saveErr
+                        //TODO: errorHandler.getErrorMessage(updateErr)
+                        message: updateErr
                     });
                 }
                 else {
