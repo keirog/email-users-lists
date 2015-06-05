@@ -28,11 +28,14 @@
   },
   "devDependencies": {
     "agent": "^0.2.1",
+    "async": "^1.2.0",
+    "faker": "^2.1.4",
     "gulp": "^3.9.0",
     "gulp-istanbul": "^0.9.0",
     "gulp-jshint": "^1.11.0",
     "gulp-mocha": "^2.1.0",
     "gulp-todo": "^3.1.0",
+    "mongoose-fakery": "^0.1.7",
     "should": "^6.0.3",
     "supertest": "^1.0.1"
   }
