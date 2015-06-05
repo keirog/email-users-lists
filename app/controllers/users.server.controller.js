@@ -58,11 +58,20 @@ exports.update = (req, res, next) => {
 
     user = extend(user, req.body);
 
-    user.save((err) => {
-        if (err) {
+    // Create updated user
+    let  updatedUser = user.toObject();
+
+    // Delete _id property
+    delete updatedUser._id;
+
+    // Update
+    User.update({uuid: updatedUser.uuid}, updatedUser, { runValidators: true }, (updateErr) => {
+
+        /* istanbul ignore if */
+        if (updateErr) {
             return res.status(400).send({
                 //TODO: errorHandler.getErrorMessage(err)
-                message: err
+                message: updateErr
             });
         }
         else {
