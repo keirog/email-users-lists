@@ -11,12 +11,14 @@ const todo = require('gulp-todo');
 const files =  {
     server: ['server.js'],
     mochaTests: ['./tests/**/*.js'],
-    appSrc: ['./app/**/*.js']
+    appSrc: ['./app/**/*.js'],
+    fakery: ['./fakery/**/*.js']
 };
 
 const allJSFiles = files.appSrc
     .concat(files.mochaTests)
-    .concat(files.server);
+    .concat(files.server)
+    .concat(files.fakery);
 
 // Set Test environment
 gulp.task('setTestEnv', function () {
