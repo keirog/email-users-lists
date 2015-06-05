@@ -2,10 +2,13 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const  compression = require('compression');
 
 module.exports = () => {
 
     let app = express();
+
+    app.use(compression());
 
     app.use(bodyParser.urlencoded({
         extended: true,
