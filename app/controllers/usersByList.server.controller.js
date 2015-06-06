@@ -13,7 +13,7 @@ exports.list = (req, res) => {
 
     User.find({ 'lists': listId })
         //TODO: allow GET /users sorting override
-        .sort({'name': -1})
+        .sort({'name': 1})
         .exec((err, user) => {
             /* istanbul ignore if */
             if (err) {

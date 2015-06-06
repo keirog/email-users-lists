@@ -26,7 +26,7 @@ exports.list = (req, res) => {
 
     List.find({})
         //TODO: allow GET /lists sorting override
-        .sort({'name': -1})
+        .sort({'name': 1})
         .exec((err, list) => {
             /* istanbul ignore if */
             if (err) {
