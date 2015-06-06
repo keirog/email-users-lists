@@ -16,19 +16,6 @@ const async = require('async');
 const db = require('../config/mongoose')();
 const List = mongoose.model('List');
 
-function createFakeList (next) {
-
-    fakery.fake('list', List, {
-        name: faker.lorem.sentence(),
-        description: faker.lorem.paragraph()
-    });
-
-    fakery.makeAndSave('list', (err, list) =>  {
-        console.log(list);
-        next();
-    });
-}
-
 let listsToCreate = 200;
 let count = 0;
 
@@ -38,9 +25,25 @@ List.remove(() => {
         createFakeList(next);
     }, (err) => {
         if (err) { console.log(err); }
-        else { console.log(listsToCreate, 'lists added'); }
+        else { console.log(listsToCreate + ' lists added'); }
         process.exit();
     });
 });
 
+function createFakeList (next) {
 
+    fakery.fake('list', List, {
+        name: faker.lorem.sentence(),
+        description: faker.lorem.paragraph()
+    });
+
+    fakery.makeAndSave('list', (err) =>  {
+        if (err) {
+            console.log(err);
+            next(err);
+        }
+        else {
+            next();
+        }
+    });
+}
