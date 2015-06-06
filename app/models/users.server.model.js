@@ -30,11 +30,11 @@ const UserSchema = new Schema({
     },
     lists: [{
         type: Schema.Types.ObjectId,
-        ref: 'List',
-        index: true
+        ref: 'List'
     }]
 });
 
+UserSchema.index({ "lists" : 1 , "name" : -1});
 UserSchema.plugin(encrypt, { encryptionKey: process.env.EMAIL_ENCRYPTION_KEY, signingKey: process.env.EMAIL_SIGNING_KEY, encryptedFields: ['email'] });
 
 mongoose.model('User', UserSchema);
