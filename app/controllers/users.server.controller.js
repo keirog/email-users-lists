@@ -24,32 +24,40 @@ exports.create = (req, res) => {
 
 exports.list = (req, res) => {
 
-    //TODO: add X-Total-Count header
-    //TODO: add X-Page header
-    //TODO: add X-Per-Page header
+    //TODO: test headers
 
     let page = (Number(req.query.p) > 0 ? Number(req.query.p) : 1) - 1;
     //TODO: use config for pagination defaults
     let perPage = (Number(req.query.pp) > 0 ? Number(req.query.pp) : 100);
 
-    User.find({})
-        //TODO: allow GET /users sorting override
-        //TODO: test pagination
-        .sort({'name': 1})
-        .limit(perPage)
-        .skip(perPage * page)
-        .exec((err, users) => {
-            /* istanbul ignore if */
-            if (err) {
-                return res.status(400).send({
-                    //TODO: errorHandler.getErrorMessage(err)
-                    message: err
-                });
-            }
-            else {
-                res.json(users);
-            }
-        });
+    res.header('X-Page', page);
+    res.header('X-Per-Page', perPage);
+
+    User.count({}, (countErr, count) => {
+
+        res.header('X-Total-Count', count);
+
+        User.find({})
+            //TODO: allow GET /users sorting override
+            //TODO: test pagination
+            .sort({'name': 1})
+            .limit(perPage)
+            .skip(perPage * page)
+            .exec((err, users) => {
+                /* istanbul ignore if */
+                if (err) {
+                    return res.status(400).send({
+                        //TODO: errorHandler.getErrorMessage(err)
+                        message: err
+                    });
+                }
+                else {
+                    res.json(users);
+                }
+            });
+
+    });
+
 };
 
 exports.read = (req, res) => {

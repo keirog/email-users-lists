@@ -10,22 +10,18 @@
 | controllers/listsByUser.server.controller.js | 79 | errorHandler.getErrorMessage(err)
 | controllers/listsByUser.server.controller.js | 128 | errorHandler.getErrorMessage(updateErr)
 | controllers/users.server.controller.js | 15 | errorHandler.getErrorMessage(err)
-| controllers/users.server.controller.js | 27 | add X-Total-Count header
-| controllers/users.server.controller.js | 28 | add X-Page header
-| controllers/users.server.controller.js | 29 | add X-Per-Page header
-| controllers/users.server.controller.js | 32 | use config for pagination defaults
-| controllers/users.server.controller.js | 36 | allow GET /users sorting override
-| controllers/users.server.controller.js | 37 | test pagination
-| controllers/users.server.controller.js | 45 | errorHandler.getErrorMessage(err)
-| controllers/users.server.controller.js | 84 | errorHandler.getErrorMessage(err)
-| controllers/users.server.controller.js | 99 | errorHandler.getErrorMessage(err)
-| controllers/usersByList.server.controller.js | 12 | add X-Total-Count header
-| controllers/usersByList.server.controller.js | 13 | add X-Page header
-| controllers/usersByList.server.controller.js | 14 | add X-Per-Page header
-| controllers/usersByList.server.controller.js | 18 | use config for pagination defaults
-| controllers/usersByList.server.controller.js | 22 | allow GET /users sorting override
-| controllers/usersByList.server.controller.js | 23 | test pagination
-| controllers/usersByList.server.controller.js | 31 | errorHandler.getErrorMessage(err)
+| controllers/users.server.controller.js | 27 | test headers
+| controllers/users.server.controller.js | 30 | use config for pagination defaults
+| controllers/users.server.controller.js | 41 | allow GET /users sorting override
+| controllers/users.server.controller.js | 42 | test pagination
+| controllers/users.server.controller.js | 50 | errorHandler.getErrorMessage(err)
+| controllers/users.server.controller.js | 92 | errorHandler.getErrorMessage(err)
+| controllers/users.server.controller.js | 107 | errorHandler.getErrorMessage(err)
+| controllers/usersByList.server.controller.js | 12 | test headers
+| controllers/usersByList.server.controller.js | 16 | use config for pagination defaults
+| controllers/usersByList.server.controller.js | 27 | allow GET /users sorting override
+| controllers/usersByList.server.controller.js | 28 | test pagination
+| controllers/usersByList.server.controller.js | 36 | errorHandler.getErrorMessage(err)
 | models/users.server.model.js | 13 | test for unique uuid
 | lists.server.routes.test.js | 82 | (listSaveRes.body.message).should.match('Name cannot be blank');
 | lists.server.routes.test.js | 157 | (listUpdateRes.body.message).should.match('Name cannot be blank');
