@@ -16,7 +16,7 @@ exports.list = (req, res) => {
     //TODO: use config for pagination defaults
     let perPage = (Number(req.query.pp) > 0 ? Number(req.query.pp) : 100);
 
-    res.header('X-Page', page);
+    res.header('X-Page', page + 1);
     res.header('X-Per-Page', perPage);
 
     User.count({'lists': listId }, (countErr, count) => {
