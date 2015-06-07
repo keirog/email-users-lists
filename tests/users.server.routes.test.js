@@ -275,6 +275,83 @@ describe('User CRUD tests:', () => {
             });
     });
 
+    it('allows to specify the maximum number of items returned', (done) => {
+
+        // Create new user model instance
+        let userObj = new User(user);
+
+        // Create a new user
+        let user2Obj = new User({
+                uuid: '849f3554-0acf-11e5-a6c0-1697f925ec7b',
+                name: 'Another Name',
+                email: 'email@example.com',
+                marketingPreferences: {
+                    allowFt: false,
+                    allow3dParty: true
+                },
+                lists: []
+        });
+
+        // Save the user
+        userObj.save(() => {
+
+            user2Obj.save(() => {
+
+                // Request users
+                request(app).get('/users?pp=1')
+                    .end((req, res) => {
+
+                        // Set assertion
+                        res.body.should.be.an.Array.with.lengthOf(1);
+
+                        // Call the assertion callback
+                        done();
+                    });
+
+            });
+        });
+
+    });
+
+    it('allows to specify the a specific pagination returned', (done) => {
+
+
+        // Create new user model instance
+        let userObj = new User(user);
+
+        // Create a new user
+        let user2Obj = new User({
+            uuid: '849f3554-0acf-11e5-a6c0-1697f925ec7b',
+            name: 'Another Name',
+            email: 'email@example.com',
+            marketingPreferences: {
+                allowFt: false,
+                allow3dParty: true
+            },
+            lists: []
+        });
+
+        // Save the user
+        userObj.save(() => {
+
+            user2Obj.save(() => {
+
+                // Request users
+                request(app).get('/users?pp=1&p=2')
+                    .end((req, res) => {
+
+                        // Set assertion
+                        res.body.should.be.an.Array.with.lengthOf(1);
+
+                        // Call the assertion callback
+                        done();
+                    });
+            });
+
+        });
+
+    });
+
     afterEach((done) => {
 
         User.remove().exec(() => {
