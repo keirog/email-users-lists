@@ -83,6 +83,58 @@ describe('The users by list methods', () => {
 
     });
 
+    it('allows to specify the maximum number of items returned', (done) => {
+
+        // Add the list to the second user
+        user2.lists.push(list._id);
+
+        // Create new user model instance
+        let userObj = new User(user2);
+
+        // Save the user
+        userObj.save(() => {
+
+            // Request users
+            request(app).get('/lists/' + list._id + '/users?pp=1')
+                .end((req, res) => {
+
+                    // Set assertion
+                    res.body.should.be.an.Array.with.lengthOf(1);
+
+                    // Call the assertion callback
+                    done();
+                });
+
+        });
+
+    });
+
+    it('allows to specify the a specific pagination returned', (done) => {
+
+        // Add the list to the second user
+        user2.lists.push(list._id);
+
+        // Create new user model instance
+        let userObj = new User(user2);
+
+        // Save the user
+        userObj.save(() => {
+
+            // Request users
+            request(app).get('/lists/' + list._id + '/users?pp=1&p=2')
+                .end((req, res) => {
+
+                    // Set assertion
+                    res.body.should.be.an.Array.with.lengthOf(1);
+
+                    // Call the assertion callback
+                    done();
+                });
+
+        });
+
+    });
+
     afterEach((done) => {
 
         User.remove().exec(() => {
