@@ -29,6 +29,7 @@ exports.list = (req, res) => {
             .sort({'createdOn': 1})
             .limit(perPage)
             .skip(perPage * page)
+            .select('name email uuid')
             .exec((err, users) => {
                 /* istanbul ignore if */
                 if (err) {
