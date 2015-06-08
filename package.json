@@ -18,14 +18,14 @@
   },
   "homepage": "https://github.com/Financial-Times/email-users-lists#readme",
   "dependencies": {
-    "async": "^1.2.0",
+    "async": "^1.2.1",
     "body-parser": "^1.12.4",
     "compression": "^1.4.4",
     "dotenv": "^1.1.0",
     "express": "^4.12.4",
     "extend": "^2.0.1",
     "faker": "^2.1.4",
-    "mongoose": "^4.0.4",
+    "mongoose": "^4.0.5",
     "mongoose-encryption": "^1.1.0",
     "mongoose-fakery": "^0.1.7",
     "winston": "^1.0.0"
@@ -33,10 +33,10 @@
   "devDependencies": {
     "agent": "^0.2.1",
     "gulp": "^3.9.0",
-    "gulp-istanbul": "^0.9.0",
+    "gulp-istanbul": "^0.10.0",
     "gulp-jshint": "^1.11.0",
-    "gulp-mocha": "^2.1.0",
-    "gulp-todo": "^3.1.0",
+    "gulp-mocha": "^2.1.1",
+    "gulp-todo": "^3.1.1",
     "should": "^6.0.3",
     "supertest": "^1.0.1"
   }
