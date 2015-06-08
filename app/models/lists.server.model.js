@@ -8,6 +8,7 @@ const ListSchema = new Schema({
     name: {
         type: String,
         trim: true,
+        index: true,
         required: 'name cannot be blank'
     },
     description: {

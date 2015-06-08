@@ -18,7 +18,7 @@ const db = require('../config/mongoose')();
 const User = mongoose.model('User');
 const List = mongoose.model('List');
 
-let usersToCreate = 9000000;
+let usersToCreate = 5000000;
 let count = 0;
 
 User.remove(() => {
