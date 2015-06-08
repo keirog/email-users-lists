@@ -17,8 +17,12 @@ const UserSchema = new Schema({
     name: {
         type: String,
         trim: true,
-        index: true,
         required: 'name cannot be blank'
+    },
+    createdOn: {
+        type: Date,
+        default: Date.now,
+        index: true
     },
     email: {
         type: String,
@@ -35,7 +39,7 @@ const UserSchema = new Schema({
     }]
 });
 
-UserSchema.index({ "lists" : 1 , "name" : 1});
+UserSchema.index({ "lists" : 1 , "createdOn" : 1});
 UserSchema.plugin(encrypt, { encryptionKey: process.env.EMAIL_ENCRYPTION_KEY, signingKey: process.env.EMAIL_SIGNING_KEY, encryptedFields: ['email'] });
 
 mongoose.model('User', UserSchema);

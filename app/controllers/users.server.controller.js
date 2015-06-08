@@ -40,7 +40,7 @@ exports.list = (req, res) => {
         User.find({})
             //TODO: allow GET /users sorting override
             //TODO: test pagination
-            .sort({'name': 1})
+            .sort({'createdOn': 1})
             .limit(perPage)
             .skip(perPage * page)
             .exec((err, users) => {
