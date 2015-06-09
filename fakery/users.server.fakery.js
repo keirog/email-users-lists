@@ -46,12 +46,7 @@ function createFakeUser (next) {
                 // Generate fake user
                 fakery.fake('user', User, {
                     uuid: faker.random.uuid(),
-                    name: faker.name.findName(),
                     email: faker.internet.email(),
-                    marketingPreferences: {
-                        allowFt: faker.random.array_element([true, false]),
-                        allow3dParty: faker.random.array_element([true, false])
-                    },
                     lists: [listId]
 
                 });

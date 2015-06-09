@@ -21,9 +21,9 @@
 | controllers/usersByList.server.controller.js | 16 | use config for pagination defaults
 | controllers/usersByList.server.controller.js | 27 | allow GET /users sorting override
 | controllers/usersByList.server.controller.js | 28 | test pagination
-| controllers/usersByList.server.controller.js | 36 | errorHandler.getErrorMessage(err)
+| controllers/usersByList.server.controller.js | 37 | errorHandler.getErrorMessage(err)
 | models/users.server.model.js | 13 | test for unique uuid
 | lists.server.routes.test.js | 82 | (listSaveRes.body.message).should.match('Name cannot be blank');
 | lists.server.routes.test.js | 157 | (listUpdateRes.body.message).should.match('Name cannot be blank');
-| users.server.routes.test.js | 107 | (userSaveRes.body.message).should.match('Name cannot be blank');
-| users.server.routes.test.js | 183 | (userUpdateRes.body.message).should.match('Name cannot be blank');
+| users.server.routes.test.js | 97 | (userSaveRes.body.message).should.match('Email cannot be blank');
+| users.server.routes.test.js | 173 | (userUpdateRes.body.message).should.match('Email cannot be blank');

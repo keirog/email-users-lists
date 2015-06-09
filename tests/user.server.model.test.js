@@ -35,12 +35,7 @@ describe('User Model Unit Tests:', () => {
         list.save((err, res) => {
             user = new User ({
                 uuid:     '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                name:     'User Name',
                 email:    'email@list.com',
-                marketingPreferences: {
-                    allowFt: true,
-                    allow3dParty: false
-                },
                 lists: [res._id]
             });
             done();
@@ -53,15 +48,6 @@ describe('User Model Unit Tests:', () => {
         it('should be able to save without problems', (done) => {
             return user.save((err) => {
                 should.not.exist(err);
-                done();
-            });
-        });
-
-        it('should throw an error trying to save without name', (done) => {
-            user.name = '';
-
-            return user.save((err) => {
-                should.exist(err);
                 done();
             });
         });
