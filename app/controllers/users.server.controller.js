@@ -37,9 +37,7 @@ exports.list = (req, res) => {
 
         res.header('X-Total-Count', count);
 
-        User.find({})
-            //TODO: allow GET /users sorting override
-            //TODO: test pagination
+        User.find({}, { __v: 0, createdOn: 0})
             .sort({'createdOn': 1})
             .limit(perPage)
             .skip(perPage * page)
