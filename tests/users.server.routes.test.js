@@ -34,12 +34,7 @@ describe('User CRUD tests:', () => {
             // Create a new user
             user = new User({
                 uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                name: 'User Name',
                 email: 'email@list.com',
-                marketingPreferences: {
-                    allowFt: true,
-                    allow3dParty: false
-                },
                 lists: [res._id]
             });
 
@@ -75,14 +70,9 @@ describe('User CRUD tests:', () => {
                         let users = userGetRes.body;
 
                         // Set assertions
-                        (users[0].name).should.match(user.name);
                         (users[0].uuid).should.match(user.uuid);
                         (users[0].email).should.match(user.email);
                         (users[0].lists).should.be.an.Array.with.lengthOf(user.lists.length);
-                        (users[0].marketingPreferences).should.be.an.Object.with.property('allowFt');
-                        (users[0].marketingPreferences).should.be.an.Object.with.property('allow3dParty');
-
-
 
                         // Call the assertion callback
                         done();
@@ -92,9 +82,9 @@ describe('User CRUD tests:', () => {
     });
 
 
-    it('should not be able to save a user if no name is provided', (done) => {
-        // Invalidate name field
-        user.name = '';
+    it('should not be able to save a user if no email is provided', (done) => {
+        // Invalidate email field
+        user.email = '';
 
         // Save a new user
         agent.post('/users')
@@ -104,7 +94,7 @@ describe('User CRUD tests:', () => {
 
                 // Set message assertion
                 should.exist(userSaveRes);
-                //TODO: (userSaveRes.body.message).should.match('Name cannot be blank');
+                //TODO: (userSaveRes.body.message).should.match('Email cannot be blank');
                 // Handle user save error
                 done(userSaveErr);
 
@@ -119,14 +109,14 @@ describe('User CRUD tests:', () => {
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
 
-                let newName = 'This is a different user';
+                let newEmail = 'This is a different email';
                 // Handle user save error
                 if (userSaveErr) {
                     done(userSaveErr);
                 }
 
-                // Update user name
-                user.name = newName;
+                // Update user email
+                user.email = newEmail;
 
                 // Update an existing user
                 agent.put('/users/' + userSaveRes.body.uuid)
@@ -142,7 +132,7 @@ describe('User CRUD tests:', () => {
                         // Set assertions
                         (userUpdateRes.body._id).should.equal(userSaveRes.body._id);
                         (userUpdateRes.body.uuid).should.equal(userSaveRes.body.uuid);
-                        (userUpdateRes.body.name).should.match(newName);
+                        (userUpdateRes.body.email).should.match(newEmail);
 
                         // Call the assertion callback
                         done();
@@ -150,7 +140,7 @@ describe('User CRUD tests:', () => {
             });
     });
 
-    it('should not be able to update a user deleting its name', (done) => {
+    it('should not be able to update a user deleting its email', (done) => {
 
         // Save a new user
         agent.post('/users')
@@ -158,14 +148,14 @@ describe('User CRUD tests:', () => {
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
 
-                let newName = '';
+                let newEmail = '';
                 // Handle user save error
                 if (userSaveErr) {
                     done(userSaveErr);
                 }
 
-                // Update user name
-                user.name = newName;
+                // Update user email
+                user.email = newEmail;
 
                 // Update an existing user
                 agent.put('/users/' + userSaveRes.body.uuid)
@@ -180,7 +170,7 @@ describe('User CRUD tests:', () => {
 
                         // Set assertions
                         should.exist(userUpdateRes);
-                        //TODO: (userUpdateRes.body.message).should.match('Name cannot be blank');
+                        //TODO: (userUpdateRes.body.message).should.match('Email cannot be blank');
 
                         // Call the assertion callback
                         done();
@@ -221,7 +211,7 @@ describe('User CRUD tests:', () => {
                 .end((req, res) => {
 
                     // Set assertion
-                    res.body.should.be.an.Object.with.property('name', user.name);
+                    res.body.should.be.an.Object.with.property('email', user.email);
 
                     // Call the assertion callback
                     done();
@@ -283,12 +273,7 @@ describe('User CRUD tests:', () => {
         // Create a new user
         let user2Obj = new User({
                 uuid: '849f3554-0acf-11e5-a6c0-1697f925ec7b',
-                name: 'Another Name',
                 email: 'email@example.com',
-                marketingPreferences: {
-                    allowFt: false,
-                    allow3dParty: true
-                },
                 lists: []
         });
 
@@ -322,12 +307,7 @@ describe('User CRUD tests:', () => {
         // Create a new user
         let user2Obj = new User({
             uuid: '849f3554-0acf-11e5-a6c0-1697f925ec7b',
-            name: 'Another Name',
             email: 'email@example.com',
-            marketingPreferences: {
-                allowFt: false,
-                allow3dParty: true
-            },
             lists: []
         });
 

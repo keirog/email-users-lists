@@ -31,12 +31,7 @@ describe('The users by list methods', () => {
             // Create a new user
             user1 = new User({
                 uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                name: 'User Name',
                 email: 'email@list.com',
-                marketingPreferences: {
-                    allowFt: true,
-                    allow3dParty: false
-                },
                 lists: [resListSave._id]
             });
 
@@ -44,12 +39,7 @@ describe('The users by list methods', () => {
                 // Create a new user
                 user2 = new User({
                     uuid: '849f3554-0acf-11e5-a6c0-1697f925ec7b',
-                    name: 'Another Name',
                     email: 'email@example.com',
-                    marketingPreferences: {
-                        allowFt: false,
-                        allow3dParty: true
-                    },
                     lists: []
                 });
 

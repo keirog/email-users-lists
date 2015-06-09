@@ -39,12 +39,7 @@ describe('The lists by user methods', () => {
                 // Create a new user
                 user = new User({
                     uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                    name: 'User Name',
                     email: 'email@list.com',
-                    marketingPreferences: {
-                        allowFt: true,
-                        allow3dParty: false
-                    },
                     lists: [resSave1._id]
                 });
 

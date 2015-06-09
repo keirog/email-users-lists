@@ -14,11 +14,6 @@ const UserSchema = new Schema({
         index: { unique: true },
         required: 'uuid cannot be blank'
     },
-    name: {
-        type: String,
-        trim: true,
-        required: 'name cannot be blank'
-    },
     createdOn: {
         type: Date,
         default: Date.now,
@@ -28,10 +23,6 @@ const UserSchema = new Schema({
         type: String,
         trim: true,
         required: 'email cannot be blank'
-    },
-    marketingPreferences: {
-        allowFt: Boolean,
-        allow3dParty: Boolean
     },
     lists: [{
         type: Schema.Types.ObjectId,
