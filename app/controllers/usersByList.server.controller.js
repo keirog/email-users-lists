@@ -21,7 +21,13 @@ exports.list = (req, res) => {
     res.header('X-Page', page + 1);
     res.header('X-Per-Page', perPage);
 
+    let t1 = Date.now();
+    console.log('Request received');
+
     User.count({'lists': listId }, (countErr, count) => {
+
+        let t2 = Date.now();
+        console.log('Users counted', t2 - t1);
 
         res.header('X-Total-Count', count);
 
@@ -39,6 +45,9 @@ exports.list = (req, res) => {
                     });
                 }
                 else {
+                    let t3 = Date.now();
+                    console.log('Users found', t3 - t2);
+
                     // Asynchronously decrypt the users array
                     async.map(users,
                         // Iterator
@@ -55,6 +64,8 @@ exports.list = (req, res) => {
                                 });
                             }
                             else {
+                                let t4 = Date.now();
+                                console.log('Users decrypted', t4 - t3);
                                 res.json(decryptedUsers);
                             }
 

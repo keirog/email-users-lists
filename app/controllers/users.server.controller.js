@@ -33,7 +33,8 @@ exports.create = (req, res) => {
 
 exports.list = (req, res) => {
 
-    //TODO: test headers
+    let t1 = Date.now();
+    console.log('Request received');
 
     let page = (Number(req.query.p) > 0 ? Number(req.query.p) : 1) - 1;
     //TODO: use config for pagination defaults
@@ -43,6 +44,9 @@ exports.list = (req, res) => {
     res.header('X-Per-Page', perPage);
 
     User.count({}, (countErr, count) => {
+
+        let t2 = Date.now();
+        console.log('Users counted', t2 - t1);
 
         res.header('X-Total-Count', count);
 
@@ -60,6 +64,9 @@ exports.list = (req, res) => {
                     });
                 }
                 else {
+                    let t3 = Date.now();
+                    console.log('Users found', t3 - t2);
+
                     // Asynchronously decrypt the users array
                     async.map(users,
                         // Iterator
@@ -76,6 +83,8 @@ exports.list = (req, res) => {
                                 });
                             }
                             else {
+                                let t4 = Date.now();
+                                console.log('Users decrypted', t4 - t3);
                                 res.json(decryptedUsers);
                             }
 
