@@ -15,6 +15,7 @@ const faker = require('faker');
 const async = require('async');
 
 const db = require('../config/mongoose')();
+const crypto = require('../app/utils/crypto.server.utils');
 const User = mongoose.model('User');
 const List = mongoose.model('List');
 
@@ -46,7 +47,7 @@ function createFakeUser (next) {
                 // Generate fake user
                 fakery.fake('user', User, {
                     uuid: faker.random.uuid(),
-                    email: faker.internet.email(),
+                    email: crypto.encrypt(faker.internet.email()),
                     lists: [listId]
 
                 });

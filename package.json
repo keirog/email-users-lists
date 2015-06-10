@@ -26,7 +26,6 @@
     "extend": "^2.0.1",
     "faker": "^2.1.4",
     "mongoose": "^4.0.5",
-    "mongoose-encryption": "^1.1.0",
     "mongoose-fakery": "^0.1.7",
     "winston": "^1.0.0"
   },
