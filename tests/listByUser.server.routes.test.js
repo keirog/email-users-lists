@@ -3,6 +3,7 @@
 // Our modules
 const app = require('../server');
 const crypto = require('../app/utils/crypto.server.utils');
+const config = require('../config/config');
 
 // External modules
 const should = require('should');
@@ -58,7 +59,9 @@ describe('The lists by user methods', () => {
 
         userObj.save(() => {
             // Request users
-            request(app).get('/users/' + userObj.uuid + '/lists')
+            request(app)
+                .get('/users/' + userObj.uuid + '/lists')
+                .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
                     // Set assertion
                     res.body.should.be.an.Array.with.lengthOf(1);
@@ -82,6 +85,7 @@ describe('The lists by user methods', () => {
 
             // Request users
             request(app).get('/users/' + 'wrongUuid' + '/lists')
+                .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
                     // Set assertion
                     res.status.should.match(400);
@@ -96,6 +100,7 @@ describe('The lists by user methods', () => {
     it('should be able to remove a list from a user', (done) => {
         // Save a new user
         agent.post('/users')
+            .auth(config.authUser, config.authPassword)
             .send(user)
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
@@ -107,6 +112,7 @@ describe('The lists by user methods', () => {
 
                 // Delete an existing list
                 agent.delete('/users/' + userSaveRes.body.uuid + '/lists/' + list1._id)
+                    .auth(config.authUser, config.authPassword)
                     .send()
                     .expect(200)
                     .end((listDeleteErr, listDeleteRes) => {
@@ -129,6 +135,7 @@ describe('The lists by user methods', () => {
     it('should return a proper error if the wrong user uuid is provided when deleting', (done) => {
         // Save a new user
         agent.post('/users')
+            .auth(config.authUser, config.authPassword)
             .send(user)
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
@@ -140,6 +147,7 @@ describe('The lists by user methods', () => {
 
                 // Provide the wrong user uuid
                 agent.delete('/users/' + 'wrongUuid' + '/lists/' + list1._id)
+                    .auth(config.authUser, config.authPassword)
                     .send()
                     .expect(400)
                     .end((listDeleteErr, listDeleteRes) => {
@@ -161,6 +169,7 @@ describe('The lists by user methods', () => {
     it('should return a proper error if the wrong list id is provided', (done) => {
         // Save a new user
         agent.post('/users')
+            .auth(config.authUser, config.authPassword)
             .send(user)
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
@@ -172,6 +181,7 @@ describe('The lists by user methods', () => {
 
                 // Provide the wrong list Id
                 agent.delete('/users/' + userSaveRes.body.uuid + '/lists/' + 'wrongId')
+                    .auth(config.authUser, config.authPassword)
                     .send()
                     .expect(400)
                     .end((listDeleteErr, listDeleteRes) => {
@@ -193,6 +203,7 @@ describe('The lists by user methods', () => {
     it('should return a proper error if the user is not linked to the list', (done) => {
         // Save a new user
         agent.post('/users')
+            .auth(config.authUser, config.authPassword)
             .send(user)
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
@@ -204,6 +215,7 @@ describe('The lists by user methods', () => {
 
                 // Provide the wrong list Id
                 agent.delete('/users/' + userSaveRes.body.uuid + '/lists/' + list2._id)
+                    .auth(config.authUser, config.authPassword)
                     .send()
                     .expect(400)
                     .end((listDeleteErr, listDeleteRes) => {
@@ -229,6 +241,7 @@ describe('The lists by user methods', () => {
 
         userObj.save(() => {
             agent.post('/users/' + user.uuid + '/lists')
+                .auth(config.authUser, config.authPassword)
                 .send(list2)
                 .expect(200)
                 .end((listSaveErr) => {
@@ -240,6 +253,7 @@ describe('The lists by user methods', () => {
 
                     // Get a list of lists
                     agent.get('/users/' + user.uuid + '/lists')
+                        .auth(config.authUser, config.authPassword)
                         .end((listGetErr, listGetRes) => {
 
                             // Handle lists get error
@@ -263,6 +277,7 @@ describe('The lists by user methods', () => {
     it('should return a proper error if the wrong user uuid is provided when adding', (done) => {
         // Save a new user
         agent.post('/users')
+            .auth(config.authUser, config.authPassword)
             .send(user)
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
@@ -274,6 +289,7 @@ describe('The lists by user methods', () => {
 
                 // Provide the wrong user uuid
                 agent.post('/users/' + 'wrongUuid' + '/lists')
+                    .auth(config.authUser, config.authPassword)
                     .send(list2)
                     .expect(400)
                     .end((listDeleteErr, listDeleteRes) => {
@@ -298,6 +314,7 @@ describe('The lists by user methods', () => {
 
         userObj.save(() => {
             agent.post('/users/' + user.uuid + '/lists')
+                .auth(config.authUser, config.authPassword)
                 .send(list1)
                 //.expect(200)
                 .end((listSaveErr) => {
@@ -309,6 +326,7 @@ describe('The lists by user methods', () => {
 
                     // Get a list of lists
                     agent.get('/users/' + user.uuid + '/lists')
+                        .auth(config.authUser, config.authPassword)
                         .end((listGetErr, listGetRes) => {
 
                             // Handle lists get error

@@ -2,6 +2,7 @@
 
 // Our modules
 const app = require('../server');
+const config = require('../config/config');
 
 // External modules
 const should = require('should');
@@ -35,6 +36,7 @@ describe('List CRUD tests:', () => {
 
         // Save a new list
         agent.post('/lists')
+            .auth(config.authUser, config.authPassword)
             .send(list)
             .expect(200)
             .end((listSaveErr) => {
@@ -46,6 +48,7 @@ describe('List CRUD tests:', () => {
 
                 // Get a list of lists
                 agent.get('/lists')
+                    .auth(config.authUser, config.authPassword)
                     .end((listGetErr, listGetRes) => {
 
                         // Handle lists get error
@@ -73,6 +76,7 @@ describe('List CRUD tests:', () => {
 
         // Save a new list
         agent.post('/lists')
+            .auth(config.authUser, config.authPassword)
             .send(list)
             .expect(400)
             .end((listSaveErr, listSaveRes) => {
@@ -90,6 +94,7 @@ describe('List CRUD tests:', () => {
 
         // Save a new list
         agent.post('/lists')
+            .auth(config.authUser, config.authPassword)
             .send(list)
             .expect(200)
             .end((listSaveErr, listSaveRes) => {
@@ -105,6 +110,7 @@ describe('List CRUD tests:', () => {
 
                 // Update an existing list
                 agent.put('/lists/' + listSaveRes.body._id)
+                    .auth(config.authUser, config.authPassword)
                     .send(list)
                     .expect(200)
                     .end((listUpdateErr, listUpdateRes) => {
@@ -128,6 +134,7 @@ describe('List CRUD tests:', () => {
 
         // Save a new list
         agent.post('/lists')
+            .auth(config.authUser, config.authPassword)
             .send(list)
             .expect(200)
             .end((listSaveErr, listSaveRes) => {
@@ -143,6 +150,7 @@ describe('List CRUD tests:', () => {
 
                 // Update an existing list
                 agent.put('/lists/' + listSaveRes.body._id)
+                    .auth(config.authUser, config.authPassword)
                     .send(list)
                     .expect(400)
                     .end((listUpdateErr, listUpdateRes) => {
@@ -171,6 +179,7 @@ describe('List CRUD tests:', () => {
 
             // Request lists
             request(app).get('/lists')
+                .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
 
                     // Set assertion
@@ -192,6 +201,7 @@ describe('List CRUD tests:', () => {
         listObj.save(() => {
 
             request(app).get('/lists/' + listObj._id)
+                .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
 
                     // Set assertion
@@ -206,6 +216,7 @@ describe('List CRUD tests:', () => {
 
     it('should return proper error for single list if an invalid _id is provided', (done) => {
         request(app).get('/lists/test')
+            .auth(config.authUser, config.authPassword)
             .end((req, res) => {
                 // Set assertion
                 res.body.should.be.an.Object.with.property('message', 'List is invalid');
@@ -219,6 +230,7 @@ describe('List CRUD tests:', () => {
 
         // Save a new list
         agent.post('/lists')
+            .auth(config.authUser, config.authPassword)
             .send(list)
             .expect(200)
             .end((listSaveErr, listSaveRes) => {
@@ -230,6 +242,7 @@ describe('List CRUD tests:', () => {
 
                 // Delete an existing list
                 agent.delete('/lists/' + listSaveRes.body._id)
+                    .auth(config.authUser, config.authPassword)
                     .send()
                     .expect(200)
                     .end((listDeleteErr, listDeleteRes) => {
