@@ -2,6 +2,7 @@
 
 // Our modules
 const app = require('../server');
+const crypto = require('../app/utils/crypto.server.utils');
 
 // External modules
 const should = require('should');
@@ -39,7 +40,7 @@ describe('The lists by user methods', () => {
                 // Create a new user
                 user = new User({
                     uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                    email: 'email@list.com',
+                    email: crypto.encrypt('email@list.com'),
                     lists: [resSave1._id]
                 });
 
@@ -73,7 +74,12 @@ describe('The lists by user methods', () => {
         // Create new user model instance
         let userObj = new User(user);
 
-        userObj.save(() => {
+        userObj.save((errSave) => {
+
+            if(errSave) {
+                done(errSave);
+            }
+
             // Request users
             request(app).get('/users/' + 'wrongUuid' + '/lists')
                 .end((req, res) => {
@@ -224,7 +230,7 @@ describe('The lists by user methods', () => {
         userObj.save(() => {
             agent.post('/users/' + user.uuid + '/lists')
                 .send(list2)
-                //.expect(200)
+                .expect(200)
                 .end((listSaveErr) => {
 
                     // Handle list save error

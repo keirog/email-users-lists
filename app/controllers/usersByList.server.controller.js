@@ -23,7 +23,8 @@ exports.list = (req, res) => {
 
         res.header('X-Total-Count', count);
 
-        User.find({'lists': listId}, {__v: 0, lists: 0, createdOn: 0})
+        User.find({'lists': listId}, {__v: 0, lists: 0, createdOn: 0, _id: 0 })
+            .lean()
             .sort({'createdOn': 1})
             .limit(perPage)
             .skip(perPage * page)

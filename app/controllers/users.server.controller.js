@@ -4,11 +4,19 @@
 const mongoose = require('mongoose');
 const extend = require('extend');
 
+// Our modules
+const crypto = require('../utils/crypto.server.utils');
+
 // Models
 const User = mongoose.model('User');
 
 exports.create = (req, res) => {
-    let user = new User(req.body);
+    let userObj = req.body;
+
+    // Encrypt the email
+    userObj.email = crypto.encrypt(userObj.email);
+
+    let user = new User(userObj);
     user.save((err) => {
         if (err) {
             return res.status(400).send({
@@ -37,8 +45,9 @@ exports.list = (req, res) => {
 
         res.header('X-Total-Count', count);
 
-        User.find({}, { __v: 0, createdOn: 0})
+        User.find({}, { __v: 0, createdOn: 0, _id: 0 })
             .sort({'createdOn': 1})
+            .lean()
             .limit(perPage)
             .skip(perPage * page)
             .exec((err, users) => {
@@ -50,6 +59,9 @@ exports.list = (req, res) => {
                     });
                 }
                 else {
+                    users.map((user) => {
+                        user.email = crypto.decrypt(user.email);
+                    });
                     res.json(users);
                 }
             });
@@ -75,6 +87,10 @@ exports.update = (req, res, next) => {
 
     user = extend(user, req.body);
 
+    if (user.email) {
+        user.email = crypto.encrypt(user.email);
+    }
+
     // Create updated user
     let  updatedUser = user.toObject();
 
@@ -92,6 +108,7 @@ exports.update = (req, res, next) => {
             });
         }
         else {
+            user.email = crypto.decrypt(user.email);
             res.json(user);
         }
     });
@@ -119,9 +136,14 @@ exports.userByUuid = (req, res, next, uuid) => {
         if (findErr) {
             return next(findErr);
         }
+        else if (user) {
+                user.email = crypto.decrypt(user.email);
+                req.user = user;
+                return next();
+        }
         else {
             req.user = user;
-            next();
+            return next();
         }
     });
 };

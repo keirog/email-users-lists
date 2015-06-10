@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 
 // Internal modules
 const listCtrl = require('./lists.server.controller');
+const crypto = require('../utils/crypto.server.utils');
 
 // Models
 const List = mongoose.model('List');
@@ -33,6 +34,7 @@ exports.list = (req, res) => {
                 });
             }
             else {
+                populatedUser.email = crypto.decrypt(populatedUser.email);
                 res.json(populatedUser.lists);
             }
         });

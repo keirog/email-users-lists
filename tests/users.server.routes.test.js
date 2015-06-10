@@ -3,6 +3,8 @@
 
 // Our modules
 const app = require('../server');
+const crypto = require('../app/utils/crypto.server.utils');
+
 
 // External modules
 const should = require('should');
@@ -179,6 +181,9 @@ describe('User CRUD tests:', () => {
     });
 
     it('should be able to get a list of users', (done) => {
+
+        user.email = crypto.encrypt(user.email);
+
         // Create new user model instance
         let userObj = new User(user);
 
@@ -201,6 +206,11 @@ describe('User CRUD tests:', () => {
 
 
     it('should be able to get a single user', (done) => {
+
+        let clearEmail = user.email;
+
+        user.email = crypto.encrypt(user.email);
+
         // Create new user model instance
         let userObj = new User(user);
 
@@ -211,7 +221,7 @@ describe('User CRUD tests:', () => {
                 .end((req, res) => {
 
                     // Set assertion
-                    res.body.should.be.an.Object.with.property('email', user.email);
+                    res.body.should.be.an.Object.with.property('email', clearEmail);
 
                     // Call the assertion callback
                     done();
@@ -267,6 +277,8 @@ describe('User CRUD tests:', () => {
 
     it('allows to specify the maximum number of items returned', (done) => {
 
+        user.email = crypto.encrypt(user.email);
+
         // Create new user model instance
         let userObj = new User(user);
 
@@ -279,6 +291,9 @@ describe('User CRUD tests:', () => {
 
         // Save the user
         userObj.save(() => {
+
+            user2Obj.email = crypto.encrypt(user2Obj.email);
+
 
             user2Obj.save(() => {
 
@@ -301,6 +316,8 @@ describe('User CRUD tests:', () => {
     it('allows to specify the a specific pagination returned', (done) => {
 
 
+        user.email = crypto.encrypt(user.email);
+
         // Create new user model instance
         let userObj = new User(user);
 
@@ -313,6 +330,8 @@ describe('User CRUD tests:', () => {
 
         // Save the user
         userObj.save(() => {
+
+            user2Obj.email = crypto.encrypt(user2Obj.email);
 
             user2Obj.save(() => {
 
