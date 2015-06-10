@@ -2,7 +2,11 @@
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const  compression = require('compression');
+const compression = require('compression');
+const basicAuth = require('basic-auth-connect');
+
+
+const config = require('./config');
 
 module.exports = () => {
 
@@ -15,6 +19,8 @@ module.exports = () => {
         limit:'10mb'
     }));
 
+    // Authenticator
+    app.use(basicAuth(config.authUser, config.authPassword));
 
     app.use(bodyParser.json({
         limit:'10mb'
