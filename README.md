@@ -7,26 +7,26 @@ REST API for Users' Lists matching
 ### /lists
 **GET /lists**: returns an array of list objects
 
-**POST /lists**: add the posted list object to the list of lists
+**POST /lists**: adds the posted list object to the list of lists
 
 ### /lists/:listId
 **GET /lists/listId**: returns a specific list object
 
-**PUT /lists/listId**: edit the specific list object updating the provided properties
+**PUT /lists/listId**: edits the specific list object updating the provided properties
 
-**DELETE /lists/listId**: delete the specific list object 
+**DELETE /lists/listId**: deletes the specific list object 
 
 ### /users
 **GET /users**: returns an array of user objects
 
-**POST /users**: add the posted user object to the list of users
+**POST /users**: adds the posted user object to the list of users
 
 ### /users/:userUuid
 **GET /users/userUuid**: returns a specific user object
 
-**PUT /users/userUuid**: edit the specific user object updating the provided properties
+**PUT /users/userUuid**: edits the specific user object updating the provided properties
 
-**DELETE /users/userUuid**: delete the specific user object 
+**DELETE /users/userUuid**: deletes the specific user object 
 
 ### /users/:userUuid/lists
 **GET /users/:userUuid/lists**: returns a populated list of lists for the provided user
