@@ -2,14 +2,16 @@
 
 // External modules
 const mongoose = require('mongoose');
+const async = require('async');
+
+// Our modules
+const crypto = require('../utils/crypto.server.utils');
 
 // Models
 const List = mongoose.model('List');
 const User = mongoose.model('User');
 
 exports.list = (req, res) => {
-
-    //TODO: test headers
 
     let listId = req.list;
     let page = (Number(req.query.p) > 0 ? Number(req.query.p) : 1) - 1;
@@ -37,7 +39,26 @@ exports.list = (req, res) => {
                     });
                 }
                 else {
-                    res.json(users);
+                    // Asynchronously decrypt the users array
+                    async.map(users,
+                        // Iterator
+                        (user, next) => {
+                            user.email = crypto.decrypt(user.email);
+                            next(null, user);
+                        },
+                        // Callback
+                        (encryptErr, decryptedUsers) => {
+                            /* istanbul ignore if */
+                            if (encryptErr) {
+                                return res.status(400).send({
+                                    message: encryptErr
+                                });
+                            }
+                            else {
+                                res.json(decryptedUsers);
+                            }
+
+                        });
                 }
             });
     });

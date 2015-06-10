@@ -12,6 +12,7 @@ const agent = request.agent(app);
 // Models
 const List = mongoose.model('List');
 const User = mongoose.model('User');
+const crypto = require('../app/utils/crypto.server.utils');
 
 // Module globals
 let list, user1, user2;
@@ -35,6 +36,8 @@ describe('The users by list methods', () => {
                 lists: [resListSave._id]
             });
 
+            user1.email = crypto.encrypt(user1.email);
+
             user1.save(() => {
                 // Create a new user
                 user2 = new User({
@@ -52,6 +55,9 @@ describe('The users by list methods', () => {
     });
 
     it('lists the user members of the provided list', (done) => {
+
+        user2.email = crypto.encrypt(user2.email);
+
         // Create new user model instance
         let userObj = new User(user2);
 
@@ -74,6 +80,8 @@ describe('The users by list methods', () => {
     });
 
     it('allows to specify the maximum number of items returned', (done) => {
+
+        user2.email = crypto.encrypt(user2.email);
 
         // Add the list to the second user
         user2.lists.push(list._id);
@@ -103,6 +111,8 @@ describe('The users by list methods', () => {
 
         // Add the list to the second user
         user2.lists.push(list._id);
+
+        user2.email = crypto.encrypt(user2.email);
 
         // Create new user model instance
         let userObj = new User(user2);
