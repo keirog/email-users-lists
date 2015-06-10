@@ -13,8 +13,6 @@ const User = mongoose.model('User');
 
 exports.list = (req, res) => {
 
-    //TODO: test headers
-
     let listId = req.list;
     let page = (Number(req.query.p) > 0 ? Number(req.query.p) : 1) - 1;
     //TODO: use config for pagination defaults
