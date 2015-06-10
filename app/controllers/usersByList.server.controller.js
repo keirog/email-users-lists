@@ -6,6 +6,7 @@ const async = require('async');
 
 // Our modules
 const crypto = require('../utils/crypto.server.utils');
+const logger = require('../../config/logger');
 
 // Models
 const List = mongoose.model('List');
@@ -21,7 +22,13 @@ exports.list = (req, res) => {
     res.header('X-Page', page + 1);
     res.header('X-Per-Page', perPage);
 
+    let t1 = Date.now();
+    logger.debug('Request received');
+
     User.count({'lists': listId }, (countErr, count) => {
+
+        let t2 = Date.now();
+        logger.debug('Users counted', t2 - t1);
 
         res.header('X-Total-Count', count);
 
@@ -39,6 +46,9 @@ exports.list = (req, res) => {
                     });
                 }
                 else {
+                    let t3 = Date.now();
+                    logger.debug('Users found', t3 - t2);
+
                     // Asynchronously decrypt the users array
                     async.map(users,
                         // Iterator
@@ -55,6 +65,8 @@ exports.list = (req, res) => {
                                 });
                             }
                             else {
+                                let t4 = Date.now();
+                                logger.debug('Users decrypted', t4 - t3);
                                 res.json(decryptedUsers);
                             }
 
