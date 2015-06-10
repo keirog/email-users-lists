@@ -4,7 +4,7 @@
 // Our modules
 const app = require('../server');
 const crypto = require('../app/utils/crypto.server.utils');
-
+const config = require('../config/config');
 
 // External modules
 const should = require('should');
@@ -50,6 +50,7 @@ describe('User CRUD tests:', () => {
 
         // Save a new user
         agent.post('/users')
+            .auth(config.authUser, config.authPassword)
             .send(user)
             .expect(200)
             .end((userSaveErr) => {
@@ -61,6 +62,7 @@ describe('User CRUD tests:', () => {
 
                 // Get a list of users
                 agent.get('/users')
+                    .auth(config.authUser, config.authPassword)
                     .end((userGetErr, userGetRes) => {
 
                         // Handle users get error
@@ -90,6 +92,7 @@ describe('User CRUD tests:', () => {
 
         // Save a new user
         agent.post('/users')
+            .auth(config.authUser, config.authPassword)
             .send(user)
             .expect(400)
             .end((userSaveErr, userSaveRes) => {
@@ -107,6 +110,7 @@ describe('User CRUD tests:', () => {
 
         // Save a new user
         agent.post('/users')
+            .auth(config.authUser, config.authPassword)
             .send(user)
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
@@ -122,6 +126,7 @@ describe('User CRUD tests:', () => {
 
                 // Update an existing user
                 agent.put('/users/' + userSaveRes.body.uuid)
+                    .auth(config.authUser, config.authPassword)
                     .send(user)
                     .expect(200)
                     .end((userUpdateErr, userUpdateRes) => {
@@ -146,6 +151,7 @@ describe('User CRUD tests:', () => {
 
         // Save a new user
         agent.post('/users')
+            .auth(config.authUser, config.authPassword)
             .send(user)
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
@@ -161,6 +167,7 @@ describe('User CRUD tests:', () => {
 
                 // Update an existing user
                 agent.put('/users/' + userSaveRes.body.uuid)
+                    .auth(config.authUser, config.authPassword)
                     .send(user)
                     .expect(400)
                     .end((userUpdateErr, userUpdateRes) => {
@@ -192,6 +199,7 @@ describe('User CRUD tests:', () => {
 
             // Request users
             request(app).get('/users')
+                .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
 
                     // Set assertion
@@ -218,6 +226,7 @@ describe('User CRUD tests:', () => {
         userObj.save(() => {
 
             request(app).get('/users/' + userObj.uuid)
+                .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
 
                     // Set assertion
@@ -232,6 +241,7 @@ describe('User CRUD tests:', () => {
 
     it('should return a 404 for single user if an invalid uuid is provided', (done) => {
         request(app).get('/users/test')
+            .auth(config.authUser, config.authPassword)
             .end((req, res) => {
                 // Set assertion
                 res.body.should.be.an.Object.with.property('message', 'User not found');
@@ -245,6 +255,7 @@ describe('User CRUD tests:', () => {
 
         // Save a new user
         agent.post('/users')
+            .auth(config.authUser, config.authPassword)
             .send(user)
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
@@ -256,6 +267,7 @@ describe('User CRUD tests:', () => {
 
                 // Delete an existing user
                 agent.delete('/users/' + userSaveRes.body.uuid)
+                    .auth(config.authUser, config.authPassword)
                     .send()
                     .expect(200)
                     .end((userDeleteErr, userDeleteRes) => {
@@ -299,6 +311,7 @@ describe('User CRUD tests:', () => {
 
                 // Request users
                 request(app).get('/users?pp=1')
+                    .auth(config.authUser, config.authPassword)
                     .end((req, res) => {
 
                         // Set assertion
@@ -337,6 +350,7 @@ describe('User CRUD tests:', () => {
 
                 // Request users
                 request(app).get('/users?pp=1&p=2')
+                    .auth(config.authUser, config.authPassword)
                     .end((req, res) => {
 
                         // Set assertion

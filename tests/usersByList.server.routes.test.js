@@ -2,6 +2,7 @@
 
 // Our modules
 const app = require('../server');
+const config = require('../config/config');
 
 // External modules
 const should = require('should');
@@ -66,6 +67,7 @@ describe('The users by list methods', () => {
 
             // Request users
             request(app).get('/lists/' + list._id + '/users')
+                .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
 
                     // Set assertion
@@ -94,6 +96,7 @@ describe('The users by list methods', () => {
 
             // Request users
             request(app).get('/lists/' + list._id + '/users?pp=1')
+                .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
 
                     // Set assertion
@@ -122,6 +125,7 @@ describe('The users by list methods', () => {
 
             // Request users
             request(app).get('/lists/' + list._id + '/users?pp=1&p=2')
+                .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
 
                     // Set assertion
