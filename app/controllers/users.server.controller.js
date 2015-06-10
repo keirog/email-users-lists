@@ -7,6 +7,7 @@ const async = require('async');
 
 // Our modules
 const crypto = require('../utils/crypto.server.utils');
+const logger = require('../../config/logger');
 
 // Models
 const User = mongoose.model('User');
@@ -34,7 +35,7 @@ exports.create = (req, res) => {
 exports.list = (req, res) => {
 
     let t1 = Date.now();
-    console.log('Request received');
+    logger.debug('Request received');
 
     let page = (Number(req.query.p) > 0 ? Number(req.query.p) : 1) - 1;
     //TODO: use config for pagination defaults
@@ -46,7 +47,7 @@ exports.list = (req, res) => {
     User.count({}, (countErr, count) => {
 
         let t2 = Date.now();
-        console.log('Users counted', t2 - t1);
+        logger.debug('Users counted', t2 - t1);
 
         res.header('X-Total-Count', count);
 
@@ -65,7 +66,7 @@ exports.list = (req, res) => {
                 }
                 else {
                     let t3 = Date.now();
-                    console.log('Users found', t3 - t2);
+                    logger.debug('Users found', t3 - t2);
 
                     // Asynchronously decrypt the users array
                     async.map(users,
@@ -84,7 +85,7 @@ exports.list = (req, res) => {
                             }
                             else {
                                 let t4 = Date.now();
-                                console.log('Users decrypted', t4 - t3);
+                                logger.debug('Users decrypted', t4 - t3);
                                 res.json(decryptedUsers);
                             }
 
