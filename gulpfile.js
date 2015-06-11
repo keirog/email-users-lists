@@ -75,3 +75,5 @@ gulp.task('apidoc', function(){
         dest: "public/docs/users-lists/"
     });
 });
+
+gulp.task('heroku:production', ['apidoc']);
