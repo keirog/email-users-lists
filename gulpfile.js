@@ -76,4 +76,4 @@ gulp.task('apidoc', function(){
     });
 });
 
-gulp.task('heroku:production', ['apidoc']);
+gulp.task('postinstall', ['apidoc']);

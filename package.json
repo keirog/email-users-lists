@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "gulp --harmony test",
-    "start": "node --harmony server.js"
+    "start": "node --harmony server.js",
+    "postinstall": "gulp --harmony postinstall"
+
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,8 @@
     "express": "^4.12.4",
     "extend": "^2.0.1",
     "faker": "^2.1.4",
+    "gulp": "^3.9.0",
+    "gulp-apidoc": "^0.1.4",
     "mongoose": "^4.0.5",
     "mongoose-fakery": "^0.1.7",
     "raven": "^0.7.3",
@@ -38,8 +42,6 @@
   },
   "devDependencies": {
     "agent": "^0.2.1",
-    "gulp": "^3.9.0",
-    "gulp-apidoc": "^0.1.4",
     "gulp-istanbul": "^0.10.0",
     "gulp-jshint": "^1.11.0",
     "gulp-mocha": "^2.1.1",
