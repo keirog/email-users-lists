@@ -28,6 +28,7 @@
     "faker": "^2.1.4",
     "mongoose": "^4.0.5",
     "mongoose-fakery": "^0.1.7",
+    "raven": "^0.7.3",
     "winston": "^1.0.0"
   },
   "devDependencies": {
