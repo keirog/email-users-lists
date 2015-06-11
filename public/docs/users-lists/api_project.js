@@ -1,1 +1,0 @@
-define({  "title": "Email webservices APIs",  "url": "http://email-webservices.ft.com/",  "name": "email-users-lists",  "version": "0.1.0",  "description": "Users and lists matching",  "sampleUrl": false,  "apidoc": "0.2.0",  "generator": {    "name": "apidoc",    "time": "2015-06-11T15:08:11.114Z",    "url": "http://apidocjs.com",    "version": "0.13.1"  }});
