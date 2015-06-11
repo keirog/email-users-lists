@@ -29,7 +29,8 @@
     "mongoose": "^4.0.5",
     "mongoose-fakery": "^0.1.7",
     "raven": "^0.7.3",
-    "winston": "^1.0.0"
+    "winston": "^1.0.0",
+    "winston-sentry": "0.0.7"
   },
   "devDependencies": {
     "agent": "^0.2.1",
