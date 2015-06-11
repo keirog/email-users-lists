@@ -9,10 +9,18 @@ module.exports = (app) => {
         /**
          * @api {post} /lists/ Create a List.
          * @apiVersion 0.1.0
-         * @apiName CreateLists
+         * @apiName CreateList
          * @apiGroup List
          *
          * @apiHeader {String} Authorization Basic Auth Token.
+         *
+         * @apiHeaderExample {json} Header-Example:
+         *     {
+         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
+         *     }
+         *
+         * @apiParam {String} name  The name of the List.
+         * @apiParam {String} [description]   The description for the List.
          *
          * @apiSuccess {String} name  The name of the List.
          * @apiSuccess {String} [description]   The description for the List.
@@ -42,6 +50,11 @@ module.exports = (app) => {
          * @apiGroup List
          *
          * @apiHeader {String} Authorization Basic Auth Token.
+         *
+         * @apiHeaderExample {json} Header-Example:
+         *     {
+         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
+         *     }
          *
          * @apiSuccess {Object[]} lists The list of Lists.
          * @apiSuccess {ObjectId} list._id The List Object ID.
@@ -75,6 +88,11 @@ module.exports = (app) => {
          *
          * @apiHeader {String} Authorization Basic Auth Token.
          *
+         * @apiHeaderExample {json} Header-Example:
+         *     {
+         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
+         *     }
+         *
          * @apiParam {ObjectId} listId List unique ID.
          *
          * @apiSuccess {ObjectId} _id The List Object ID.
@@ -107,6 +125,11 @@ module.exports = (app) => {
          * @apiGroup List
          *
          * @apiHeader {String} Authorization Basic Auth Token.
+         *
+         * @apiHeaderExample {json} Header-Example:
+         *     {
+         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
+         *     }
          *
          * @apiParam {ObjectId} listId List unique ID.
          * @apiParam {String} [name]  The name of the List.
@@ -142,6 +165,11 @@ module.exports = (app) => {
          * @apiGroup List
          *
          * @apiHeader {String} Authorization Basic Auth Token.
+         *
+         * @apiHeaderExample {json} Header-Example:
+         *     {
+         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
+         *     }
          *
          * @apiParam {ObjectId} listId List unique ID.
          *

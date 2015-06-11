@@ -72,7 +72,6 @@ gulp.task('test', ['setTestEnv', 'lint', 'istanbul']);
 gulp.task('apidoc', function(){
     apidoc.exec({
         src: "app/",
-        dest: "public/docs/users-lists/",
-        debug: true
+        dest: "public/docs/users-lists/"
     });
 });

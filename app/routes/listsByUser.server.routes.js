@@ -17,6 +17,11 @@ module.exports = (app) => {
          *
          * @apiHeader {String} Authorization Basic Auth Token.
          *
+         * @apiHeaderExample {json} Header-Example:
+         *     {
+         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
+         *     }
+         *
          * @apiParam {String} userUuid User unique UUID.
          *
          * @apiSuccess {Object[]} lists The list of Lists.
@@ -48,6 +53,11 @@ module.exports = (app) => {
          * @apiGroup List
          *
          * @apiHeader {String} Authorization Basic Auth Token.
+         *
+         * @apiHeaderExample {json} Header-Example:
+         *     {
+         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
+         *     }
          *
          * @apiParam {String} userUuid User unique UUID.
          * @apiParam {ObjectId} listId List unique ID.
@@ -90,6 +100,11 @@ module.exports = (app) => {
          * @apiGroup List
          *
          * @apiHeader {String} Authorization Basic Auth Token.
+         *
+         * @apiHeaderExample {json} Header-Example:
+         *     {
+         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
+         *     }
          *
          * @apiParam {String} userUuid User unique UUID.
          * @apiParam {ObjectId} listId List unique ID.
