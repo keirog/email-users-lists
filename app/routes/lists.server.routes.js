@@ -36,7 +36,7 @@ module.exports = (app) => {
         .post(lists.create)
 
         /**
-         * @api {get} /lists/ Get list of Lists.
+         * @api {get} /lists/ Get all the Lists.
          * @apiVersion 0.1.0
          * @apiName GetLists
          * @apiGroup List
