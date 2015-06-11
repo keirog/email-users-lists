@@ -17,6 +17,10 @@
     "url": "https://github.com/Financial-Times/email-users-lists/issues"
   },
   "homepage": "https://github.com/Financial-Times/email-users-lists#readme",
+  "apidoc": {
+    "title": "Email webservices APIs",
+    "url" : "http://email-webservices.ft.com/"
+  },
   "dependencies": {
     "async": "^1.2.1",
     "basic-auth-connect": "^1.0.0",
@@ -35,6 +39,7 @@
   "devDependencies": {
     "agent": "^0.2.1",
     "gulp": "^3.9.0",
+    "gulp-apidoc": "^0.1.4",
     "gulp-istanbul": "^0.10.0",
     "gulp-jshint": "^1.11.0",
     "gulp-mocha": "^2.1.1",

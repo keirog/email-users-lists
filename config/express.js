@@ -19,6 +19,9 @@ module.exports = () => {
         limit:'10mb'
     }));
 
+    // NOTE: we expose the public folder before adding basic authentication!
+    app.use(express.static('./public'));
+
     // Authenticator
     app.use(basicAuth(config.authUser, config.authPassword));
 
@@ -31,7 +34,6 @@ module.exports = () => {
     require('../app/routes/listsByUser.server.routes.js')(app);
     require('../app/routes/usersByList.server.routes.js')(app);
 
-    app.use(express.static('./public'));
 
     return app;
 };
