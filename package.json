@@ -34,6 +34,10 @@
     "faker": "^2.1.4",
     "gulp": "^3.9.0",
     "gulp-apidoc": "^0.1.4",
+    "gulp-istanbul": "^0.10.0",
+    "gulp-jshint": "^1.11.0",
+    "gulp-mocha": "^2.1.1",
+    "gulp-todo": "^3.1.1",
     "mongoose": "^4.0.5",
     "mongoose-fakery": "^0.1.7",
     "raven": "^0.7.3",
@@ -42,10 +46,6 @@
   },
   "devDependencies": {
     "agent": "^0.2.1",
-    "gulp-istanbul": "^0.10.0",
-    "gulp-jshint": "^1.11.0",
-    "gulp-mocha": "^2.1.1",
-    "gulp-todo": "^3.1.1",
     "should": "^6.0.3",
     "supertest": "^1.0.1"
   }
