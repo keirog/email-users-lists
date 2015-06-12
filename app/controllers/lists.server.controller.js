@@ -81,20 +81,26 @@ exports.delete = (req, res, next) => {
 
 exports.listById = (req, res, next, id) => {
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).send({
-            message: 'List is invalid'
-        });
-    }
-
     List.findOne({ _id: id }, (err, list) => {
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send({
+                message: 'List is invalid'
+            });
+        }
+
         /* istanbul ignore next */
         if (err) {
             return next(err);
         }
-        else {
+        else if (list) {
             req.list = list;
             next();
+        }
+        else {
+            return res.status(404).send({
+                message: 'List not found'
+            });
         }
     });
 };

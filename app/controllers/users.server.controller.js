@@ -98,14 +98,7 @@ exports.list = (req, res) => {
 };
 
 exports.read = (req, res) => {
-    if (req.user) {
-        return res.json(req.user);
-    }
-    else {
-        return res.status(404).send({
-            message: 'User not found'
-        });
-    }
+    return res.json(req.user);
 };
 
 exports.update = (req, res, next) => {
@@ -141,7 +134,7 @@ exports.update = (req, res, next) => {
     });
 };
 
-exports.delete = (req, res, next) => {
+exports.delete = (req, res) => {
     req.user.remove((err) => {
         /* istanbul ignore if */
         if (err) {
@@ -151,7 +144,7 @@ exports.delete = (req, res, next) => {
             });
         }
         else {
-            res.json(req.user);
+            return res.json(req.user);
         }
     });
 };
@@ -164,13 +157,15 @@ exports.userByUuid = (req, res, next, uuid) => {
             return next(findErr);
         }
         else if (user) {
-                user.email = crypto.decrypt(user.email);
-                req.user = user;
-                return next();
-        }
-        else {
+            user.email = crypto.decrypt(user.email);
             req.user = user;
             return next();
+        }
+        else {
+            return res.status(404).send({
+                message: 'User not found'
+            });
+
         }
     });
 };
