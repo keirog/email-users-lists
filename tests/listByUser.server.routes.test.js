@@ -86,10 +86,10 @@ describe('The lists by user methods', () => {
             // Request users
             request(app).get('/users/' + 'wrongUuid' + '/lists')
                 .auth(config.authUser, config.authPassword)
+                .expect(404)
                 .end((req, res) => {
                     // Set assertion
-                    res.status.should.match(400);
-                    res.body.should.be.an.Object.with.property('message', 'Invalid user provided');
+                    res.body.should.be.an.Object.with.property('message', 'User not found');
                     // Call the assertion callback
                     done();
                 });
@@ -149,7 +149,7 @@ describe('The lists by user methods', () => {
                 agent.delete('/users/' + 'wrongUuid' + '/lists/' + list1._id)
                     .auth(config.authUser, config.authPassword)
                     .send()
-                    .expect(400)
+                    .expect(404)
                     .end((listDeleteErr, listDeleteRes) => {
 
                         // Handle list error
@@ -158,7 +158,7 @@ describe('The lists by user methods', () => {
                         }
 
                         // Set assertions
-                        listDeleteRes.body.should.be.an.Object.with.property('message', 'Invalid user uuid provided');
+                        listDeleteRes.body.should.be.an.Object.with.property('message', 'User not found');
 
                         // Call the assertion callback
                         done();
@@ -166,7 +166,7 @@ describe('The lists by user methods', () => {
             });
     });
 
-    it('should return a proper error if the wrong list id is provided', (done) => {
+    it('should return a proper error if the wrong list id is provided when deleting', (done) => {
         // Save a new user
         agent.post('/users')
             .auth(config.authUser, config.authPassword)
@@ -291,7 +291,7 @@ describe('The lists by user methods', () => {
                 agent.post('/users/' + 'wrongUuid' + '/lists')
                     .auth(config.authUser, config.authPassword)
                     .send(list2)
-                    .expect(400)
+                    .expect(404)
                     .end((listDeleteErr, listDeleteRes) => {
 
                         // Handle list error
@@ -300,7 +300,7 @@ describe('The lists by user methods', () => {
                         }
 
                         // Set assertions
-                        listDeleteRes.body.should.be.an.Object.with.property('message', 'Invalid user uuid provided');
+                        listDeleteRes.body.should.be.an.Object.with.property('message', 'User not found');
 
                         // Call the assertion callback
                         done();

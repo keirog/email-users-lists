@@ -16,8 +16,8 @@ exports.list = (req, res) => {
     let user = req.user;
 
     if(!user) {
-        return res.status(400).send({
-            message: 'Invalid user provided'
+        return res.status(404).send({
+            message: 'User not found'
         });
     }
 
@@ -44,8 +44,8 @@ exports.add = (req, res) => {
     let user = req.user;
     let listId = req.body._id;
     if(!user) {
-        return res.status(400).send({
-            message: 'Invalid user uuid provided'
+        return res.status(404).send({
+            message: 'User not found'
         });
     }
     else {
@@ -97,8 +97,13 @@ exports.delete = (req, res) => {
     let list = req.list;
 
     if(!user) {
-        return res.status(400).send({
-            message: 'Invalid user uuid provided'
+        return res.status(404).send({
+            message: 'User not found'
+        });
+    }
+    else if (!list) {
+        return res.status(404).send({
+            message: 'List not found'
         });
     }
     else { //We have a valid user uuid and list _id
