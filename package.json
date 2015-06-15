@@ -21,7 +21,7 @@
   "homepage": "https://github.com/Financial-Times/email-users-lists#readme",
   "apidoc": {
     "title": "Email webservices APIs",
-    "url" : "http://email-webservices.ft.com/"
+    "url" : "http://email-webservices.ft.com"
   },
   "dependencies": {
     "async": "^1.2.1",
