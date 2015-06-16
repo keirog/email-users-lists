@@ -3,6 +3,7 @@
 // External modules
 const mongoose = require('mongoose');
 const _ = require('lodash');
+const extend = require('extend');
 
 // Internal modules
 const listCtrl = require('./lists.server.controller');
@@ -74,6 +75,9 @@ exports.add = (req, res) => {
 
         user.lists = userLists;
 
+        // Save a copy of the decrypted user that will be used in the response
+        let decryptedUser = JSON.parse(JSON.stringify(user));
+
         // At this point the emails have been decrypted. We do not want that!
         user.email = crypto.encrypt(user.email);
         user.lists = user.lists.map((listRelationship) => {
@@ -100,7 +104,8 @@ exports.add = (req, res) => {
                 });
             }
             else {
-                res.json(user);
+
+                res.json(decryptedUser.lists);
             }
         });
 
