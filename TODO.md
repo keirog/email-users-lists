@@ -6,9 +6,9 @@
 | controllers/lists.server.controller.js | 34 | errorHandler.getErrorMessage(err)
 | controllers/lists.server.controller.js | 57 | errorHandler.getErrorMessage(err)
 | controllers/lists.server.controller.js | 72 | errorHandler.getErrorMessage(err)
-| controllers/listsByUser.server.controller.js | 28 | errorHandler.getErrorMessage(err)
-| controllers/listsByUser.server.controller.js | 98 | errorHandler.getErrorMessage(err)
-| controllers/listsByUser.server.controller.js | 132 | errorHandler.getErrorMessage(updateErr)
+| controllers/listsByUser.server.controller.js | 29 | errorHandler.getErrorMessage(err)
+| controllers/listsByUser.server.controller.js | 102 | errorHandler.getErrorMessage(err)
+| controllers/listsByUser.server.controller.js | 137 | errorHandler.getErrorMessage(updateErr)
 | controllers/users.server.controller.js | 35 | errorHandler.getErrorMessage(err)
 | controllers/users.server.controller.js | 51 | use config for pagination defaults
 | controllers/users.server.controller.js | 75 | errorHandler.getErrorMessage(err)
