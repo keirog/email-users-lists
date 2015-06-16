@@ -27,17 +27,26 @@ describe('User CRUD tests:', () => {
 
         // Create new list
         list = new List({
+            identifier: '86547b0a-1427-11e5-b60b-1697f925ec7b',
             name: 'An Example List',
             description: 'A description for the example list'
         });
 
         list.save((err, res) => {
 
+            let email = 'email@email.com';
+            let alternativeEmail = 'anotheremail@list.com';
+
             // Create a new user
             user = new User({
                 uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                email: 'email@list.com',
-                lists: [res._id]
+                email: email,
+                lists: [{
+                    list: res._id,
+                    alternativeEmail: alternativeEmail,
+                    frequency: 'immediate',
+                    products: ['next']
+                }]
             });
 
             done();
@@ -72,11 +81,9 @@ describe('User CRUD tests:', () => {
 
                         // Get users list
                         let users = userGetRes.body;
-
                         // Set assertions
                         (users[0].uuid).should.match(user.uuid);
                         (users[0].email).should.match(user.email);
-                        (users[0].lists).should.be.an.Array.with.lengthOf(user.lists.length);
 
                         // Call the assertion callback
                         done();
@@ -84,7 +91,6 @@ describe('User CRUD tests:', () => {
                     });
             });
     });
-
 
     it('should not be able to save a user if no email is provided', (done) => {
         // Invalidate email field
@@ -191,11 +197,8 @@ describe('User CRUD tests:', () => {
 
         user.email = crypto.encrypt(user.email);
 
-        // Create new user model instance
-        let userObj = new User(user);
-
         // Save the user
-        userObj.save(() => {
+        user.save(() => {
 
             // Request users
             request(app).get('/users')
@@ -218,14 +221,12 @@ describe('User CRUD tests:', () => {
         let clearEmail = user.email;
 
         user.email = crypto.encrypt(user.email);
-
-        // Create new user model instance
-        let userObj = new User(user);
+        user.lists[0].alternativeEmail = crypto.encrypt(user.lists[0].alternativeEmail);
 
         // Save the user
-        userObj.save(() => {
+        user.save(() => {
 
-            request(app).get('/users/' + userObj.uuid)
+            request(app).get('/users/' + user.uuid)
                 .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
 
@@ -278,7 +279,6 @@ describe('User CRUD tests:', () => {
                         }
 
                         // Set assertions
-                        (userDeleteRes.body._id).should.equal(userSaveRes.body._id);
                         (userDeleteRes.body.uuid).should.equal(userSaveRes.body.uuid);
 
                         // Call the assertion callback

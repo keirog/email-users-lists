@@ -33,6 +33,7 @@ List.remove(() => {
 function createFakeList (next) {
 
     fakery.fake('list', List, {
+        identifier: faker.random.uuid(),
         name: faker.lorem.sentence(),
         description: faker.lorem.paragraph()
     });

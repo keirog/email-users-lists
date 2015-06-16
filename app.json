@@ -2,9 +2,6 @@
   "name":"email-users-lists",
   "scripts":{},
   "env":{
-    "EMAIL_ENCRYPTION_KEY":{
-      "required":true
-    },
     "EMAIL_SIGNING_KEY":{
       "required":true
     }

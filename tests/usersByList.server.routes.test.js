@@ -23,6 +23,7 @@ describe('The users by list methods', () => {
 
         // Create new list
         list = new List({
+            identifier: '86547b0a-1427-11e5-b60b-1697f925ec7b',
             name: 'An Example List',
             description: 'A description for the example list'
         });
@@ -30,20 +31,26 @@ describe('The users by list methods', () => {
 
         list.save((errListSave, resListSave) => {
 
+            let email = crypto.encrypt('email@email.com');
+            let alternativeEmail = crypto.encrypt('anotheremail@list.com');
+
             // Create a new user
             user1 = new User({
                 uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                email: 'email@list.com',
-                lists: [resListSave._id]
+                email: email,
+                lists: [{
+                    list: resListSave._id,
+                    alternativeEmail: alternativeEmail,
+                    frequency: 'immediate',
+                    products: ['next']
+                }]
             });
-
-            user1.email = crypto.encrypt(user1.email);
 
             user1.save(() => {
                 // Create a new user
                 user2 = new User({
                     uuid: '849f3554-0acf-11e5-a6c0-1697f925ec7b',
-                    email: 'email@example.com',
+                    email: email,
                     lists: []
                 });
 
@@ -56,8 +63,6 @@ describe('The users by list methods', () => {
     });
 
     it('lists the user members of the provided list', (done) => {
-
-        user2.email = crypto.encrypt(user2.email);
 
         // Create new user model instance
         let userObj = new User(user2);
@@ -83,10 +88,8 @@ describe('The users by list methods', () => {
 
     it('allows to specify the maximum number of items returned', (done) => {
 
-        user2.email = crypto.encrypt(user2.email);
-
         // Add the list to the second user
-        user2.lists.push(list._id);
+        user2.lists.push({list: list._id});
 
         // Create new user model instance
         let userObj = new User(user2);
@@ -113,9 +116,7 @@ describe('The users by list methods', () => {
     it('allows to specify the a specific pagination returned', (done) => {
 
         // Add the list to the second user
-        user2.lists.push(list._id);
-
-        user2.email = crypto.encrypt(user2.email);
+        user2.lists.push({list: list._id});
 
         // Create new user model instance
         let userObj = new User(user2);

@@ -4,6 +4,45 @@ const lists = require('../controllers/lists.server.controller');
 const users = require('../controllers/users.server.controller');
 const listsByUser = require('../controllers/listsByUser.server.controller');
 
+/**
+ * @apiDefine ListByUserResponse
+ *
+ * @apiSuccess {Object[]} listsRelationships The list of List Relationships.
+ * @apiSuccess {Object} listsRelationships.list The List Object.
+ * @apiSuccess {ObjectID} listsRelationships.list._id The List Object ID.
+ * @apiSuccess {String} listsRelationships.list.identifier The List identifier.
+ * @apiSuccess {String} listsRelationships.list.name  The name of the List.
+ * @apiSuccess {String} [listsRelationships.list.description]   The description for the List.
+ * @apiSuccess {String} [listsRelationships.alternativeEmail] An alternative email used to subscribe to this List.
+ * @apiSuccess {String} [listsRelationships.frequency] How often is the email sent.
+ * @apiSuccess {String[]} [listsRelationships.products] List of products used by the User for this List.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *    [{
+ *       "list":{
+ *          "_id":"55801ec760c5056e10dbcf0b",
+ *          "identifier":"80b99e3b-375b-4464-adc7-754b466e5205",
+ *          "name":"molestiae et nihil enim nostrum sequi nemo occaecati",
+ *          "description":"ipsum ipsa nulla itaque\net quod esse aut fuga\nmaiores dignissimos voluptate laboriosam\nat autem reiciendis quas",
+ *       },
+ *       "alternativeEmail":"Bryana28@gmail.com",
+ *       "frequency":"immediate",
+ *       "products":[
+ *          "ft.com"
+ *       ]
+ *    }]
+ *
+ * @apiError UserNotFound The User UUID provided is not valid.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "message": "User not found"
+ *     }
+ *
+ */
+
 
 
 module.exports = (app) => {
@@ -11,125 +50,54 @@ module.exports = (app) => {
 
         /**
          * @api {get} /users/:userUuid/lists/ Get Lists for a specific user.
-         * @apiVersion 0.1.0
+         * @apiVersion 0.2.0
          * @apiName GetListsByUser
          * @apiGroup List
          *
-         * @apiHeader {String} Authorization Basic Auth Token.
-         *
-         * @apiHeaderExample {json} Header-Example:
-         *     {
-         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
-         *     }
+         * @apiUse BasicAuthHeader
          *
          * @apiParam {String} userUuid User unique UUID.
          *
-         * @apiSuccess {Object[]} lists The list of Lists.
-         * @apiSuccess {ObjectId} list._id The List Object ID.
-         * @apiSuccess {String} list.name  The name of the List.
-         * @apiSuccess {String} list.description   The description for the List.
-         *
-         * @apiSuccessExample Success-Response:
-         *     HTTP/1.1 200 OK
-         *     [{
-         *       "_id": "55719bbc18ef0a03008404cb",
-         *       "name": "a eaque aut accusamus voluptatem pariatur",
-         *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe"
-         *     },
-         *     {
-         *       "_id": "55719bbc18ef0a030084048a",
-         *       "name": "commodi officiis natus",
-         *       "description": "doloribus sunt qui qui voluptatem cumque voluptatem\nasperiores labore voluptatem saepe ratione\nea provident velit maiores non omnis quos temporibus\neum occaecati nostrum deserunt\neaque dicta cupiditate labore hic fugiat"
-         *     }]
+         * @apiUse ListByUserResponse
          *
          */
         .get(listsByUser.list)
 
 
         /**
-         * @api {post} /users/:userUuid/lists Add list to a specific user.
-         * @apiVersion 0.1.0
+         * @api {post} /users/:userUuid/lists Add List to a specific User.
+         * @apiVersion 0.2.0
          * @apiName AddListToUser
          * @apiGroup List
          *
-         * @apiHeader {String} Authorization Basic Auth Token.
-         *
-         * @apiHeaderExample {json} Header-Example:
-         *     {
-         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
-         *     }
+         * @apiUse BasicAuthHeader
          *
          * @apiParam {String} userUuid User unique UUID.
-         * @apiParam {ObjectId} listId List unique ID.
+         * @apiParam {ObjectId} list List unique ID.
+         * @apiParam {String} frequency How often to send the email. E.g. 'immediate'.
+         * @apiParam {String[]} products List of products used by the User for this List.
          *
-         * @apiSuccess {Object[]} lists The list of Lists.
-         * @apiSuccess {ObjectId} list._id The List Object ID.
-         * @apiSuccess {String} list.name  The name of the List.
-         * @apiSuccess {String} list.description   The description for the List.
-         *
-         * @apiSuccessExample Success-Response:
-         *     HTTP/1.1 200 OK
-         *     [{
-         *       "_id": "55719bbc18ef0a03008404cb",
-         *       "name": "a eaque aut accusamus voluptatem pariatur",
-         *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe"
-         *     },
-         *     {
-         *       "_id": "55719bbc18ef0a030084048a",
-         *       "name": "commodi officiis natus",
-         *       "description": "doloribus sunt qui qui voluptatem cumque voluptatem\nasperiores labore voluptatem saepe ratione\nea provident velit maiores non omnis quos temporibus\neum occaecati nostrum deserunt\neaque dicta cupiditate labore hic fugiat"
-         *     }]
-         *
-         * @apiError ListIsInvalid The id of the List is not valid.
-         * @apiError UuidIsInvalid The uuid provided is not valid.
-         *
-         * @apiErrorExample Error-Response:
-         *     HTTP/1.1 400 Bad Request
-         *     {
-         *       "message": "Invalid user uuid provided"
-         *     }
+         * @apiUse ListByUserResponse
          */
         .post(listsByUser.add);
 
     app.route('/users/:userUuid/lists/:listId')
 
         /**
-         * @api {dekete} /users/:userUuid/lists/:listId Remove list from a specific user.
-         * @apiVersion 0.1.0
+         * @api {delete} /users/:userUuid/lists/:listId Remove list from a specific user.
+         * @apiVersion 0.2.0
          * @apiName RemoveListFromUser
          * @apiGroup List
          *
-         * @apiHeader {String} Authorization Basic Auth Token.
-         *
-         * @apiHeaderExample {json} Header-Example:
-         *     {
-         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
-         *     }
+         * @apiUse BasicAuthHeader
          *
          * @apiParam {String} userUuid User unique UUID.
          * @apiParam {ObjectId} listId List unique ID.
          *
-         * @apiSuccess {Object[]} lists The list of Lists.
-         * @apiSuccess {ObjectId} list._id The List Object ID.
-         * @apiSuccess {String} list.name  The name of the List.
-         * @apiSuccess {String} list.description   The description for the List.
+         * @apiUse ListsResponse
          *
-         * @apiSuccessExample Success-Response:
-         *     HTTP/1.1 200 OK
-         *     [{
-         *       "_id": "55719bbc18ef0a03008404cb",
-         *       "name": "a eaque aut accusamus voluptatem pariatur",
-         *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe"
-         *     },
-         *     {
-         *       "_id": "55719bbc18ef0a030084048a",
-         *       "name": "commodi officiis natus",
-         *       "description": "doloribus sunt qui qui voluptatem cumque voluptatem\nasperiores labore voluptatem saepe ratione\nea provident velit maiores non omnis quos temporibus\neum occaecati nostrum deserunt\neaque dicta cupiditate labore hic fugiat"
-         *     }]
-         *
-         * @apiError ListIsInvalid The id of the List is not valid.
-         * @apiError UuidIsInvalid The uuid provided is not valid.
-
+         * @apiError ListNotFound The _id of the List provided is not valid.
+         * @apiError UserNotFound The User uuid provided is not valid.
          *
          * @apiErrorExample Error-Response:
          *     HTTP/1.1 400 Bad Request
