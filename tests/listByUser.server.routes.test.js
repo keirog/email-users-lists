@@ -24,12 +24,14 @@ describe('The lists by user methods', () => {
 
         // Create new list
         list1 = new List({
+            identifier: '86547b0a-1427-11e5-b60b-1697f925ec7b',
             name: 'An Example List',
             description: 'A description for the example list'
         });
 
         // Create another list
         list2 = new List({
+            identifier: 'a1d8d84e-1427-11e5-b60b-1697f925ec7b',
             name: 'An Second Example List',
             description: 'A description for the second example list'
         });
@@ -38,11 +40,19 @@ describe('The lists by user methods', () => {
 
             list2.save(() => {
 
+                let email = crypto.encrypt('email@email.com');
+                let alternativeEmail = crypto.encrypt('anotheremail@list.com');
+
                 // Create a new user
                 user = new User({
                     uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                    email: crypto.encrypt('email@list.com'),
-                    lists: [resSave1._id]
+                    email: email,
+                    lists: [{
+                        list: resSave1._id,
+                        alternativeEmail: alternativeEmail,
+                        frequency: 'immediate',
+                        products: ['next']
+                    }]
                 });
 
                 done();
@@ -55,12 +65,10 @@ describe('The lists by user methods', () => {
 
     it('should be able to get a populated list of lists for the provided user', (done) => {
         // Create new user model instance
-        let userObj = new User(user);
-
-        userObj.save(() => {
+        user.save(() => {
             // Request users
             request(app)
-                .get('/users/' + userObj.uuid + '/lists')
+                .get('/users/' + user.uuid + '/lists')
                 .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
                     // Set assertion
@@ -75,9 +83,8 @@ describe('The lists by user methods', () => {
 
     it('should return a proper error if the wrong user uuid is provided', (done) => {
         // Create new user model instance
-        let userObj = new User(user);
 
-        userObj.save((errSave) => {
+        user.save((errSave) => {
 
             if(errSave) {
                 done(errSave);
@@ -200,7 +207,7 @@ describe('The lists by user methods', () => {
             });
     });
 
-    it('should return a proper error if the user is not linked to the list', (done) => {
+    it('should not return an error if the user is not linked to the list when deleting', (done) => {
         // Save a new user
         agent.post('/users')
             .auth(config.authUser, config.authPassword)
@@ -217,7 +224,7 @@ describe('The lists by user methods', () => {
                 agent.delete('/users/' + userSaveRes.body.uuid + '/lists/' + list2._id)
                     .auth(config.authUser, config.authPassword)
                     .send()
-                    .expect(400)
+                    .expect(200)
                     .end((listDeleteErr, listDeleteRes) => {
 
                         // Handle list error
@@ -226,7 +233,7 @@ describe('The lists by user methods', () => {
                         }
 
                         // Set assertions
-                        listDeleteRes.body.should.be.an.Object.with.property('message', 'The user is not a member of the specified list');
+                        listDeleteRes.body.lists.should.be.an.Array.with.lengthOf(1);
 
                         // Call the assertion callback
                         done();
@@ -236,24 +243,32 @@ describe('The lists by user methods', () => {
 
 
     it('should be able to add a user to a list', (done) => {
-        // Create new user model instance
-        let userObj = new User(user);
 
-        userObj.save(() => {
+        user.save((saveErr) => {
+
+            if (saveErr) {
+                done(saveErr);
+            }
+
             agent.post('/users/' + user.uuid + '/lists')
                 .auth(config.authUser, config.authPassword)
-                .send(list2)
+                .send({
+                    list: list2._id,
+                    frequency: 'immediate',
+                    products: ['next']
+                })
                 .expect(200)
-                .end((listSaveErr) => {
+                .end((listAddErr) => {
 
                     // Handle list save error
-                    if (listSaveErr) {
-                        done(listSaveErr);
+                    if (listAddErr) {
+                        done(listAddErr);
                     }
 
                     // Get a list of lists
                     agent.get('/users/' + user.uuid + '/lists')
                         .auth(config.authUser, config.authPassword)
+                        //.expect(200)
                         .end((listGetErr, listGetRes) => {
 
                             // Handle lists get error
@@ -290,7 +305,11 @@ describe('The lists by user methods', () => {
                 // Provide the wrong user uuid
                 agent.post('/users/' + 'wrongUuid' + '/lists')
                     .auth(config.authUser, config.authPassword)
-                    .send(list2)
+                    .send({
+                        list: list2._id,
+                        frequency: 'immediate',
+                        products: ['next']
+                    })
                     .expect(404)
                     .end((listDeleteErr, listDeleteRes) => {
 
@@ -310,12 +329,16 @@ describe('The lists by user methods', () => {
 
     it('should not throw an error if the user is already a member of the list provided', (done) => {
         // Create new user model instance
-        let userObj = new User(user);
 
-        userObj.save(() => {
+        user.save(() => {
             agent.post('/users/' + user.uuid + '/lists')
                 .auth(config.authUser, config.authPassword)
-                .send(list1)
+                .send({
+                    list: list1._id,
+                    alternateEmail: 'someotheremail@email.com',
+                    frequency: 'immediate',
+                    products: ['next']
+                })
                 //.expect(200)
                 .end((listSaveErr) => {
 

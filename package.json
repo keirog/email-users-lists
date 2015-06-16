@@ -7,7 +7,6 @@
     "test": "gulp --harmony test",
     "start": "node --harmony server.js",
     "postinstall": "gulp --harmony postinstall"
-
   },
   "repository": {
     "type": "git",
@@ -21,7 +20,7 @@
   "homepage": "https://github.com/Financial-Times/email-users-lists#readme",
   "apidoc": {
     "title": "Email webservices APIs",
-    "url" : "http://email-webservices.ft.com"
+    "url": "http://email-webservices.ft.com"
   },
   "dependencies": {
     "async": "^1.2.1",
@@ -38,6 +37,7 @@
     "gulp-jshint": "^1.11.0",
     "gulp-mocha": "^2.1.1",
     "gulp-todo": "^3.1.1",
+    "lodash": "^3.9.3",
     "mongoose": "^4.0.5",
     "mongoose-fakery": "^0.1.7",
     "raven": "^0.7.3",

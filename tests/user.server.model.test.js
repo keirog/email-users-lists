@@ -28,6 +28,7 @@ describe('User Model Unit Tests:', () => {
     beforeEach((done) => {
 
         list = new List ({
+            identifier: '86547b0a-1427-11e5-b60b-1697f925ec7b',
             name:   'An Example List',
             description: 'A description for the list list'
         });

@@ -47,7 +47,7 @@ module.exports = (app) => {
 
 
         /**
-         * @api {post} /users/:userUuid/lists Add list to a specific user.
+         * @api {post} /users/:userUuid/lists Add List to a specific User.
          * @apiVersion 0.1.0
          * @apiName AddListToUser
          * @apiGroup List
@@ -94,7 +94,7 @@ module.exports = (app) => {
     app.route('/users/:userUuid/lists/:listId')
 
         /**
-         * @api {dekete} /users/:userUuid/lists/:listId Remove list from a specific user.
+         * @api {delete} /users/:userUuid/lists/:listId Remove list from a specific user.
          * @apiVersion 0.1.0
          * @apiName RemoveListFromUser
          * @apiGroup List

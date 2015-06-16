@@ -5,6 +5,28 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+const listRelationshipSchema = new Schema({
+        list: {
+            type: Schema.Types.ObjectId,
+            ref: 'List'
+        },
+        alternativeEmail: {
+            type: String,
+            trim: true
+        },
+        frequency: {
+            type: String,
+            trim: true
+        },
+        products: [{
+            type: String,
+            trim: true
+        }]
+    },
+    {
+        _id : false
+    });
+
 const UserSchema = new Schema({
         uuid: {
             type: String,
@@ -21,12 +43,9 @@ const UserSchema = new Schema({
         email: {
             type: String,
             trim: true,
-            required: 'encryptedEmail cannot be blank'
+            required: 'email cannot be blank'
         },
-        lists: [{
-            type: Schema.Types.ObjectId,
-            ref: 'List'
-        }]
+        lists: [listRelationshipSchema]
     });
 
 UserSchema.index({ "lists" : 1 , "createdOn" : 1});

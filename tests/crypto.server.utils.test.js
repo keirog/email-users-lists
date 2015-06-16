@@ -11,7 +11,6 @@ describe('The crypto util', () => {
     it('is reversible', (done) => {
 
         let message = 'exampleemail@example.com';
-        console.log(decrypt(encrypt(message)));
         decrypt(encrypt(message)).should.match(message);
         done();
 

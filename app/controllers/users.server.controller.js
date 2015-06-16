@@ -18,6 +18,16 @@ exports.create = (req, res) => {
     // Encrypt the email
     userObj.email = crypto.encrypt(userObj.email);
 
+    // Synchronously encrypt alternative emails
+    userObj.lists = userObj.lists.map((listRelationship) => {
+
+        /* istanbul ignore else */
+        if (listRelationship.alternativeEmail) {
+            listRelationship.alternativeEmail = crypto.encrypt(listRelationship.alternativeEmail);
+        }
+        return listRelationship;
+    });
+
     let user = new User(userObj);
     user.save((err) => {
         if (err) {
@@ -51,7 +61,9 @@ exports.list = (req, res) => {
 
         res.header('X-Total-Count', count);
 
-        User.find({}, { __v: 0, createdOn: 0, _id: 0 })
+        // Currently we do not retrieve the List relationships here. It can be changed if needed.
+
+        User.find({}, { __v: 0, createdOn: 0, _id: 0, lists: 0 })
             .sort({'createdOn': 1})
             .lean()
             .limit(perPage)
@@ -111,6 +123,16 @@ exports.update = (req, res, next) => {
         user.email = crypto.encrypt(user.email);
     }
 
+    // Synchronously encrypt alternative emails
+    user.lists = user.lists.map((listRelationship) => {
+
+        /* istanbul ignore else */
+        if (listRelationship.alternativeEmail) {
+            listRelationship.alternativeEmail = crypto.encrypt(listRelationship.alternativeEmail);
+        }
+        return listRelationship;
+    });
+
     // Create updated user
     let  updatedUser = user.toObject();
 
@@ -158,6 +180,15 @@ exports.userByUuid = (req, res, next, uuid) => {
         }
         else if (user) {
             user.email = crypto.decrypt(user.email);
+
+            // Synchronously decrypt alternative emails
+            user.lists = user.lists.map((listRelationship) => {
+                if (listRelationship.alternativeEmail) {
+                    listRelationship.alternativeEmail = crypto.decrypt(listRelationship.alternativeEmail);
+                }
+                return listRelationship;
+            });
+
             req.user = user;
             return next();
         }

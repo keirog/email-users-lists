@@ -48,8 +48,12 @@ function createFakeUser (next) {
                 fakery.fake('user', User, {
                     uuid: faker.random.uuid(),
                     email: crypto.encrypt(faker.internet.email()),
-                    lists: [listId]
-
+                    lists: [{
+                        list: listId,
+                        alternativeEmail: crypto.encrypt(faker.internet.email()),
+                        frequency: faker.random.array_element(['immediate', 'digest']),
+                        products: [faker.random.array_element(['next', 'ft.com'])]
+                    }]
                 });
 
                 // Save fake user
