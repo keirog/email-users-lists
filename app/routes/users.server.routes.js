@@ -2,6 +2,31 @@
 
 const users = require('../controllers/users.server.controller');
 
+/**
+ * @apiDefine UserResponse
+ *
+ * @apiSuccess {String} uuid  The UUID of the User.
+ * @apiSuccess {String} email   The email for the User.
+ * @apiSuccess {[ObjectId[]]} list A list of Lists Relationships for the User.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *    {
+ *      "uuid": "deb15e25-b44c-4f4d-aa32-262214ff757c",
+ *      "email": "Jeramy32@yahoo.com",
+ *      "lists": [{
+ *          "list": "55801ec760c5056e10dbcf0b",
+ *          "alternativeEmail": "Bryana28@gmail.com",
+ *          "frequency": "immediate",
+ *          "products": [
+ *            "ft.com"
+ *          ]
+ *      }]
+ *    }
+ *
+ *
+ */
+
 module.exports = (app) => {
     app.route('/users')
 
@@ -11,30 +36,13 @@ module.exports = (app) => {
          * @apiName CreateUser
          * @apiGroup User
          *
-         * @apiHeader {String} Authorization Basic Auth Token.
-         *
-         * @apiHeaderExample {json} Header-Example:
-         *     {
-         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
-         *     }
+         * @apiUse BasicAuthHeader
          *
          * @apiParam {String} uuid  The UUID of the User.
          * @apiParam {String} email The email of the User.
          * @apiParam {[ObjectId[]]} list A list of Lists the User is member of.
          *
-         * @apiSuccess {String} uuid  The UUID of the User.
-         * @apiSuccess {String} email   The email for the User.
-         * @apiSuccess {[ObjectId[]]} list A list of Lists the User is member of.
-         *
-         * @apiSuccessExample Success-Response:
-         *     HTTP/1.1 200 OK
-         *      {
-         *        "uuid": "d8df4982-c5fd-4102-8f61-e0dd0e608bcd",
-         *        "email": "Moriah_Pagac@hotmail.com",
-         *        "lists": [
-         *           "55719bbc18ef0a03008404c4"
-         *         ]
-         *      }
+         * @apiUse UserResponse
          *
          * @apiError ValidationError The posted User object is not valid.
          *
@@ -53,12 +61,7 @@ module.exports = (app) => {
          * @apiName GetUsers
          * @apiGroup User
          *
-         * @apiHeader {String} Authorization Basic Auth Token.
-         *
-         * @apiHeaderExample {json} Header-Example:
-         *     {
-         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
-         *     }
+         * @apiUse BasicAuthHeader
          *
          * @apiParam {Number} [p=1]  The pagination page to retrieve.
          * @apiParam {Number} [pp=100] The number of Users per page to retrieve.
@@ -66,20 +69,17 @@ module.exports = (app) => {
          * @apiSuccess {Object[]} users The list of Users.
          * @apiSuccess {String} user.uuid  The UUID of the User.
          * @apiSuccess {String} user.email   The email for the User.
-         * @apiSuccess {[ObjectId[]]} user.list A list of Lists the User is member of.
          *
          * @apiSuccessExample Success-Response:
          *     HTTP/1.1 200 OK
-         *     [{
-         *       "_id": "55719bbc18ef0a03008404cb",
-         *       "name": "a eaque aut accusamus voluptatem pariatur",
-         *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe"
-         *     },
-         *     {
-         *       "_id": "55719bbc18ef0a030084048a",
-         *       "name": "commodi officiis natus",
-         *       "description": "doloribus sunt qui qui voluptatem cumque voluptatem\nasperiores labore voluptatem saepe ratione\nea provident velit maiores non omnis quos temporibus\neum occaecati nostrum deserunt\neaque dicta cupiditate labore hic fugiat"
-         *     }]
+         *    [{
+         *      "uuid": "deb15e25-b44c-4f4d-aa32-262214ff757c",
+         *      "email": "Jeramy32@yahoo.com"
+         *    },
+         *    {
+         *      "uuid": "3af4c3fd-2cbd-48bc-b87f-2664ef33c103",
+         *      "email": "Oleta79@hotmail.com"
+         *    }]
          *
          */
         .get(users.list);
@@ -93,28 +93,15 @@ module.exports = (app) => {
          * @apiName GetUser
          * @apiGroup User
          *
-         * @apiHeader {String} Authorization Basic Auth Token.
-         *
-         * @apiHeaderExample {json} Header-Example:
-         *     {
-         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
-         *     }
+         * @apiUse BasicAuthHeader
          *
          * @apiParam {ObjectId} userUuid User unique UUID.
          *
          * @apiSuccess {String} uuid  The UUID of the User.
          * @apiSuccess {String} email   The email for the User.
-         * @apiSuccess {[ObjectId[]]} list A list of Lists the User is member of.
+         * @apiSuccess {[ObjectId[]]} list A list of Lists Relationships for the User.
          *
-         * @apiSuccessExample Success-Response:
-         *     HTTP/1.1 200 OK
-         *     {
-         *        "uuid": "d8df4982-c5fd-4102-8f61-e0dd0e608bcd",
-         *        "email": "Moriah_Pagac@hotmail.com",
-         *        "lists": [
-         *           "55719bbc18ef0a03008404c4"
-         *         ]
-         *      }
+         * @apiUse UserResponse
          *
          * @apiError UserNotFound The UUID of the User is not found.
          * @apiError UuidIsInvalid The UUID of the User is not valid.
@@ -134,30 +121,13 @@ module.exports = (app) => {
          * @apiName EditUser
          * @apiGroup User
          *
-         * @apiHeader {String} Authorization Basic Auth Token.
-         *
-         * @apiHeaderExample {json} Header-Example:
-         *     {
-         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
-         *     }
+         * @apiUse BasicAuthHeader
          *
          * @apiParam {String} uuid  The UUID of the User.
          * @apiParam {String} [email] The email of the User.
-         * @apiParam {[ObjectId[]]} list A list of Lists the User is member of.
+         * @apiParam {[ObjectId[]]} list A list of Lists Relationships for the user.
          *
-         * @apiSuccess {String} uuid  The UUID of the User.
-         * @apiSuccess {String} email   The email for the User.
-         * @apiSuccess {[ObjectId[]]} list A list of Lists the User is member of.
-         *
-         * @apiSuccessExample Success-Response:
-         *     HTTP/1.1 200 OK
-         *     {
-         *        "uuid": "d8df4982-c5fd-4102-8f61-e0dd0e608bcd",
-         *        "email": "Moriah_Pagac@hotmail.com",
-         *        "lists": [
-         *           "55719bbc18ef0a03008404c4"
-         *         ]
-         *      }
+         * @apiUse UserResponse
          *
          * @apiError UserNotFound The UUID of the User is not found.
          *
@@ -176,28 +146,11 @@ module.exports = (app) => {
          * @apiName DeleteUser
          * @apiGroup User
          *
-         * @apiHeader {String} Authorization Basic Auth Token.
-         *
-         * @apiHeaderExample {json} Header-Example:
-         *     {
-         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
-         *     }
+         * @apiUse BasicAuthHeader
          *
          * @apiParam {String} uuid  The UUID of the User.
          *
-         * @apiSuccess {String} uuid  The UUID of the deleted User.
-         * @apiSuccess {String} email   The email for the deleted User.
-         * @apiSuccess {[ObjectId[]]} list A list of Lists the User was member of.
-         *
-         * @apiSuccessExample Success-Response:
-         *     HTTP/1.1 200 OK
-         *     {
-         *        "uuid": "d8df4982-c5fd-4102-8f61-e0dd0e608bcd",
-         *        "email": "Moriah_Pagac@hotmail.com",
-         *        "lists": [
-         *           "55719bbc18ef0a03008404c4"
-         *         ]
-         *      }
+         * @apiUse UserResponse
          *
          * @apiError UserNotFound The UUID of the User is not found.
          *

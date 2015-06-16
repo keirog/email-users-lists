@@ -279,7 +279,6 @@ describe('User CRUD tests:', () => {
                         }
 
                         // Set assertions
-                        (userDeleteRes.body._id).should.equal(userSaveRes.body._id);
                         (userDeleteRes.body.uuid).should.equal(userSaveRes.body.uuid);
 
                         // Call the assertion callback

@@ -173,7 +173,7 @@ exports.delete = (req, res) => {
 
 exports.userByUuid = (req, res, next, uuid) => {
 
-    User.findOne({ uuid: uuid }, (findErr, user) => {
+    User.findOne({ uuid: uuid }, { __v: 0, createdOn: 0, _id: 0 }, (findErr, user) => {
         /* istanbul ignore next */
         if (findErr) {
             return next(findErr);
