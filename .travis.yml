@@ -10,3 +10,5 @@ install:
   - npm install
 after_success:
   - codeclimate < coverage/lcov.info
+notifications:
+  slack: financialtimes:F7ol60TlTlcG7ZP0DvAZWan5
