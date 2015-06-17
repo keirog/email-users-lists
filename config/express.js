@@ -22,6 +22,8 @@ module.exports = () => {
     // NOTE: we expose the public folder before adding basic authentication!
     app.use(express.static('./public'));
 
+    require('../app/routes/__gtg.server.routes')(app);
+
     // Authenticator
     app.use(basicAuth(config.authUser, config.authPassword));
 
