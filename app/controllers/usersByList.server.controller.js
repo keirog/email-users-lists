@@ -14,7 +14,7 @@ const User = mongoose.model('User');
 
 exports.list = (req, res) => {
 
-    let listId = req.list;
+    let listId = req.list._id;
     let page = (Number(req.query.p) > 0 ? Number(req.query.p) : 1) - 1;
     //TODO: use config for pagination defaults
     let perPage = (Number(req.query.pp) > 0 ? Number(req.query.pp) : 100);
@@ -25,7 +25,7 @@ exports.list = (req, res) => {
     let t1 = Date.now();
     logger.debug('Request received');
 
-    User.count({'lists': listId }, (countErr, count) => {
+    User.count({'lists.list': listId }, (countErr, count) => {
 
         let t2 = Date.now();
         logger.debug('Users counted', t2 - t1);
@@ -55,7 +55,12 @@ exports.list = (req, res) => {
                         (user, next) => {
                             user.email = crypto.decrypt(user.email);
 
-                            // Synchronously decrypt alternative emails
+                            //Return only the list we are asking for
+                            user.lists = user.lists.filter((listRelationship) => {
+                                return listRelationship.list.toString() === listId.toString();
+                            });
+
+                            // Synchronously decrypt the alternative email, if there is any
                             user.lists = user.lists.map((listRelationship) => {
                                 if (listRelationship.alternativeEmail) {
                                     listRelationship.alternativeEmail = crypto.decrypt(listRelationship.alternativeEmail);
@@ -63,10 +68,25 @@ exports.list = (req, res) => {
                                 return listRelationship;
                             });
 
-                            next(null, user);
+                            let userOutput = {
+                                uuid: user.uuid
+                            };
+
+                            // Use the alternative email if it exists, otherwise use the default email
+                            userOutput.email = user.lists[0].alternativeEmail || user.email;
+
+                            if (user.lists[0].frequency) {
+                                userOutput.frequency = user.lists[0].frequency;
+                            }
+
+                            if (user.lists[0].products && user.lists[0].products.length) {
+                                userOutput.products = user.lists[0].products;
+                            }
+
+                            next(null, userOutput);
                         },
                         // Callback
-                        (encryptErr, decryptedUsers) => {
+                        (encryptErr, usersOutput) => {
                             /* istanbul ignore if */
                             if (encryptErr) {
                                 return res.status(400).send({
@@ -76,7 +96,7 @@ exports.list = (req, res) => {
                             else {
                                 let t4 = Date.now();
                                 logger.debug('Users decrypted', t4 - t3);
-                                res.json(decryptedUsers);
+                                res.json(usersOutput);
                             }
 
                         });

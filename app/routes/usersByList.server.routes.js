@@ -15,32 +15,24 @@ module.exports = (app) => {
          * @apiName GetUsersByList
          * @apiGroup User
          *
-         * @apiHeader {String} Authorization Basic Auth Token.
-         *
-         * @apiHeaderExample {json} Header-Example:
-         *     {
-         *       "Authorization": "Accept-Encoding: Basic TGV2ZWxvcG1lbnQ6ZGV2ZWxvcG1lbnQ="
-         *     }
+         * @apiUse BasicAuthHeader
          *
          * @apiParam {Number} [p=1]  The pagination page to retrieve.
          * @apiParam {Number} [pp=100] The number of Users per page to retrieve.
          *
-         * @apiSuccess {Object[]} users The list of Users.
-         * @apiSuccess {String} user.uuid  The UUID of the User.
-         * @apiSuccess {String} user.email   The email for the User.
-         * @apiSuccess {[ObjectId[]]} user.list A list of Lists the User is member of.
+         * @apiSuccess {Object[]} userList relationships array.
+         * @apiSuccess {String} userList.uuid  The UUID of the User.
+         * @apiSuccess {String} userList.email   The email the User for the specific List.
+         * @apiSuccess {String} [userList.frequency]   Indication on when the email has to be sent.
+         * @apiSuccess {String} [userList.products]   An array of products for the specific user-list relationship.
          *
          * @apiSuccessExample Success-Response:
          *     HTTP/1.1 200 OK
          *     [{
-         *       "_id": "55719bbc18ef0a03008404cb",
-         *       "name": "a eaque aut accusamus voluptatem pariatur",
-         *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe"
-         *     },
-         *     {
-         *       "_id": "55719bbc18ef0a030084048a",
-         *       "name": "commodi officiis natus",
-         *       "description": "doloribus sunt qui qui voluptatem cumque voluptatem\nasperiores labore voluptatem saepe ratione\nea provident velit maiores non omnis quos temporibus\neum occaecati nostrum deserunt\neaque dicta cupiditate labore hic fugiat"
+         *       "email": "Freddy35@hotmail.com"
+         *       "frequency": "immediate"
+         *       "products": ["next"]
+         *       "uuid": "34c6fc81-99d1-4ddd-a3b1-f778e2560a98"          *
          *     }]
          *
          * @apiError UserNotFound The UUID of the User is not found.
