@@ -8,7 +8,8 @@ const Schema = mongoose.Schema;
 const listRelationshipSchema = new Schema({
         list: {
             type: Schema.Types.ObjectId,
-            ref: 'List'
+            ref: 'List',
+            index: true
         },
         alternativeEmail: {
             type: String,
@@ -31,7 +32,6 @@ const UserSchema = new Schema({
         uuid: {
             type: String,
             trim: true,
-            // TODO: test for unique uuid
             index: { unique: true },
             required: 'uuid cannot be blank'
         },
@@ -48,5 +48,5 @@ const UserSchema = new Schema({
         lists: [listRelationshipSchema]
     });
 
-UserSchema.index({ "lists" : 1 , "createdOn" : 1});
+UserSchema.index({"lists.list": 1, "createdOn": 1});
 mongoose.model('User', UserSchema);
