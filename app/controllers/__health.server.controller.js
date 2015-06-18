@@ -13,7 +13,8 @@ exports.handle = (req, res) => {
         severity: 2,
         businessImpact: 'Some test text',
         technicalSummary: 'Some test text',
-        panicGuide: 'Some test text'
+        panicGuide: 'Some test text',
+        lastUpdated: Date.now()
     }];
 
     res.status(200).json(health);
