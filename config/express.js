@@ -19,13 +19,14 @@ module.exports = () => {
         limit:'10mb'
     }));
 
-    // NOTE: we expose the public folder before adding basic authentication!
-    app.use(express.static('./public'));
-
     app.use(bodyParser.json({
         limit:'10mb'
     }));
 
+    // NOTE: we expose the public folder before adding basic authentication!
+    app.use(express.static('./public'));
+
+    // NOTE: we expose the health and gtg endpoints folder before adding basic authentication!
     require('../app/routes/__health.server.routes')(app);
     require('../app/routes/__gtg.server.routes')(app);
 
