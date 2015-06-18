@@ -94,16 +94,8 @@ module.exports = (app) => {
          * @apiParam {String} userUuid User unique UUID.
          * @apiParam {ObjectId} listId List unique ID.
          *
-         * @apiUse ListsResponse
+         * @apiUse ListByUserResponse
          *
-         * @apiError ListNotFound The _id of the List provided is not valid.
-         * @apiError UserNotFound The User uuid provided is not valid.
-         *
-         * @apiErrorExample Error-Response:
-         *     HTTP/1.1 400 Bad Request
-         *     {
-         *       "message": "Invalid user uuid provided"
-         *     }
          */
         .delete(listsByUser.delete);
 
