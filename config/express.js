@@ -22,14 +22,15 @@ module.exports = () => {
     // NOTE: we expose the public folder before adding basic authentication!
     app.use(express.static('./public'));
 
+    app.use(bodyParser.json({
+        limit:'10mb'
+    }));
+
+    require('../app/routes/__health.server.routes')(app);
     require('../app/routes/__gtg.server.routes')(app);
 
     // Authenticator
     app.use(basicAuth(config.authUser, config.authPassword));
-
-    app.use(bodyParser.json({
-        limit:'10mb'
-    }));
 
     require('../app/routes/users.server.routes.js')(app);
     require('../app/routes/lists.server.routes.js')(app);
