@@ -16,7 +16,7 @@ const List = mongoose.model('List');
 const User = mongoose.model('User');
 
 // Module globals
-let list1, list2, user;
+let list1, list2, list3, user;
 
 describe('The lists by user methods', () => {
 
@@ -36,26 +36,39 @@ describe('The lists by user methods', () => {
             description: 'A description for the second example list'
         });
 
+        // Create another list
+        list3 = new List({
+            identifier: 'a1d8d84e-1427-11e5-b60b-1697f925ec7c',
+            name: 'An Third Example List',
+            description: 'A description for the third example list'
+        });
+
         list1.save((errSave1, resSave1) => {
 
-            list2.save(() => {
+            list3.save((errSave3, resSave3) => {
 
-                let email = crypto.encrypt('email@email.com');
-                let alternativeEmail = crypto.encrypt('anotheremail@list.com');
+                list2.save(() => {
 
-                // Create a new user
-                user = new User({
-                    uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                    email: email,
-                    lists: [{
-                        list: resSave1._id,
-                        alternativeEmail: alternativeEmail,
-                        frequency: 'immediate',
-                        products: ['next']
-                    }]
+                    let email = crypto.encrypt('email@email.com');
+                    let alternativeEmail = crypto.encrypt('anotheremail@list.com');
+
+                    // Create a new user
+                    user = new User({
+                        uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
+                        email: email,
+                        lists: [{
+                            list: resSave1._id,
+                            alternativeEmail: alternativeEmail,
+                            frequency: 'immediate',
+                            products: ['next']
+                        }, {
+                            list: resSave3._id
+                        }]
+                    });
+
+                    done();
+
                 });
-
-                done();
 
             });
 
@@ -72,7 +85,7 @@ describe('The lists by user methods', () => {
                 .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
                     // Set assertion
-                    res.body.should.be.an.Array.with.lengthOf(1);
+                    res.body.should.be.an.Array.with.lengthOf(2);
 
                     // Call the assertion callback
                     done();
@@ -130,7 +143,7 @@ describe('The lists by user methods', () => {
                         }
 
                         // Set assertions
-                        listDeleteRes.body.lists.should.be.an.Array.with.lengthOf(0);
+                        listDeleteRes.body.should.be.an.Array.with.lengthOf(1);
                         //listDeleteRes.body.should.be.an.Object.with.property('message', 'Invalid user uuid provided');
 
                         // Call the assertion callback
@@ -233,7 +246,7 @@ describe('The lists by user methods', () => {
                         }
 
                         // Set assertions
-                        listDeleteRes.body.lists.should.be.an.Array.with.lengthOf(1);
+                        listDeleteRes.body.should.be.an.Array.with.lengthOf(2);
 
                         // Call the assertion callback
                         done();
@@ -243,6 +256,54 @@ describe('The lists by user methods', () => {
 
 
     it('should be able to add a user to a list', (done) => {
+
+        user.save((saveErr) => {
+
+            if (saveErr) {
+                done(saveErr);
+            }
+
+            agent.post('/users/' + user.uuid + '/lists')
+                .auth(config.authUser, config.authPassword)
+                .send({
+                    list: list2._id,
+                    frequency: 'immediate',
+                    products: ['next'],
+                    alternativeEmail: 'testEmail@email.com'
+                })
+                .expect(200)
+                .end((listAddErr) => {
+
+                    // Handle list save error
+                    if (listAddErr) {
+                        done(listAddErr);
+                    }
+
+                    // Get a list of lists
+                    agent.get('/users/' + user.uuid + '/lists')
+                        .auth(config.authUser, config.authPassword)
+                        //.expect(200)
+                        .end((listGetErr, listGetRes) => {
+
+                            // Handle lists get error
+                            if (listGetErr) {
+                                done(listGetErr);
+                            }
+
+                            // Get lists list
+                            let lists = listGetRes.body;
+
+                            // Set assertions
+                            lists.should.be.an.Array.with.lengthOf(3);
+                            // Call the assertion callback
+                            done();
+
+                        });
+                });
+        });
+    });
+
+    it('should be able to add a user without alternative email to a list', (done) => {
 
         user.save((saveErr) => {
 
@@ -280,7 +341,7 @@ describe('The lists by user methods', () => {
                             let lists = listGetRes.body;
 
                             // Set assertions
-                            lists.should.be.an.Array.with.lengthOf(2);
+                            lists.should.be.an.Array.with.lengthOf(3);
                             // Call the assertion callback
                             done();
 
@@ -330,16 +391,18 @@ describe('The lists by user methods', () => {
     it('should not throw an error if the user is already a member of the list provided', (done) => {
         // Create new user model instance
 
+        let anotherEmail = 'someotheremail@email.com';
+
         user.save(() => {
             agent.post('/users/' + user.uuid + '/lists')
                 .auth(config.authUser, config.authPassword)
                 .send({
                     list: list1._id,
-                    alternateEmail: 'someotheremail@email.com',
+                    alternativeEmail: anotherEmail,
                     frequency: 'immediate',
                     products: ['next']
                 })
-                //.expect(200)
+                .expect(200)
                 .end((listSaveErr) => {
 
                     // Handle list save error
@@ -361,7 +424,8 @@ describe('The lists by user methods', () => {
                             let lists = listGetRes.body;
 
                             // Set assertions
-                            lists.should.be.an.Array.with.lengthOf(1);
+                            lists.should.be.an.Array.with.lengthOf(2);
+                            lists[1].alternativeEmail.should.match(anotherEmail);
                             // Call the assertion callback
                             done();
 

@@ -70,6 +70,10 @@ exports.add = (req, res) => {
         newRelationship.frequency = bodyListRelationship.frequency;
         newRelationship.products = bodyListRelationship.products;
 
+        if (bodyListRelationship.alternativeEmail) {
+            newRelationship.alternativeEmail = bodyListRelationship.alternativeEmail;
+        }
+
         // Add the list to the user
         userLists.push(newRelationship);
 
@@ -122,6 +126,18 @@ exports.delete = (req, res) => {
     // Remove the list from the user
     user.lists = _.reject(user.lists, 'list', listId);
 
+    // Save a copy of the decrypted user that will be used in the response
+    let decryptedUser = JSON.parse(JSON.stringify(user));
+
+    // At this point the emails have been decrypted. We do not want that!
+    user.email = crypto.encrypt(user.email);
+    user.lists = user.lists.map((listRelationship) => {
+        if (listRelationship.alternativeEmail) {
+            listRelationship.alternativeEmail = crypto.encrypt(listRelationship.alternativeEmail);
+        }
+        return listRelationship;
+    });
+
     // Create updated user
     let  updatedUser = user.toObject();
 
@@ -139,7 +155,7 @@ exports.delete = (req, res) => {
             });
         }
         else {
-            res.json(user);
+            res.json(decryptedUser.lists);
         }
     });
 
