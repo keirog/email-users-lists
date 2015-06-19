@@ -50,7 +50,7 @@ describe('The lists by user methods', () => {
                 list2.save(() => {
 
                     let email = crypto.encrypt('email@email.com');
-                    let alternativeEmail = crypto.encrypt('anotheremail@list.com');
+                    let alternativeEmail = crypto.encrypt('listByUserl@email.com');
 
                     // Create a new user
                     user = new User({
@@ -85,7 +85,7 @@ describe('The lists by user methods', () => {
                 .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
                     // Set assertion
-                    res.body.should.be.an.Array.with.lengthOf(2);
+                    res.body.should.have.a.lengthOf(2);
 
                     // Call the assertion callback
                     done();
@@ -109,7 +109,7 @@ describe('The lists by user methods', () => {
                 .expect(404)
                 .end((req, res) => {
                     // Set assertion
-                    res.body.should.be.an.Object.with.property('message', 'User not found');
+                    res.body.should.have.a.property('message', 'User not found');
                     // Call the assertion callback
                     done();
                 });
@@ -143,7 +143,7 @@ describe('The lists by user methods', () => {
                         }
 
                         // Set assertions
-                        listDeleteRes.body.should.be.an.Array.with.lengthOf(1);
+                        listDeleteRes.body.should.have.a.lengthOf(1);
                         //listDeleteRes.body.should.be.an.Object.with.property('message', 'Invalid user uuid provided');
 
                         // Call the assertion callback
@@ -178,7 +178,7 @@ describe('The lists by user methods', () => {
                         }
 
                         // Set assertions
-                        listDeleteRes.body.should.be.an.Object.with.property('message', 'User not found');
+                        listDeleteRes.body.should.have.a.property('message', 'User not found');
 
                         // Call the assertion callback
                         done();
@@ -212,7 +212,7 @@ describe('The lists by user methods', () => {
                         }
 
                         // Set assertions
-                        listDeleteRes.body.should.be.an.Object.with.property('message', 'List is invalid');
+                        listDeleteRes.body.should.have.a.property('message', 'List is invalid');
 
                         // Call the assertion callback
                         done();
@@ -246,7 +246,7 @@ describe('The lists by user methods', () => {
                         }
 
                         // Set assertions
-                        listDeleteRes.body.should.be.an.Array.with.lengthOf(2);
+                        listDeleteRes.body.should.have.a.lengthOf(2);
 
                         // Call the assertion callback
                         done();
@@ -294,7 +294,7 @@ describe('The lists by user methods', () => {
                             let lists = listGetRes.body;
 
                             // Set assertions
-                            lists.should.be.an.Array.with.lengthOf(3);
+                            lists.should.have.a.lengthOf(3);
                             // Call the assertion callback
                             done();
 
@@ -341,7 +341,7 @@ describe('The lists by user methods', () => {
                             let lists = listGetRes.body;
 
                             // Set assertions
-                            lists.should.be.an.Array.with.lengthOf(3);
+                            lists.should.have.a.lengthOf(3);
                             // Call the assertion callback
                             done();
 
@@ -380,7 +380,7 @@ describe('The lists by user methods', () => {
                         }
 
                         // Set assertions
-                        listDeleteRes.body.should.be.an.Object.with.property('message', 'User not found');
+                        listDeleteRes.body.should.have.a.property('message', 'User not found');
 
                         // Call the assertion callback
                         done();
@@ -424,7 +424,7 @@ describe('The lists by user methods', () => {
                             let lists = listGetRes.body;
 
                             // Set assertions
-                            lists.should.be.an.Array.with.lengthOf(2);
+                            lists.should.have.a.lengthOf(2);
                             lists[1].alternativeEmail.should.match(anotherEmail);
                             // Call the assertion callback
                             done();

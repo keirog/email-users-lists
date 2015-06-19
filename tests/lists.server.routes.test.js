@@ -184,7 +184,7 @@ describe('List CRUD tests:', () => {
                 .end((req, res) => {
 
                     // Set assertion
-                    res.body.should.be.an.Array.with.lengthOf(1);
+                    res.body.should.have.a.lengthOf(1);
 
                     // Call the assertion callback
                     done();
@@ -206,7 +206,7 @@ describe('List CRUD tests:', () => {
                 .end((req, res) => {
 
                     // Set assertion
-                    res.body.should.be.an.Object.with.property('name', list.name);
+                    res.body.should.have.a.property('name', list.name);
 
                     // Call the assertion callback
                     done();
@@ -220,7 +220,7 @@ describe('List CRUD tests:', () => {
             .auth(config.authUser, config.authPassword)
             .end((req, res) => {
                 // Set assertion
-                res.body.should.be.an.Object.with.property('message', 'List is invalid');
+                res.body.should.have.a.property('message', 'List is invalid');
 
                 // Call the assertion callback
                 done();

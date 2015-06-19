@@ -35,7 +35,7 @@ describe('User CRUD tests:', () => {
         list.save((err, res) => {
 
             let email = 'email@email.com';
-            let alternativeEmail = 'anotheremail@list.com';
+            let alternativeEmail = 'user@email.com';
 
             // Create a new user
             user = new User({
@@ -206,7 +206,7 @@ describe('User CRUD tests:', () => {
                 .end((req, res) => {
 
                     // Set assertion
-                    res.body.should.be.an.Array.with.lengthOf(1);
+                    res.body.should.have.a.lengthOf(1);
 
                     // Call the assertion callback
                     done();
@@ -231,7 +231,7 @@ describe('User CRUD tests:', () => {
                 .end((req, res) => {
 
                     // Set assertion
-                    res.body.should.be.an.Object.with.property('email', clearEmail);
+                    res.body.should.have.a.property('email', clearEmail);
 
                     // Call the assertion callback
                     done();
@@ -245,7 +245,7 @@ describe('User CRUD tests:', () => {
             .auth(config.authUser, config.authPassword)
             .end((req, res) => {
                 // Set assertion
-                res.body.should.be.an.Object.with.property('message', 'User not found');
+                res.body.should.have.a.property('message', 'User not found');
 
                 // Call the assertion callback
                 done();
@@ -279,7 +279,7 @@ describe('User CRUD tests:', () => {
                         }
 
                         // Set assertions
-                        (userDeleteRes.body.uuid).should.equal(userSaveRes.body.uuid);
+                        (userDeleteRes.body.uuid).should.match(userSaveRes.body.uuid);
 
                         // Call the assertion callback
                         done();
@@ -315,7 +315,7 @@ describe('User CRUD tests:', () => {
                     .end((req, res) => {
 
                         // Set assertion
-                        res.body.should.be.an.Array.with.lengthOf(1);
+                        res.body.should.have.a.lengthOf(1);
 
                         // Call the assertion callback
                         done();
@@ -354,7 +354,7 @@ describe('User CRUD tests:', () => {
                     .end((req, res) => {
 
                         // Set assertion
-                        res.body.should.be.an.Array.with.lengthOf(1);
+                        res.body.should.have.a.lengthOf(1);
 
                         // Call the assertion callback
                         done();
