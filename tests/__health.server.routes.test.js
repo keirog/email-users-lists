@@ -18,9 +18,9 @@ describe('__health tests:', () => {
                 if (hooksPostErr) {
                     done(hooksPostErr);
                 }
-                hooksPostRes.body.should.be.an.Object.with.property('schemaVersion', 1);
-                hooksPostRes.body.should.be.an.Object.with.property('name', 'Email Platform Users-Lists');
-                hooksPostRes.body.should.be.an.Object.with.property('description', 'Email Platform Users-Lists REST API');
+                hooksPostRes.body.should.have.a.property('schemaVersion', 1);
+                hooksPostRes.body.should.have.a.property('name', 'Email Platform Users-Lists');
+                hooksPostRes.body.should.have.a.property('description', 'Email Platform Users-Lists REST API');
 
                 done();
             });

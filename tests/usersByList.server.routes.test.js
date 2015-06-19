@@ -32,7 +32,7 @@ describe('The users by list methods', () => {
         list.save((errListSave, resListSave) => {
 
             let email = crypto.encrypt('email@email.com');
-            let alternativeEmail = crypto.encrypt('anotheremail@list.com');
+            let alternativeEmail = crypto.encrypt('userByList@list.com');
 
             // Create a new user
             user1 = new User({
@@ -76,7 +76,7 @@ describe('The users by list methods', () => {
                 .end((req, res) => {
 
                     // Set assertion
-                    res.body.should.be.an.Array.with.lengthOf(1);
+                    res.body.should.have.a.lengthOf(1);
 
                     // Call the assertion callback
                     done();
@@ -103,7 +103,7 @@ describe('The users by list methods', () => {
                 .end((req, res) => {
 
                     // Set assertion
-                    res.body.should.be.an.Array.with.lengthOf(1);
+                    res.body.should.have.a.lengthOf(1);
 
                     // Call the assertion callback
                     done();
@@ -130,7 +130,7 @@ describe('The users by list methods', () => {
                 .end((req, res) => {
 
                     // Set assertion
-                    res.body.should.be.an.Array.with.lengthOf(1);
+                    res.body.should.have.a.lengthOf(1);
 
                     // Call the assertion callback
                     done();

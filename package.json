@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "agent": "^0.2.1",
-    "should": "^6.0.3",
+    "should": "^7.0.1",
     "supertest": "^1.0.1"
   }
 }
