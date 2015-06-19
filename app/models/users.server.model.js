@@ -28,7 +28,12 @@ const listRelationshipSchema = new Schema({
         _id : false
     });
 
-const UserSchema = new Schema({
+//We always want emails to be encrypted
+listRelationshipSchema.path('alternativeEmail').validate((value) => {
+        return /^[0-9A-F]+$/i.test(value);
+    }, 'The email to save is not encrypted');
+
+const userSchema = new Schema({
         uuid: {
             type: String,
             trim: true,
@@ -48,5 +53,10 @@ const UserSchema = new Schema({
         lists: [listRelationshipSchema]
     });
 
-UserSchema.index({"lists.list": 1, "createdOn": 1});
-mongoose.model('User', UserSchema);
+//We always want emails to be encrypted
+userSchema.path('email').validate((value) => {
+        return /^[0-9A-F]+$/i.test(value);
+    }, 'The email to save is not encrypted');
+
+userSchema.index({"lists.list": 1, "createdOn": 1});
+mongoose.model('User', userSchema);

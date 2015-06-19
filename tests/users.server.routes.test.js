@@ -20,6 +20,9 @@ const User = mongoose.model('User');
 // Module globals
 let list, user;
 
+let email = 'user@email.com';
+let alternativeEmail = 'altuser@email.com';
+
 // List routes tests
 describe('User CRUD tests:', () => {
 
@@ -33,9 +36,6 @@ describe('User CRUD tests:', () => {
         });
 
         list.save((err, res) => {
-
-            let email = 'email@email.com';
-            let alternativeEmail = 'user@email.com';
 
             // Create a new user
             user = new User({
@@ -195,10 +195,16 @@ describe('User CRUD tests:', () => {
 
     it('should be able to get a list of users', (done) => {
 
-        user.email = crypto.encrypt(user.email);
+        //Encrypt the emails, since we are going to directly save the user
+        user.email = crypto.encrypt(email);
+        user.lists[0].alternativeEmail = crypto.encrypt(alternativeEmail);
 
         // Save the user
-        user.save(() => {
+        user.save((saveErr) => {
+
+            if (saveErr) {
+                done(saveErr);
+            }
 
             // Request users
             request(app).get('/users')
@@ -218,10 +224,9 @@ describe('User CRUD tests:', () => {
 
     it('should be able to get a single user', (done) => {
 
-        let clearEmail = user.email;
-
-        user.email = crypto.encrypt(user.email);
-        user.lists[0].alternativeEmail = crypto.encrypt(user.lists[0].alternativeEmail);
+        //Encrypt the emails, since we are going to directly save the user
+        user.email = crypto.encrypt(email);
+        user.lists[0].alternativeEmail = crypto.encrypt(alternativeEmail);
 
         // Save the user
         user.save(() => {
@@ -231,7 +236,7 @@ describe('User CRUD tests:', () => {
                 .end((req, res) => {
 
                     // Set assertion
-                    res.body.should.have.a.property('email', clearEmail);
+                    res.body.should.have.a.property('email', email);
 
                     // Call the assertion callback
                     done();
@@ -289,7 +294,9 @@ describe('User CRUD tests:', () => {
 
     it('allows to specify the maximum number of items returned', (done) => {
 
-        user.email = crypto.encrypt(user.email);
+        //Encrypt the emails, since we are going to directly save the user
+        user.email = crypto.encrypt(email);
+        user.lists[0].alternativeEmail = crypto.encrypt(alternativeEmail);
 
         // Create new user model instance
         let userObj = new User(user);
@@ -329,7 +336,9 @@ describe('User CRUD tests:', () => {
     it('allows to specify the a specific pagination returned', (done) => {
 
 
-        user.email = crypto.encrypt(user.email);
+        //Encrypt the emails, since we are going to directly save the user
+        user.email = crypto.encrypt(email);
+        user.lists[0].alternativeEmail = crypto.encrypt(alternativeEmail);
 
         // Create new user model instance
         let userObj = new User(user);
@@ -337,7 +346,7 @@ describe('User CRUD tests:', () => {
         // Create a new user
         let user2Obj = new User({
             uuid: '849f3554-0acf-11e5-a6c0-1697f925ec7b',
-            email: 'email@example.com',
+            email: crypto.encrypt('user2@example.com'),
             lists: []
         });
 

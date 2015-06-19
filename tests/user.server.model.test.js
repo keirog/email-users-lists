@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
  */
 
 const app = require('../server');
+const crypto = require('../app/utils/crypto.server.utils');
 
 const List = mongoose.model('List');
 const User = mongoose.model('User');
@@ -36,8 +37,10 @@ describe('User Model Unit Tests:', () => {
         list.save((err, res) => {
             user = new User ({
                 uuid:     '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                email:    'email@list.com',
-                lists: [res._id]
+                email:    crypto.encrypt('email@list.com'),
+                lists: [{
+                    list: [res._id]
+                }]
             });
             done();
         });
