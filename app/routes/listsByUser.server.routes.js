@@ -50,7 +50,7 @@ module.exports = (app) => {
 
         /**
          * @api {get} /users/:userUuid/lists/ Get Lists for a specific user.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName GetListsByUser
          * @apiGroup List
          *
@@ -66,7 +66,7 @@ module.exports = (app) => {
 
         /**
          * @api {post} /users/:userUuid/lists Add List to a specific User.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName AddListToUser
          * @apiGroup List
          *
@@ -85,7 +85,7 @@ module.exports = (app) => {
 
         /**
          * @api {delete} /users/:userUuid/lists/:listId Remove list from a specific user.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName RemoveListFromUser
          * @apiGroup List
          *

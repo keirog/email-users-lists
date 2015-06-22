@@ -32,7 +32,7 @@ module.exports = (app) => {
 
         /**
          * @api {post} /users/ Create a User.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName CreateUser
          * @apiGroup User
          *
@@ -57,7 +57,7 @@ module.exports = (app) => {
 
         /**
          * @api {get} /users/ Get a list of Users.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName GetUsers
          * @apiGroup User
          *
@@ -89,7 +89,7 @@ module.exports = (app) => {
 
         /**
          * @api {get} /users/:userUuid Get User information.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName GetUser
          * @apiGroup User
          *
@@ -117,7 +117,7 @@ module.exports = (app) => {
 
         /**
          * @api {patch} /users/:userUuid Edit User information.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName EditUser
          * @apiGroup User
          *
@@ -142,7 +142,7 @@ module.exports = (app) => {
 
         /**
          * @api {delete} /users/:userUuid Delete User information.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName DeleteUser
          * @apiGroup User
          *

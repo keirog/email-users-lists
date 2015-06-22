@@ -72,7 +72,7 @@ module.exports = (app) => {
 
         /**
          * @api {post} /lists/ Create a List.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName CreateList
          * @apiGroup List
          *
@@ -88,7 +88,7 @@ module.exports = (app) => {
 
         /**
          * @api {get} /lists/ Get all the Lists.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName GetLists
          * @apiGroup List
          *
@@ -104,7 +104,7 @@ module.exports = (app) => {
 
         /**
          * @api {get} /lists/:listId Get List.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName GetList
          * @apiGroup List
          *
@@ -120,7 +120,7 @@ module.exports = (app) => {
 
         /**
          * @api {patch} /lists/:listId Edit List.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName EditList
          * @apiGroup List
          *
@@ -138,7 +138,7 @@ module.exports = (app) => {
 
         /**
          * @api {delete} /lists/:listId Delete List.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName DeleteList
          * @apiGroup List
          *
