@@ -12,7 +12,7 @@ REST API for Users' Lists matching
 ### /lists/:listId
 **GET /lists/:listId**: returns a specific list object
 
-**PUT /lists/:listId**: edits the specific list object updating the provided properties
+**PATCH /lists/:listId**: edits (partially) the specific list object updating the provided properties
 
 **DELETE /lists/:listId**: deletes the specific list object 
 
@@ -24,7 +24,7 @@ REST API for Users' Lists matching
 ### /users/:userUuid
 **GET /users/:userUuid**: returns a specific user object
 
-**PUT /users/:userUuid**: edits the specific user object updating the provided properties
+**PATCH /users/:userUuid**: edits (partially) the specific user object updating the provided properties
 
 **DELETE /users/:userUuid**: deletes the specific user object 
 

@@ -119,7 +119,7 @@ module.exports = (app) => {
 
 
         /**
-         * @api {put} /lists/:listId Edit List.
+         * @api {patch} /lists/:listId Edit List.
          * @apiVersion 0.2.0
          * @apiName EditList
          * @apiGroup List
@@ -133,7 +133,7 @@ module.exports = (app) => {
          * @apiUse ListResponse
          *
          */
-        .put(lists.update)
+        .patch(lists.update)
 
 
         /**

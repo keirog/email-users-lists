@@ -116,7 +116,7 @@ module.exports = (app) => {
 
 
         /**
-         * @api {put} /users/:userUuid Edit User information.
+         * @api {patch} /users/:userUuid Edit User information.
          * @apiVersion 0.2.0
          * @apiName EditUser
          * @apiGroup User
@@ -137,7 +137,7 @@ module.exports = (app) => {
          *       "message": "User not found"
          *     }
          */
-        .put(users.update)
+        .patch(users.update)
 
 
         /**
