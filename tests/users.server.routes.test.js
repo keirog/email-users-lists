@@ -131,7 +131,7 @@ describe('User CRUD tests:', () => {
                 user.email = newEmail;
 
                 // Update an existing user
-                agent.put('/users/' + userSaveRes.body.uuid)
+                agent.patch('/users/' + userSaveRes.body.uuid)
                     .auth(config.authUser, config.authPassword)
                     .send(user)
                     .expect(200)
@@ -172,7 +172,7 @@ describe('User CRUD tests:', () => {
                 user.email = newEmail;
 
                 // Update an existing user
-                agent.put('/users/' + userSaveRes.body.uuid)
+                agent.patch('/users/' + userSaveRes.body.uuid)
                     .auth(config.authUser, config.authPassword)
                     .send(user)
                     .expect(400)

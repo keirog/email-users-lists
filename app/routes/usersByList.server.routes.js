@@ -11,7 +11,7 @@ module.exports = (app) => {
 
         /**
          * @api {get} /lists/:listId/users Get Users members of a List.
-         * @apiVersion 0.2.0
+         * @apiVersion 0.3.0
          * @apiName GetUsersByList
          * @apiGroup User
          *

@@ -110,7 +110,7 @@ describe('List CRUD tests:', () => {
                 list.name = newName;
 
                 // Update an existing list
-                agent.put('/lists/' + listSaveRes.body._id)
+                agent.patch('/lists/' + listSaveRes.body._id)
                     .auth(config.authUser, config.authPassword)
                     .send(list)
                     .expect(200)
@@ -150,7 +150,7 @@ describe('List CRUD tests:', () => {
                 list.name = newName;
 
                 // Update an existing list
-                agent.put('/lists/' + listSaveRes.body._id)
+                agent.patch('/lists/' + listSaveRes.body._id)
                     .auth(config.authUser, config.authPassword)
                     .send(list)
                     .expect(400)
