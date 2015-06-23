@@ -227,41 +227,6 @@ describe('List CRUD tests:', () => {
             });
     });
 
-    it('should be able to delete a list', (done) => {
-
-        // Save a new list
-        agent.post('/lists')
-            .auth(config.authUser, config.authPassword)
-            .send(list)
-            .expect(200)
-            .end((listSaveErr, listSaveRes) => {
-
-                // Handle list save error
-                if (listSaveErr) {
-                    done(listSaveErr);
-                }
-
-                // Delete an existing list
-                agent.delete('/lists/' + listSaveRes.body._id)
-                    .auth(config.authUser, config.authPassword)
-                    .send()
-                    .expect(200)
-                    .end((listDeleteErr, listDeleteRes) => {
-
-                        // Handle list error
-                        if (listDeleteErr) {
-                            done(listDeleteErr);
-                        }
-
-                        // Set assertions
-                        (listDeleteRes.body._id).should.equal(listSaveRes.body._id);
-
-                        // Call the assertion callback
-                        done();
-                    });
-            });
-    });
-
     afterEach((done) => {
         List.remove().exec(done);
     });
