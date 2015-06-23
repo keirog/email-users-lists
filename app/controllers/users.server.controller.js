@@ -117,6 +117,12 @@ exports.update = (req, res, next) => {
 
     let user = req.user;
 
+    if (req.body.lists) {
+        return res.status(403).send({
+            message: 'Forbidden. Lists cannot be edited via this method'
+        });
+    }
+
     user = extend(user, req.body);
 
     if (user.email) {
