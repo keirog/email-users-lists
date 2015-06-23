@@ -21,6 +21,7 @@ module.exports = (app) => {
      * @apiSuccess {String} name  The name of the List.
      * @apiSuccess {String} identifier A unique identifier for the list.
      * @apiSuccess {String} [description]   The description for the List.
+     * @apiSuccess {Boolean} [inactive=false]   The list is not active.
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -28,7 +29,8 @@ module.exports = (app) => {
      *       "_id": "55719bbc18ef0a03008404cb",
      *       "identifier": "deb15e25-b44c-4f4d-aa32-262214ff757c"
      *       "name": "a eaque aut accusamus voluptatem pariatur",
-     *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe"
+     *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe",
+     *       "inactive": false
      *     }
      *
      * @apiError ValidationError The posted List object is not valid.
@@ -48,6 +50,7 @@ module.exports = (app) => {
      * @apiSuccess {String} list.name  The name of the List.
      * @apiSuccess {String} list.identifier  The unique identifier dor the List.
      * @apiSuccess {String} list.description   The description for the List.
+     * @apiSuccess {Boolean} [list.inactive=false]   The list is not active.
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -55,13 +58,15 @@ module.exports = (app) => {
      *       "_id": "55719bbc18ef0a03008404cb",
      *       "identifier":"80b99e3b-375b-4464-adc7-754b466e5204",
      *       "name": "a eaque aut accusamus voluptatem pariatur",
-     *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe"
+     *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe",
+     *       "inactive": true
      *     },
      *     {
      *       "_id": "55719bbc18ef0a030084048a",
      *       "identifier":"80b99e3b-375b-4464-adc7-754b466e5205",
      *       "name": "commodi officiis natus",
-     *       "description": "doloribus sunt qui qui voluptatem cumque voluptatem\nasperiores labore voluptatem saepe ratione\nea provident velit maiores non omnis quos temporibus\neum occaecati nostrum deserunt\neaque dicta cupiditate labore hic fugiat"
+     *       "description": "doloribus sunt qui qui voluptatem cumque voluptatem\nasperiores labore voluptatem saepe ratione\nea provident velit maiores non omnis quos temporibus\neum occaecati nostrum deserunt\neaque dicta cupiditate labore hic fugiat",
+     *       "inactive": false
      *     }]
      *
      **/
@@ -81,6 +86,7 @@ module.exports = (app) => {
          * @apiParam {String} name  The name of the List.
          * @apiParam {String} identifier A unique identifier for the list.
          * @apiParam {String} [description]   The description for the List.
+         * @apiParam {Boolean} [inactive=false]   The list is not active.
          *
          * @apiUse ListResponse
          */
@@ -129,26 +135,12 @@ module.exports = (app) => {
          * @apiParam {ObjectId} listId List unique ID.
          * @apiParam {String} [name]  The name of the List.
          * @apiParam {String} [description]   The description for the List.
+         * @apiParam {Boolean} [inactive=false]   The list is not active.
          *
          * @apiUse ListResponse
          *
          */
-        .patch(lists.update)
-
-
-        /**
-         * @api {delete} /lists/:listId Delete List.
-         * @apiVersion 0.3.0
-         * @apiName DeleteList
-         * @apiGroup List
-         *
-         * @apiUse BasicAuthHeader
-         *
-         * @apiParam {ObjectId} listId List unique ID.
-         *
-         * @apiUse ListResponse
-         */
-        .delete(lists.delete);
+        .patch(lists.update);
 
     app.param('listId', lists.listById);
 };

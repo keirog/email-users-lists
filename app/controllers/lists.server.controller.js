@@ -64,21 +64,6 @@ exports.update = (req, res, next) => {
     });
 };
 
-exports.delete = (req, res, next) => {
-    req.list.remove((err) => {
-        /* istanbul ignore if */
-        if (err) {
-            return res.status(400).send({
-                //TODO: errorHandler.getErrorMessage(err)
-                message: err
-            });
-        }
-        else {
-            res.json(req.list);
-        }
-    });
-};
-
 exports.listById = (req, res, next, id) => {
 
     List.findOne({ _id: id }, (err, list) => {

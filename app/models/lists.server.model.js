@@ -20,6 +20,11 @@ const ListSchema = new Schema({
     description: {
         type: String,
         trim: true
+    },
+    inactive: {
+        type: Boolean,
+        default: false,
+        index: true
     }
 });
 
