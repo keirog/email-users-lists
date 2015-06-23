@@ -128,12 +128,15 @@ describe('User CRUD tests:', () => {
                 }
 
                 // Update user email
-                user.email = newEmail;
+                let updateObj = {
+                    uuid: user.uuid,
+                    email: newEmail
+                };
 
                 // Update an existing user
                 agent.patch('/users/' + userSaveRes.body.uuid)
                     .auth(config.authUser, config.authPassword)
-                    .send(user)
+                    .send(updateObj)
                     .expect(200)
                     .end((userUpdateErr, userUpdateRes) => {
 
@@ -143,8 +146,7 @@ describe('User CRUD tests:', () => {
                         }
 
                         // Set assertions
-                        (userUpdateRes.body._id).should.equal(userSaveRes.body._id);
-                        (userUpdateRes.body.uuid).should.equal(userSaveRes.body.uuid);
+                        (userUpdateRes.body.uuid).should.match(userSaveRes.body.uuid);
                         (userUpdateRes.body.email).should.match(newEmail);
 
                         // Call the assertion callback
@@ -169,12 +171,15 @@ describe('User CRUD tests:', () => {
                 }
 
                 // Update user email
-                user.email = newEmail;
+                let updateObj = {
+                    uuid: user.uuid,
+                    email: newEmail
+                };
 
                 // Update an existing user
                 agent.patch('/users/' + userSaveRes.body.uuid)
                     .auth(config.authUser, config.authPassword)
-                    .send(user)
+                    .send(updateObj)
                     .expect(400)
                     .end((userUpdateErr, userUpdateRes) => {
 
@@ -184,13 +189,56 @@ describe('User CRUD tests:', () => {
                         }
 
                         // Set assertions
-                        should.exist(userUpdateRes);
+                        should.exist(userUpdateRes.body);
                         //TODO: (userUpdateRes.body.message).should.match('Email cannot be blank');
 
                         // Call the assertion callback
                         done();
                     });
             });
+    });
+
+    it('should throw return an error when  trying to patch the user-lists relationships', (done) => {
+
+        // Save a new user
+        agent.post('/users')
+            .auth(config.authUser, config.authPassword)
+            .send(user)
+            .expect(200)
+            .end((userSaveErr, userSaveRes) => {
+
+                // Handle user save error
+                if (userSaveErr) {
+                    done(userSaveErr);
+                }
+
+                // Update user email
+                let updateObj = {
+                    uuid: user.uuid,
+                    lists: []
+                };
+
+                // Update an existing user
+                agent.patch('/users/' + userSaveRes.body.uuid)
+                    .auth(config.authUser, config.authPassword)
+                    .send(updateObj)
+                    .expect(403)
+                    .end((userUpdateErr, userUpdateRes) => {
+
+                        // Handle user update error
+                        if (userUpdateErr) {
+                            done(userUpdateErr);
+                        }
+
+                        // Set assertions
+                        should.exist(userUpdateRes.body);
+                        (userUpdateRes.body.message).should.match('Forbidden. Lists cannot be edited via this method');
+
+                        // Call the assertion callback
+                        done();
+                    });
+            });
+
     });
 
     it('should be able to get a list of users', (done) => {

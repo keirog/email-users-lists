@@ -125,16 +125,16 @@ module.exports = (app) => {
          *
          * @apiParam {String} uuid  The UUID of the User.
          * @apiParam {String} [email] The email of the User.
-         * @apiParam {[ObjectId[]]} list A list of Lists Relationships for the user.
          *
          * @apiUse UserResponse
          *
          * @apiError UserNotFound The UUID of the User is not found.
+         * @apiError Forbidden Lists cannot be edited via this method.
          *
          * @apiErrorExample Error-Response:
-         *     HTTP/1.1 404 Not Found
+         *     HTTP/1.1 403 Forbidden
          *     {
-         *       "message": "User not found"
+         *       "message": "Forbidden. Lists cannot be edited via this method"
          *     }
          */
         .patch(users.update)
