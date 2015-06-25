@@ -13,20 +13,25 @@ const logger = require('../../config/logger');
 const User = mongoose.model('User');
 
 exports.create = (req, res) => {
+
+    logger.debug('Request to create a user received...');
     let userObj = req.body;
 
     // Encrypt the email
     userObj.email = crypto.encrypt(userObj.email);
 
-    // Synchronously encrypt alternative emails
-    userObj.lists = userObj.lists.map((listRelationship) => {
+    if (userObj.lists) {
 
-        /* istanbul ignore else */
-        if (listRelationship.alternativeEmail) {
-            listRelationship.alternativeEmail = crypto.encrypt(listRelationship.alternativeEmail);
-        }
-        return listRelationship;
-    });
+        // Synchronously encrypt alternative emails
+        userObj.lists = userObj.lists.map((listRelationship) => {
+
+            /* istanbul ignore else */
+            if (listRelationship.alternativeEmail) {
+                listRelationship.alternativeEmail = crypto.encrypt(listRelationship.alternativeEmail);
+            }
+            return listRelationship;
+        });
+    }
 
     let user = new User(userObj);
     user.save((err) => {
@@ -45,7 +50,7 @@ exports.create = (req, res) => {
 exports.list = (req, res) => {
 
     let t1 = Date.now();
-    logger.debug('Request received');
+    logger.debug('Request to list the users received...');
 
     let page = (Number(req.query.p) > 0 ? Number(req.query.p) : 1) - 1;
     //TODO: use config for pagination defaults
@@ -114,6 +119,8 @@ exports.read = (req, res) => {
 };
 
 exports.update = (req, res, next) => {
+
+    logger.debug('Request to edit a user received...');
 
     let user = req.user;
 
