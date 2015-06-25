@@ -34,11 +34,12 @@ exports.create = (req, res) => {
     }
 
     let user = new User(userObj);
-    user.save((err) => {
-        if (err) {
+    user.save((saveErr) => {
+        if (saveErr) {
+            logger.warn(saveErr);
             return res.status(400).send({
-                //TODO: errorHandler.getErrorMessage(err)
-                message: err
+                //TODO: errorHandler.getErrorMessage(saveErr)
+                message: saveErr
             });
         }
         else {
@@ -53,7 +54,6 @@ exports.list = (req, res) => {
     logger.debug('Request to list the users received...');
 
     let page = (Number(req.query.p) > 0 ? Number(req.query.p) : 1) - 1;
-    //TODO: use config for pagination defaults
     let perPage = (Number(req.query.pp) > 0 ? Number(req.query.pp) : 100);
 
     res.header('X-Page', page + 1);
@@ -73,12 +73,13 @@ exports.list = (req, res) => {
             .lean()
             .limit(perPage)
             .skip(perPage * page)
-            .exec((err, users) => {
+            .exec((findErr, users) => {
                 /* istanbul ignore if */
-                if (err) {
+                if (findErr) {
+                    logger.warn(findErr);
                     return res.status(400).send({
-                        //TODO: errorHandler.getErrorMessage(err)
-                        message: err
+                        //TODO: errorHandler.getErrorMessage(findErr)
+                        message: findErr
                     });
                 }
                 else {
@@ -96,6 +97,7 @@ exports.list = (req, res) => {
                         (encryptErr, decryptedUsers) => {
                             /* istanbul ignore if */
                             if (encryptErr) {
+                                logger.warn(encryptErr);
                                 return res.status(400).send({
                                     message: encryptErr
                                 });
@@ -157,6 +159,7 @@ exports.update = (req, res, next) => {
 
         /* istanbul ignore if */
         if (updateErr) {
+            logger.warn(updateErr);
             return res.status(400).send({
                 //TODO: errorHandler.getErrorMessage(err)
                 message: updateErr
@@ -170,12 +173,13 @@ exports.update = (req, res, next) => {
 };
 
 exports.delete = (req, res) => {
-    req.user.remove((err) => {
+    req.user.remove((deleteErr) => {
         /* istanbul ignore if */
-        if (err) {
+        if (deleteErr) {
+            logger.warn(deleteErr);
             return res.status(400).send({
-                //TODO: errorHandler.getErrorMessage(err)
-                message: err
+                //TODO: errorHandler.getErrorMessage(deleteErr)
+                message: deleteErr
             });
         }
         else {
@@ -189,6 +193,7 @@ exports.userByUuid = (req, res, next, uuid) => {
     User.findOne({ uuid: uuid }, { __v: 0, createdOn: 0, _id: 0 }, (findErr, user) => {
         /* istanbul ignore next */
         if (findErr) {
+            logger.warn(findErr);
             return next(findErr);
         }
         else if (user) {
