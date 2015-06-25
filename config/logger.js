@@ -12,7 +12,8 @@ if (dsn) {
 
     winston.transports.Sentry = require('winston-sentry');
     winston.add(winston.transports.Sentry, {
-        dsn: dsn
+        dsn: dsn,
+        level: 'error'
     });
 }
 
