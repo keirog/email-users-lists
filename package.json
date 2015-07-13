@@ -30,15 +30,15 @@
     "dotenv": "^1.2.0",
     "express": "^4.13.1",
     "extend": "^3.0.0",
-    "faker": "^2.1.5",
+    "faker": "^3.0.0",
     "gulp": "^3.9.0",
     "gulp-apidoc": "^0.1.4",
     "gulp-istanbul": "^0.10.0",
     "gulp-jshint": "^1.11.2",
-    "gulp-mocha": "^2.1.2",
+    "gulp-mocha": "^2.1.3",
     "gulp-todo": "^3.1.1",
     "lodash": "^3.10.0",
-    "mongoose": "^4.0.6",
+    "mongoose": "^4.0.7",
     "mongoose-fakery": "^0.1.7",
     "raven": "^0.8.1",
     "winston": "^1.0.1",
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "agent": "^0.2.1",
-    "should": "^7.0.1",
+    "should": "^7.0.2",
     "supertest": "^1.0.1"
   }
 }
