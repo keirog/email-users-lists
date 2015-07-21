@@ -340,6 +340,7 @@ describe('User CRUD tests:', () => {
                         }
 
                         // Set assertions
+                        console.log(userDeleteRes);
                         (userDeleteRes.body.uuid).should.match(userSaveRes.body.uuid);
 
                         // Call the assertion callback
