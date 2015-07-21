@@ -29,7 +29,9 @@ module.exports = (app) => {
          * @apiSuccessExample Success-Response:
          *     HTTP/1.1 200 OK
          *     [{
-         *       "email": "Freddy35@hotmail.com"
+         *       "email": "Freddy35@hotmail.com",
+         *       "firstName": "Bob",
+         *       "lastName": "Dylan",
          *       "frequency": "immediate"
          *       "products": ["next"]
          *       "uuid": "34c6fc81-99d1-4ddd-a3b1-f778e2560a98"          *

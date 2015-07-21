@@ -14,6 +14,8 @@ const users = require('../controllers/users.server.controller');
  *    {
  *      "uuid": "deb15e25-b44c-4f4d-aa32-262214ff757c",
  *      "email": "Jeramy32@yahoo.com",
+ *      "firstName": "Bob",
+ *      "lastName": "Dylan",
  *      "lists": [{
  *          "list": "55801ec760c5056e10dbcf0b",
  *          "alternativeEmail": "Bryana28@gmail.com",
@@ -137,30 +139,7 @@ module.exports = (app) => {
          *       "message": "Forbidden. Lists cannot be edited via this method"
          *     }
          */
-        .patch(users.update)
-
-
-        /**
-         * @api {delete} /users/:userUuid Delete User information.
-         * @apiVersion 0.3.0
-         * @apiName DeleteUser
-         * @apiGroup User
-         *
-         * @apiUse BasicAuthHeader
-         *
-         * @apiParam {String} uuid  The UUID of the User.
-         *
-         * @apiUse UserResponse
-         *
-         * @apiError UserNotFound The UUID of the User is not found.
-         *
-         * @apiErrorExample Error-Response:
-         *     HTTP/1.1 404 Not Found
-         *     {
-         *       "message": "User not found"
-         *     }
-         */
-        .delete(users.delete);
+        .patch(users.update);
 
     app.param('userUuid', users.userByUuid);
 };

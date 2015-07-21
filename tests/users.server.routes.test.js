@@ -41,6 +41,8 @@ describe('User CRUD tests:', () => {
             user = new User({
                 uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
                 email: email,
+                firstName: 'Bob',
+                lastName: 'Dylan',
                 lists: [{
                     list: res._id,
                     alternativeEmail: alternativeEmail,
@@ -84,6 +86,8 @@ describe('User CRUD tests:', () => {
                         // Set assertions
                         (users[0].uuid).should.match(user.uuid);
                         (users[0].email).should.match(user.email);
+                        (users[0].firstName).should.match(user.firstName);
+                        (users[0].lastName).should.match(user.lastName);
 
                         // Call the assertion callback
                         done();
@@ -148,6 +152,8 @@ describe('User CRUD tests:', () => {
                         // Set assertions
                         (userUpdateRes.body.uuid).should.match(userSaveRes.body.uuid);
                         (userUpdateRes.body.email).should.match(newEmail);
+                        (userUpdateRes.body.firstName).should.match(user.firstName);
+                        (userUpdateRes.body.lastName).should.match(user.lastName);
 
                         // Call the assertion callback
                         done();
@@ -285,6 +291,8 @@ describe('User CRUD tests:', () => {
 
                     // Set assertion
                     res.body.should.have.a.property('email', email);
+                    res.body.should.have.a.property('firstName', user.firstName);
+                    res.body.should.have.a.property('lastName', user.lastName);
 
                     // Call the assertion callback
                     done();
@@ -302,41 +310,6 @@ describe('User CRUD tests:', () => {
 
                 // Call the assertion callback
                 done();
-            });
-    });
-
-    it('should be able to delete a user', (done) => {
-
-        // Save a new user
-        agent.post('/users')
-            .auth(config.authUser, config.authPassword)
-            .send(user)
-            .expect(200)
-            .end((userSaveErr, userSaveRes) => {
-
-                // Handle user save error
-                if (userSaveErr) {
-                    done(userSaveErr);
-                }
-
-                // Delete an existing user
-                agent.delete('/users/' + userSaveRes.body.uuid)
-                    .auth(config.authUser, config.authPassword)
-                    .send()
-                    .expect(200)
-                    .end((userDeleteErr, userDeleteRes) => {
-
-                        // Handle user error
-                        if (userDeleteErr) {
-                            done(userDeleteErr);
-                        }
-
-                        // Set assertions
-                        (userDeleteRes.body.uuid).should.match(userSaveRes.body.uuid);
-
-                        // Call the assertion callback
-                        done();
-                    });
             });
     });
 

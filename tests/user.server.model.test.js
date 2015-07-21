@@ -38,6 +38,8 @@ describe('User Model Unit Tests:', () => {
             user = new User ({
                 uuid:     '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
                 email:    crypto.encrypt('email@list.com'),
+                firstName: "Bob",
+                lastName: "Dylan",
                 lists: [{
                     list: [res._id]
                 }]
