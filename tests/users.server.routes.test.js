@@ -313,42 +313,6 @@ describe('User CRUD tests:', () => {
             });
     });
 
-    it('should be able to delete a user', (done) => {
-
-        // Save a new user
-        agent.post('/users')
-            .auth(config.authUser, config.authPassword)
-            .send(user)
-            .expect(200)
-            .end((userSaveErr, userSaveRes) => {
-
-                // Handle user save error
-                if (userSaveErr) {
-                    done(userSaveErr);
-                }
-
-                // Delete an existing user
-                agent.delete('/users/' + userSaveRes.body.uuid)
-                    .auth(config.authUser, config.authPassword)
-                    .send()
-                    .expect(200)
-                    .end((userDeleteErr, userDeleteRes) => {
-
-                        // Handle user error
-                        if (userDeleteErr) {
-                            done(userDeleteErr);
-                        }
-
-                        // Set assertions
-                        console.log(userDeleteRes);
-                        (userDeleteRes.body.uuid).should.match(userSaveRes.body.uuid);
-
-                        // Call the assertion callback
-                        done();
-                    });
-            });
-    });
-
     it('allows to specify the maximum number of items returned', (done) => {
 
         //Encrypt the emails, since we are going to directly save the user

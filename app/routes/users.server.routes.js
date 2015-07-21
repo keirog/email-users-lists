@@ -139,30 +139,7 @@ module.exports = (app) => {
          *       "message": "Forbidden. Lists cannot be edited via this method"
          *     }
          */
-        .patch(users.update)
-
-
-        /**
-         * @api {delete} /users/:userUuid Delete User information.
-         * @apiVersion 0.3.0
-         * @apiName DeleteUser
-         * @apiGroup User
-         *
-         * @apiUse BasicAuthHeader
-         *
-         * @apiParam {String} uuid  The UUID of the User.
-         *
-         * @apiUse UserResponse
-         *
-         * @apiError UserNotFound The UUID of the User is not found.
-         *
-         * @apiErrorExample Error-Response:
-         *     HTTP/1.1 404 Not Found
-         *     {
-         *       "message": "User not found"
-         *     }
-         */
-        .delete(users.delete);
+        .patch(users.update);
 
     app.param('userUuid', users.userByUuid);
 };

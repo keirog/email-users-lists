@@ -172,22 +172,6 @@ exports.update = (req, res, next) => {
     });
 };
 
-exports.delete = (req, res) => {
-    req.user.remove((deleteErr) => {
-        /* istanbul ignore if */
-        if (deleteErr) {
-            logger.warn(deleteErr);
-            return res.status(400).send({
-                //TODO: errorHandler.getErrorMessage(deleteErr)
-                message: deleteErr
-            });
-        }
-        else {
-            return res.json(req.user);
-        }
-    });
-};
-
 exports.userByUuid = (req, res, next, uuid) => {
 
     User.findOne({ uuid: uuid }, { __v: 0, createdOn: 0, _id: 0 }, (findErr, user) => {
