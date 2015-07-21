@@ -14,6 +14,8 @@ const users = require('../controllers/users.server.controller');
  *    {
  *      "uuid": "deb15e25-b44c-4f4d-aa32-262214ff757c",
  *      "email": "Jeramy32@yahoo.com",
+ *      "firstName": "Bob",
+ *      "lastName": "Dylan",
  *      "lists": [{
  *          "list": "55801ec760c5056e10dbcf0b",
  *          "alternativeEmail": "Bryana28@gmail.com",

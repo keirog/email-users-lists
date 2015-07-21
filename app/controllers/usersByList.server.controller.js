@@ -72,6 +72,14 @@ exports.list = (req, res) => {
                                 uuid: user.uuid
                             };
 
+                            if (user.firstName) {
+                                userOutput.fistName = user.firstName;
+                            }
+
+                            if (user.lastName) {
+                                userOutput.lastName = user.lastName;
+                            }
+
                             // Use the alternative email if it exists, otherwise use the default email
                             userOutput.email = user.lists[0].alternativeEmail || user.email;
 

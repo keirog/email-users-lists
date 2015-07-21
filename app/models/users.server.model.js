@@ -40,6 +40,14 @@ const userSchema = new Schema({
             index: { unique: true },
             required: 'uuid cannot be blank'
         },
+        firstName: {
+            type: String,
+            trim: true
+        },
+        lastName: {
+            type: String,
+            trim: true
+        },
         createdOn: {
             type: Date,
             default: Date.now,

@@ -38,6 +38,8 @@ describe('The users by list methods', () => {
             user1 = new User({
                 uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
                 email: email,
+                firstName: 'Bob',
+                lastName: 'Dylan',
                 lists: [{
                     list: resListSave._id,
                     alternativeEmail: alternativeEmail,
