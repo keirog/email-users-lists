@@ -1,6 +1,6 @@
 {
   "name": "email-users-lists",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Users and lists matching",
   "main": "server.js",
   "scripts": {
