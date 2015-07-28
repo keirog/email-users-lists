@@ -12,9 +12,9 @@ exports.handle = (req, res) => {
         name: "The Application is UP",
         ok: true,
         severity: 2,
-        businessImpact: 'Some test text',
-        technicalSummary: 'Some test text',
-        panicGuide: 'Some test text',
+        businessImpact: 'The users-lists cache cannot be reached.',
+        technicalSummary: 'Either Heroku, or the Express HTTP server or the underlying MongoDB database ar down.',
+        panicGuide: 'Login to Heroku and check what is the most recent error in Papertrail. Act accordingly.',
         lastUpdated: now.toISOString()
     }];
 
