@@ -26,8 +26,6 @@ REST API for Users' Lists matching
 
 **PATCH /users/:userUuid**: edits (partially) the specific user object updating the provided properties
 
-**DELETE /users/:userUuid**: deletes the specific user object 
-
 ### /users/:userUuid/lists
 **GET /users/:userUuid/lists**: returns a populated list of lists for the provided user
 
