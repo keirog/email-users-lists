@@ -28,4 +28,4 @@ app.listen(config.port);
 
 module.exports = app;
 
-logger.info(loggerId, process.env.NODE_ENV + ' server running at http://localhost:' + config.port);
+logger.info(loggerId, process.env.NODE_ENV + ' server running', { location: 'http://localhost:' + config.port});
