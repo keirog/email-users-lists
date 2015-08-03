@@ -28,7 +28,7 @@ exports.list = (req, res) => {
     User.count({'lists.list': listId }, (countErr, count) => {
 
         let t2 = Date.now();
-        logger.debug('Users counted', t2 - t1);
+        logger.debug('Users counted', { time: t2 - t1 });
 
         res.header('X-Total-Count', count);
 
@@ -47,7 +47,7 @@ exports.list = (req, res) => {
                 }
                 else {
                     let t3 = Date.now();
-                    logger.debug('Users found', t3 - t2);
+                    logger.debug('Users found', { time: t3 - t2 });
 
                     // Asynchronously decrypt the users array
                     async.map(users,
@@ -103,7 +103,7 @@ exports.list = (req, res) => {
                             }
                             else {
                                 let t4 = Date.now();
-                                logger.debug('Users decrypted', t4 - t3);
+                                logger.debug('Users decrypted', { time: t4 - t3 });
                                 res.json(usersOutput);
                             }
 
