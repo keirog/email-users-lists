@@ -19,6 +19,10 @@ const listRelationshipSchema = new Schema({
             type: String,
             trim: true
         },
+        unsubscribeKey: {
+            type: String,
+            required: 'Missing the unsubscribeKey'
+        },
         products: [{
             type: String,
             trim: true

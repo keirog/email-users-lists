@@ -41,7 +41,8 @@ describe('User Model Unit Tests:', () => {
                 firstName: "Bob",
                 lastName: "Dylan",
                 lists: [{
-                    list: [res._id]
+                    list: res._id,
+                    unsubscribeKey: 'SOMEKEY'
                 }]
             });
             done();

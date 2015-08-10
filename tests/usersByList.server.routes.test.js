@@ -44,7 +44,8 @@ describe('The users by list methods', () => {
                     list: resListSave._id,
                     alternativeEmail: alternativeEmail,
                     frequency: 'immediate',
-                    products: ['next']
+                    products: ['next'],
+                    unsubscribeKey: 'SOMEKEY'
                 }]
             });
 
@@ -115,10 +116,10 @@ describe('The users by list methods', () => {
 
     });
 
-    it('allows to specify the a specific pagination returned', (done) => {
+    it('allows to specify a specific pagination returned', (done) => {
 
         // Add the list to the second user
-        user2.lists.push({list: list._id});
+        user2.lists.push({list: list._id, unsubscribeKey: 'SOMEKEY' });
 
         // Create new user model instance
         let userObj = new User(user2);
