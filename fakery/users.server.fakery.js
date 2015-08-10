@@ -18,6 +18,7 @@ const db = require('../config/mongoose')();
 const crypto = require('../app/utils/crypto.server.utils');
 const User = mongoose.model('User');
 const List = mongoose.model('List');
+const unsubscribeEncryption = require('../config/unsubscribeEncryption');
 
 let usersToCreate = 5000000;
 let count = 0;
@@ -44,15 +45,21 @@ function createFakeUser (next) {
 
                 let listId = list._id.toString();
 
+                const uuid = faker.random.uuid();
+
                 // Generate fake user
                 fakery.fake('user', User, {
-                    uuid: faker.random.uuid(),
+                    uuid: uuid,
                     email: crypto.encrypt(faker.internet.email()),
                     lists: [{
                         list: listId,
                         alternativeEmail: crypto.encrypt(faker.internet.email()),
                         frequency: faker.random.arrayElement(['immediate', 'digest']),
-                        products: [faker.random.arrayElement(['next', 'ft.com'])]
+                        products: [faker.random.arrayElement(['next', 'ft.com'])],
+                        unsubscribeKey: unsubscribeEncryption.encrypt({
+                            uuid: uuid,
+                            listId: listId
+                        })
                     }]
                 });
 

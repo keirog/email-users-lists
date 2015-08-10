@@ -60,9 +60,11 @@ describe('The lists by user methods', () => {
                             list: resSave1._id,
                             alternativeEmail: alternativeEmail,
                             frequency: 'immediate',
-                            products: ['next']
+                            products: ['next'],
+                            unsubscribeKey: 'SOMEKEY'
                         }, {
-                            list: resSave3._id
+                            list: resSave3._id,
+                            unsubscribeKey: 'SOMEKEY'
                         }]
                     });
 

@@ -7,7 +7,10 @@ const extend = require('extend');
 
 // Internal modules
 const listCtrl = require('./lists.server.controller');
+
+//TODO: use The same module for both of them here
 const crypto = require('../utils/crypto.server.utils');
+const unsubscribeEncryption = require('../../config/unsubscribeEncryption');
 
 // Models
 const List = mongoose.model('List');
@@ -69,6 +72,10 @@ exports.add = (req, res) => {
 
         newRelationship.frequency = bodyListRelationship.frequency;
         newRelationship.products = bodyListRelationship.products;
+        newRelationship.unsubscribeKey = unsubscribeEncryption.encrypt({
+            uuid: user.uuid,
+            listId: listId
+        });
 
         if (bodyListRelationship.alternativeEmail) {
             newRelationship.alternativeEmail = bodyListRelationship.alternativeEmail;

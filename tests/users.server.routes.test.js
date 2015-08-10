@@ -47,7 +47,8 @@ describe('User CRUD tests:', () => {
                     list: res._id,
                     alternativeEmail: alternativeEmail,
                     frequency: 'immediate',
-                    products: ['next']
+                    products: ['next'],
+                    unsubscribeKey: 'SOMEKEY'
                 }]
             });
 

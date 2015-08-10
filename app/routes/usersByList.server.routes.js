@@ -25,6 +25,7 @@ module.exports = (app) => {
          * @apiSuccess {String} userList.email   The email the User for the specific List.
          * @apiSuccess {String} [userList.frequency]   Indication on when the email has to be sent.
          * @apiSuccess {String} [userList.products]   An array of products for the specific user-list relationship.
+         * @apiSuccess {String} [userList.unsubscribeKey]   A key to be used to unsubscribe the user from this list.
          *
          * @apiSuccessExample Success-Response:
          *     HTTP/1.1 200 OK
@@ -33,8 +34,9 @@ module.exports = (app) => {
          *       "firstName": "Bob",
          *       "lastName": "Dylan",
          *       "frequency": "immediate"
-         *       "products": ["next"]
-         *       "uuid": "34c6fc81-99d1-4ddd-a3b1-f778e2560a98"          *
+         *       "products": ["next"],
+         *       "unsubscribeKey": "SOMEKEY"
+         *       "uuid": "34c6fc81-99d1-4ddd-a3b1-f778e2560a98"
          *     }]
          *
          * @apiError UserNotFound The UUID of the User is not found.

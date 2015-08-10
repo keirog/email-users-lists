@@ -15,6 +15,7 @@ const listsByUser = require('../controllers/listsByUser.server.controller');
  * @apiSuccess {String} [listsRelationships.list.description]   The description for the List.
  * @apiSuccess {String} [listsRelationships.alternativeEmail] An alternative email used to subscribe to this List.
  * @apiSuccess {String} [listsRelationships.frequency] How often is the email sent.
+ * @apiSuccess {String} [listsRelationships.unsubscribeKey]   A key to be used to unsubscribe the user from this list.
  * @apiSuccess {String[]} [listsRelationships.products] List of products used by the User for this List.
  *
  * @apiSuccessExample Success-Response:
@@ -28,6 +29,7 @@ const listsByUser = require('../controllers/listsByUser.server.controller');
  *       },
  *       "alternativeEmail":"Bryana28@gmail.com",
  *       "frequency":"immediate",
+ *       "unsubscribeKey": "SOMEKEY"
  *       "products":[
  *          "ft.com"
  *       ]
