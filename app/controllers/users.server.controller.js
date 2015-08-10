@@ -43,6 +43,20 @@ exports.create = (req, res) => {
             });
         }
         else {
+            // Send the decrypted emails back
+            user.email = userObj.email;
+
+
+            // Synchronously encrypt alternative emails
+            user.lists = user.lists.map((listRelationship) => {
+
+                /* istanbul ignore else */
+                if (listRelationship.alternativeEmail) {
+                    listRelationship.alternativeEmail = crypto.decrypt(listRelationship.alternativeEmail);
+                }
+                return listRelationship;
+            });
+
             res.json(user);
         }
     });
