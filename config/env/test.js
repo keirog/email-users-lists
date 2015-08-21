@@ -7,8 +7,7 @@ const db = process.env.MONGOLAB_URI || 'mongodb://localhost/ft-email-users-lists
 const authUser = process.env.BASIC_AUTH_USER || 'test';
 const authPassword = process.env.BASIC_AUTH_PASSWORD || 'test';
 const unsubscribeSecret = process.env.UNSUBSCRIBE_SECRET || 'test';
-
-
+const newrelicKey = process.env.NEW_RELIC_LICENSE_KEY || 'test';
 
 module.exports = {
     port: port,
@@ -17,5 +16,6 @@ module.exports = {
     logLevel: logLevel,
     authUser: authUser,
     authPassword: authPassword,
-    unsubscribeSecret: unsubscribeSecret
+    unsubscribeSecret: unsubscribeSecret,
+    newrelicKey: newrelicKey
 };
