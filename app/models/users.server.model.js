@@ -57,6 +57,18 @@ const userSchema = new Schema({
             default: Date.now,
             index: true
         },
+        expired: {
+            type: Boolean,
+            default: false
+        },
+        manuallySuppressed: {
+            type: Boolean,
+            default: false
+        },
+        automaticallySuppressed: {
+            type: Boolean,
+            default: false
+        },
         email: {
             type: String,
             trim: true,

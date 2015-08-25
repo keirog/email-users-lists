@@ -17,6 +17,8 @@ exports.create = (req, res) => {
     logger.debug('Request to create a user received...');
     let userObj = req.body;
 
+    userObj = manageExpiration(userObj);
+
     // Encrypt the email
     userObj.email = crypto.encrypt(userObj.email);
 
@@ -84,7 +86,6 @@ exports.list = (req, res) => {
 
         User.find({}, { __v: 0, createdOn: 0, _id: 0, lists: 0 })
             .sort({'createdOn': 1})
-            .lean()
             .limit(perPage)
             .skip(perPage * page)
             .exec((findErr, users) => {
@@ -147,6 +148,8 @@ exports.update = (req, res, next) => {
     }
 
     user = extend(user, req.body);
+
+    user = manageExpiration(user);
 
     if (user.email) {
         user.email = crypto.encrypt(user.email);
@@ -216,3 +219,10 @@ exports.userByUuid = (req, res, next, uuid) => {
         }
     });
 };
+
+function manageExpiration (user) {
+    if (user.email.endsWith('@expired.com') || user.email.endsWith('@ftexpiredaccounts.com')) {
+        user.expired = true;
+    }
+    return user;
+}
