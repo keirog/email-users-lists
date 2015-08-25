@@ -23,6 +23,9 @@ module.exports = (app) => {
          * @apiSuccess {Object[]} userList relationships array.
          * @apiSuccess {String} userList.uuid  The UUID of the User.
          * @apiSuccess {String} userList.email   The email the User for the specific List.
+         * @apiSuccess {Boolean} userList.expired A fag for expired users.
+         * @apiSuccess {Boolean} userList.manuallySuppressed A fag for manually suppressed users.
+         * @apiSuccess {Boolean} userList.automaticallySuppressed A fag for automatically suppressed users.
          * @apiSuccess {String} [userList.frequency]   Indication on when the email has to be sent.
          * @apiSuccess {String} [userList.products]   An array of products for the specific user-list relationship.
          * @apiSuccess {String} [userList.unsubscribeKey]   A key to be used to unsubscribe the user from this list.
