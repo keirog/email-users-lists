@@ -68,7 +68,10 @@ exports.list = (req, res) => {
                             });
 
                             let userOutput = {
-                                uuid: user.uuid
+                                uuid: user.uuid,
+                                expired: user.expired,
+                                manuallySuppressed: user.manuallySuppressed,
+                                automaticallySuppressed: user.automaticallySuppressed
                             };
 
                             if (user.firstName) {

@@ -43,6 +43,9 @@ module.exports = (app) => {
          *
          * @apiParam {String} uuid  The UUID of the User.
          * @apiParam {String} email The email of the User.
+         * @apiParam {Boolean} expired A fag for expired users.
+         * @apiParam {Boolean} manuallySuppressed A fag for manually suppressed users.
+         * @apiParam {Boolean} automaticallySuppressed A fag for automatically suppressed users.
          * @apiParam {[ObjectId[]]} list A list of Lists the User is member of.
          *
          * @apiUse UserResponse
@@ -72,16 +75,25 @@ module.exports = (app) => {
          * @apiSuccess {Object[]} users The list of Users.
          * @apiSuccess {String} user.uuid  The UUID of the User.
          * @apiSuccess {String} user.email   The email for the User.
+         * @apiSuccess {Boolean} user.expired A fag for expired users.
+         * @apiSuccess {Boolean} user.manuallySuppressed A fag for manually suppressed users.
+         * @apiSuccess {Boolean} user.automaticallySuppressed A fag for automatically suppressed users.
          *
          * @apiSuccessExample Success-Response:
          *     HTTP/1.1 200 OK
          *    [{
          *      "uuid": "deb15e25-b44c-4f4d-aa32-262214ff757c",
-         *      "email": "Jeramy32@yahoo.com"
+         *      "email": "Jeramy32@yahoo.com",
+         *      "automaticallySuppressed":false,
+         *      "manuallySuppressed":false,
+         *      "expired":false
          *    },
          *    {
          *      "uuid": "3af4c3fd-2cbd-48bc-b87f-2664ef33c103",
-         *      "email": "Oleta79@hotmail.com"
+         *      "email": "Oleta79@hotmail.com",
+         *      "automaticallySuppressed":false,
+         *      "manuallySuppressed":false,
+         *      "expired":false
          *    }]
          *
          */
@@ -103,6 +115,9 @@ module.exports = (app) => {
          * @apiSuccess {String} uuid  The UUID of the User.
          * @apiSuccess {String} email   The email for the User.
          * @apiSuccess {[ObjectId[]]} list A list of Lists Relationships for the User.
+         * @apiSuccess {Boolean} expired A fag for expired users.
+         * @apiSuccess {Boolean} manuallySuppressed A fag for manually suppressed users.
+         * @apiSuccess {Boolean} automaticallySuppressed A fag for automatically suppressed users.
          *
          * @apiUse UserResponse
          *
