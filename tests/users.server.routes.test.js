@@ -174,7 +174,7 @@ describe('User CRUD tests:', () => {
                 let newEmail = '';
                 // Handle user save error
                 if (userSaveErr) {
-                    done(userSaveErr);
+                    return done(userSaveErr);
                 }
 
                 // Update user email
@@ -192,7 +192,7 @@ describe('User CRUD tests:', () => {
 
                         // Handle user update error
                         if (userUpdateErr) {
-                            done(userUpdateErr);
+                            return done(userUpdateErr);
                         }
 
                         // Set assertions

@@ -7,6 +7,7 @@ const async = require('async');
 
 // Our modules
 const crypto = require('../utils/crypto.server.utils');
+const manageUsers = require('../utils/userManagement.server.utils');
 const logger = require('../../config/logger');
 
 // Models
@@ -17,7 +18,7 @@ exports.create = (req, res) => {
     logger.debug('Request to create a user received...');
     let userObj = req.body;
 
-    userObj = manageExpiration(userObj);
+    manageUsers.manageExpiration(userObj);
 
     // Encrypt the email
     userObj.email = crypto.encrypt(userObj.email);
@@ -147,9 +148,11 @@ exports.update = (req, res, next) => {
         });
     }
 
+    manageUsers.manageSuppression(user, req.body);
+
     user = extend(user, req.body);
 
-    user = manageExpiration(user);
+    manageUsers.manageExpiration(user);
 
     if (user.email) {
         user.email = crypto.encrypt(user.email);
@@ -219,10 +222,3 @@ exports.userByUuid = (req, res, next, uuid) => {
         }
     });
 };
-
-function manageExpiration (user) {
-    if (user.email.endsWith('@expired.com') || user.email.endsWith('@ftexpiredaccounts.com')) {
-        user.expired = true;
-    }
-    return user;
-}
