@@ -38,16 +38,16 @@
     "gulp-jshint": "^1.11.2",
     "gulp-mocha": "^2.1.3",
     "lodash": "^3.10.1",
-    "mongoose": "^4.1.1",
+    "mongoose": "^4.1.3",
     "mongoose-fakery": "^0.1.7",
     "newrelic": "^1.22.0",
     "raven": "^0.8.1",
     "winston": "^1.0.1",
-    "winston-sentry": "0.0.7"
+    "winston-sentry": "0.1.0"
   },
   "devDependencies": {
     "agent": "^0.2.1",
-    "should": "^7.0.3",
-    "supertest": "^1.0.1"
+    "should": "^7.0.4",
+    "supertest": "^1.1.0"
   }
 }
