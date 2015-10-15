@@ -29,9 +29,7 @@ exports.list = (req, res) => {
         options.manuallySuppressed = false;
         options.automaticallySuppressed = false;
     } else if (req.query.valid === 'false') {
-        options.expired = true;
-        options.manuallySuppressed = true;
-        options.automaticallySuppressed = true;
+        options.$or = [{ expired: true }, { manuallySuppressed: true }, { automaticallySuppressed: true }];
     }
 
     res.header('X-Page', page + 1);
