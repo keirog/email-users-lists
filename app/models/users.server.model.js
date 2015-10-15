@@ -54,20 +54,22 @@ const userSchema = new Schema({
         },
         createdOn: {
             type: Date,
-            default: Date.now,
-            index: true
+            default: Date.now
         },
         expired: {
             type: Boolean,
-            default: false
+            default: false,
+            index: true
         },
         manuallySuppressed: {
             type: Boolean,
-            default: false
+            default: false,
+            index: true
         },
         automaticallySuppressed: {
             type: Boolean,
-            default: false
+            default: false,
+            index: true
         },
         email: {
             type: String,
@@ -82,5 +84,5 @@ userSchema.path('email').validate((value) => {
         return /^[0-9A-F]+$/i.test(value);
     }, 'The email to save is not encrypted');
 
-userSchema.index({"lists.list": 1, "createdOn": 1});
+userSchema.index({ "lists.list": 1, expired: 1, automaticallySuppressed: 1, manuallySuppressed: 1 });
 mongoose.model('User', userSchema);

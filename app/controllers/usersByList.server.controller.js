@@ -19,21 +19,35 @@ exports.list = (req, res) => {
     //TODO: use config for pagination defaults
     let perPage = (Number(req.query.pp) > 0 ? Number(req.query.pp) : 100);
 
+    let options = {'lists.list': listId};
+
+    /**
+     * The "valid" filter
+     */
+    if (req.query.valid === '' || req.query.valid === 'true') {
+        options.expired = false;
+        options.manuallySuppressed = false;
+        options.automaticallySuppressed = false;
+    } else if (req.query.valid === 'false') {
+        options.expired = true;
+        options.manuallySuppressed = true;
+        options.automaticallySuppressed = true;
+    }
+
     res.header('X-Page', page + 1);
     res.header('X-Per-Page', perPage);
 
     let t1 = Date.now();
     logger.debug('Request received');
 
-    User.count({'lists.list': listId }, (countErr, count) => {
+    User.count(options, (countErr, count) => {
 
         let t2 = Date.now();
         logger.debug('Users counted', { time: t2 - t1 });
 
         res.header('X-Total-Count', count);
 
-        User.find({'lists.list': listId}, {__v: 0, createdOn: 0, _id: 0 })
-            .sort({'createdOn': 1})
+        User.find(options, {__v: 0, createdOn: 0, _id: 0 })
             .limit(perPage)
             .skip(perPage * page)
             .exec((err, users) => {

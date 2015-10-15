@@ -71,6 +71,7 @@ module.exports = (app) => {
          *
          * @apiParam {Number} [p=1]  The pagination page to retrieve.
          * @apiParam {Number} [pp=100] The number of Users per page to retrieve.
+         * @apiParam {Boolean} [valid] Filter: retrieve only valid/invalid user. Valid: expired=false, automaticallySuppressed=false, manuallySuppressed=false
          *
          * @apiSuccess {Object[]} users The list of Users.
          * @apiSuccess {String} user.uuid  The UUID of the User.

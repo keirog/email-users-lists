@@ -76,7 +76,22 @@ exports.list = (req, res) => {
     res.header('X-Page', page + 1);
     res.header('X-Per-Page', perPage);
 
-    User.count({}, (countErr, count) => {
+    let options = {};
+
+    /**
+     * The "valid" filter
+     */
+    if (req.query.valid === '' || req.query.valid === 'true') {
+        options.expired = false;
+        options.manuallySuppressed = false;
+        options.automaticallySuppressed = false;
+    } else if (req.query.valid === 'false') {
+        options.expired = true;
+        options.manuallySuppressed = true;
+        options.automaticallySuppressed = true;
+    }
+
+    User.count(options, (countErr, count) => {
 
         let t2 = Date.now();
         logger.debug('Users counted', { time: t2 - t1 });
@@ -85,8 +100,7 @@ exports.list = (req, res) => {
 
         // Currently we do not retrieve the List relationships here. It can be changed if needed.
 
-        User.find({}, { __v: 0, createdOn: 0, _id: 0, lists: 0 })
-            .sort({'createdOn': 1})
+        User.find(options, { __v: 0, createdOn: 0, _id: 0, lists: 0 })
             .limit(perPage)
             .skip(perPage * page)
             .exec((findErr, users) => {
