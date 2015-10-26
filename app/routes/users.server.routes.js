@@ -43,9 +43,9 @@ module.exports = (app) => {
          *
          * @apiParam {String} uuid  The UUID of the User.
          * @apiParam {String} email The email of the User.
-         * @apiParam {Boolean} expired A fag for expired users.
-         * @apiParam {Boolean} manuallySuppressed A fag for manually suppressed users.
-         * @apiParam {Boolean} automaticallySuppressed A fag for automatically suppressed users.
+         * @apiParam {Boolean} expired A flag for expired users.
+         * @apiParam {Boolean} manuallySuppressed A flag for manually suppressed users.
+         * @apiParam {Boolean} automaticallySuppressed A flag for automatically suppressed users.
          * @apiParam {[ObjectId[]]} list A list of Lists the User is member of.
          *
          * @apiUse UserResponse
@@ -76,9 +76,9 @@ module.exports = (app) => {
          * @apiSuccess {Object[]} users The list of Users.
          * @apiSuccess {String} user.uuid  The UUID of the User.
          * @apiSuccess {String} user.email   The email for the User.
-         * @apiSuccess {Boolean} user.expired A fag for expired users.
-         * @apiSuccess {Boolean} user.manuallySuppressed A fag for manually suppressed users.
-         * @apiSuccess {Boolean} user.automaticallySuppressed A fag for automatically suppressed users.
+         * @apiSuccess {Boolean} user.expired A flag for expired users.
+         * @apiSuccess {Boolean} user.manuallySuppressed A flag for manually suppressed users.
+         * @apiSuccess {Boolean} user.automaticallySuppressed A flag for automatically suppressed users.
          *
          * @apiSuccessExample Success-Response:
          *     HTTP/1.1 200 OK
@@ -116,9 +116,9 @@ module.exports = (app) => {
          * @apiSuccess {String} uuid  The UUID of the User.
          * @apiSuccess {String} email   The email for the User.
          * @apiSuccess {[ObjectId[]]} list A list of Lists Relationships for the User.
-         * @apiSuccess {Boolean} expired A fag for expired users.
-         * @apiSuccess {Boolean} manuallySuppressed A fag for manually suppressed users.
-         * @apiSuccess {Boolean} automaticallySuppressed A fag for automatically suppressed users.
+         * @apiSuccess {Boolean} expired A flag for expired users.
+         * @apiSuccess {Boolean} manuallySuppressed A flag for manually suppressed users.
+         * @apiSuccess {Boolean} automaticallySuppressed A flag for automatically suppressed users.
          *
          * @apiUse UserResponse
          *
