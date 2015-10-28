@@ -79,7 +79,7 @@ exports.list = (req, res) => {
                             };
 
                             if (user.firstName) {
-                                userOutput.fistName = user.firstName;
+                                userOutput.firstName = user.firstName;
                             }
 
                             if (user.lastName) {
