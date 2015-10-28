@@ -7,8 +7,6 @@ const extend = require('extend');
 
 // Internal modules
 const listCtrl = require('./lists.server.controller');
-
-//TODO: use The same module for both of them here
 const crypto = require('../utils/crypto.server.utils');
 const unsubscribeEncryption = require('../../config/unsubscribeEncryption');
 
@@ -29,21 +27,11 @@ exports.list = (req, res) => {
             if (err) {
 
                 return res.status(400).send({
-                    //TODO: errorHandler.getErrorMessage(err)
                     message: err
                 });
             }
-            else {
-                // Synchronously decrypt alternative emails
-                populatedUser.lists = populatedUser.lists.map((listRelationship) => {
-                    if (listRelationship.alternativeEmail) {
-                        listRelationship.alternativeEmail = crypto.decrypt(listRelationship.alternativeEmail);
-                    }
-                    return listRelationship;
-                });
 
-                res.json(populatedUser.lists);
-            }
+            return res.json(populatedUser.lists);
         });
 };
 
@@ -77,10 +65,6 @@ exports.add = (req, res) => {
             listId: listId
         });
 
-        if (bodyListRelationship.alternativeEmail) {
-            newRelationship.alternativeEmail = bodyListRelationship.alternativeEmail;
-        }
-
         // Add the list to the user
         userLists.push(newRelationship);
 
@@ -91,12 +75,6 @@ exports.add = (req, res) => {
 
         // At this point the emails have been decrypted. We do not want that!
         user.email = crypto.encrypt(user.email);
-        user.lists = user.lists.map((listRelationship) => {
-            if (listRelationship.alternativeEmail) {
-                listRelationship.alternativeEmail = crypto.encrypt(listRelationship.alternativeEmail);
-            }
-            return listRelationship;
-        });
 
         // Create updated user
         let  updatedUser = user.toObject();
@@ -138,12 +116,6 @@ exports.delete = (req, res) => {
 
     // At this point the emails have been decrypted. We do not want that!
     user.email = crypto.encrypt(user.email);
-    user.lists = user.lists.map((listRelationship) => {
-        if (listRelationship.alternativeEmail) {
-            listRelationship.alternativeEmail = crypto.encrypt(listRelationship.alternativeEmail);
-        }
-        return listRelationship;
-    });
 
     // Create updated user
     let  updatedUser = user.toObject();

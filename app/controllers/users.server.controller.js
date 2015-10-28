@@ -23,45 +23,19 @@ exports.create = (req, res) => {
     // Encrypt the email
     userObj.email = crypto.encrypt(userObj.email);
 
-    if (userObj.lists) {
-
-        // Synchronously encrypt alternative emails
-        userObj.lists = userObj.lists.map((listRelationship) => {
-
-            /* istanbul ignore else */
-            if (listRelationship.alternativeEmail) {
-                listRelationship.alternativeEmail = crypto.encrypt(listRelationship.alternativeEmail);
-            }
-            return listRelationship;
-        });
-    }
-
     let user = new User(userObj);
     user.save((saveErr) => {
         if (saveErr) {
             logger.warn(saveErr);
             return res.status(400).send({
-                //TODO: errorHandler.getErrorMessage(saveErr)
                 message: saveErr
             });
         }
-        else {
-            // Send the decrypted emails back
-            user.email = userObj.email;
 
+        // Send the decrypted emails back
+        user.email = userObj.email;
+        return res.json(user);
 
-            // Synchronously encrypt alternative emails
-            user.lists = user.lists.map((listRelationship) => {
-
-                /* istanbul ignore else */
-                if (listRelationship.alternativeEmail) {
-                    listRelationship.alternativeEmail = crypto.decrypt(listRelationship.alternativeEmail);
-                }
-                return listRelationship;
-            });
-
-            res.json(user);
-        }
     });
 };
 
@@ -170,16 +144,6 @@ exports.update = (req, res, next) => {
         user.email = crypto.encrypt(user.email);
     }
 
-    // Synchronously encrypt alternative emails
-    user.lists = user.lists.map((listRelationship) => {
-
-        /* istanbul ignore else */
-        if (listRelationship.alternativeEmail) {
-            listRelationship.alternativeEmail = crypto.encrypt(listRelationship.alternativeEmail);
-        }
-        return listRelationship;
-    });
-
     // Create updated user
     let  updatedUser = user.toObject();
 
@@ -214,14 +178,6 @@ exports.userByUuid = (req, res, next, uuid) => {
         }
         else if (user) {
             user.email = crypto.decrypt(user.email);
-
-            // Synchronously decrypt alternative emails
-            user.lists = user.lists.map((listRelationship) => {
-                if (listRelationship.alternativeEmail) {
-                    listRelationship.alternativeEmail = crypto.decrypt(listRelationship.alternativeEmail);
-                }
-                return listRelationship;
-            });
 
             req.user = user;
             return next();

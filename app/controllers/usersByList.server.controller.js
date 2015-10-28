@@ -71,14 +71,6 @@ exports.list = (req, res) => {
                                 return listRelationship.list.toString() === listId.toString();
                             });
 
-                            // Synchronously decrypt the alternative email, if there is any
-                            user.lists = user.lists.map((listRelationship) => {
-                                if (listRelationship.alternativeEmail) {
-                                    listRelationship.alternativeEmail = crypto.decrypt(listRelationship.alternativeEmail);
-                                }
-                                return listRelationship;
-                            });
-
                             let userOutput = {
                                 uuid: user.uuid,
                                 expired: user.expired,
@@ -93,9 +85,6 @@ exports.list = (req, res) => {
                             if (user.lastName) {
                                 userOutput.lastName = user.lastName;
                             }
-
-                            // Use the alternative email if it exists, otherwise use the default email
-                            userOutput.email = user.lists[0].alternativeEmail || user.email;
 
                             if (user.lists[0].frequency) {
                                 userOutput.frequency = user.lists[0].frequency;

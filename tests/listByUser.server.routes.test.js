@@ -50,7 +50,6 @@ describe('The lists by user methods', () => {
                 list2.save(() => {
 
                     let email = crypto.encrypt('email@email.com');
-                    let alternativeEmail = crypto.encrypt('listByUserl@email.com');
 
                     // Create a new user
                     user = new User({
@@ -58,7 +57,6 @@ describe('The lists by user methods', () => {
                         email: email,
                         lists: [{
                             list: resSave1._id,
-                            alternativeEmail: alternativeEmail,
                             frequency: 'immediate',
                             products: ['next'],
                             unsubscribeKey: 'SOMEKEY'
@@ -305,53 +303,6 @@ describe('The lists by user methods', () => {
         });
     });
 
-    it('should be able to add a user without alternative email to a list', (done) => {
-
-        user.save((saveErr) => {
-
-            if (saveErr) {
-                done(saveErr);
-            }
-
-            agent.post('/users/' + user.uuid + '/lists')
-                .auth(config.authUser, config.authPassword)
-                .send({
-                    list: list2._id,
-                    frequency: 'immediate',
-                    products: ['next']
-                })
-                .expect(200)
-                .end((listAddErr) => {
-
-                    // Handle list save error
-                    if (listAddErr) {
-                        done(listAddErr);
-                    }
-
-                    // Get a list of lists
-                    agent.get('/users/' + user.uuid + '/lists')
-                        .auth(config.authUser, config.authPassword)
-                        //.expect(200)
-                        .end((listGetErr, listGetRes) => {
-
-                            // Handle lists get error
-                            if (listGetErr) {
-                                done(listGetErr);
-                            }
-
-                            // Get lists list
-                            let lists = listGetRes.body;
-
-                            // Set assertions
-                            lists.should.have.a.lengthOf(3);
-                            // Call the assertion callback
-                            done();
-
-                        });
-                });
-        });
-    });
-
     it('should return a proper error if the wrong user uuid is provided when adding', (done) => {
         // Save a new user
         agent.post('/users')
@@ -391,16 +342,13 @@ describe('The lists by user methods', () => {
     });
 
     it('should not throw an error if the user is already a member of the list provided', (done) => {
+
         // Create new user model instance
-
-        let anotherEmail = 'someotheremail@email.com';
-
         user.save(() => {
             agent.post('/users/' + user.uuid + '/lists')
                 .auth(config.authUser, config.authPassword)
                 .send({
                     list: list1._id,
-                    alternativeEmail: anotherEmail,
                     frequency: 'immediate',
                     products: ['next']
                 })
@@ -427,7 +375,6 @@ describe('The lists by user methods', () => {
 
                             // Set assertions
                             lists.should.have.a.lengthOf(2);
-                            lists[1].alternativeEmail.should.match(anotherEmail);
                             // Call the assertion callback
                             done();
 
