@@ -5,13 +5,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ListSchema = new Schema({
-    identifier: {
-        type: String,
-        trim: true,
-        index: true,
-        unique: true,
-        required: 'identifier cannot be blank'
-    },
     name: {
         type: String,
         trim: true,
@@ -25,6 +18,12 @@ const ListSchema = new Schema({
         type: Boolean,
         default: false,
         index: true
+    },
+    externalIds: {
+        eBay: {
+            type: String,
+            trim: true
+        }
     }
 });
 

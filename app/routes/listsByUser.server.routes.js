@@ -10,8 +10,8 @@ const listsByUser = require('../controllers/listsByUser.server.controller');
  * @apiSuccess {Object[]} listsRelationships The list of List Relationships.
  * @apiSuccess {Object} listsRelationships.list The List Object.
  * @apiSuccess {ObjectID} listsRelationships.list._id The List Object ID.
- * @apiSuccess {String} listsRelationships.list.identifier The List identifier.
- * @apiSuccess {String} listsRelationships.list.name  The name of the List.
+ * @apiSuccess {Object} listsRelationships.list.externalIds External IDs.
+ * @apiSuccess {String} [listsRelationships.list.externalIds.eBay] eBay ID.
  * @apiSuccess {String} [listsRelationships.list.description]   The description for the List.
  * @apiSuccess {String} [listsRelationships.frequency] How often is the email sent.
  * @apiSuccess {String} [listsRelationships.unsubscribeKey]   A key to be used to unsubscribe the user from this list.
@@ -22,7 +22,7 @@ const listsByUser = require('../controllers/listsByUser.server.controller');
  *    [{
  *       "list":{
  *          "_id":"55801ec760c5056e10dbcf0b",
- *          "identifier":"80b99e3b-375b-4464-adc7-754b466e5205",
+ *          "externalIds": {},
  *          "name":"molestiae et nihil enim nostrum sequi nemo occaecati",
  *          "description":"ipsum ipsa nulla itaque\net quod esse aut fuga\nmaiores dignissimos voluptate laboriosam\nat autem reiciendis quas",
  *       },

@@ -24,7 +24,9 @@ describe('List CRUD tests:', () => {
 
         // Create new list
         list = new List ({
-            identifier: '86547b0a-1427-11e5-b60b-1697f925ec7b',
+            externalIds: {
+                eBay: "234134234234"
+            },
             name:   'An Example List',
             description: 'A description for the list list'
         });

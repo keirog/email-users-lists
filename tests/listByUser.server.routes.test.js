@@ -24,21 +24,27 @@ describe('The lists by user methods', () => {
 
         // Create new list
         list1 = new List({
-            identifier: '86547b0a-1427-11e5-b60b-1697f925ec7b',
+            externalIds: {
+                eBay: "234134234234"
+            },
             name: 'An Example List',
             description: 'A description for the example list'
         });
 
         // Create another list
         list2 = new List({
-            identifier: 'a1d8d84e-1427-11e5-b60b-1697f925ec7b',
+            externalIds: {
+                eBay: "35454535"
+            },
             name: 'An Second Example List',
             description: 'A description for the second example list'
         });
 
         // Create another list
         list3 = new List({
-            identifier: 'a1d8d84e-1427-11e5-b60b-1697f925ec7c',
+            externalIds: {
+                eBay: "76856856"
+            },
             name: 'An Third Example List',
             description: 'A description for the third example list'
         });
