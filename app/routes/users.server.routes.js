@@ -18,7 +18,6 @@ const users = require('../controllers/users.server.controller');
  *      "lastName": "Dylan",
  *      "lists": [{
  *          "list": "55801ec760c5056e10dbcf0b",
- *          "alternativeEmail": "Bryana28@gmail.com",
  *          "frequency": "immediate",
  *          "unsubscribeKey": "SOMEKEY"
  *          "products": [

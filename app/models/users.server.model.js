@@ -11,10 +11,6 @@ const listRelationshipSchema = new Schema({
             ref: 'List',
             index: true
         },
-        alternativeEmail: {
-            type: String,
-            trim: true
-        },
         frequency: {
             type: String,
             trim: true
@@ -31,11 +27,6 @@ const listRelationshipSchema = new Schema({
     {
         _id : false
     });
-
-//We always want emails to be encrypted
-listRelationshipSchema.path('alternativeEmail').validate((value) => {
-        return /^[0-9A-F]+$/i.test(value);
-    }, 'The email to save is not encrypted');
 
 const userSchema = new Schema({
         uuid: {

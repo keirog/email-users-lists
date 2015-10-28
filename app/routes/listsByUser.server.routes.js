@@ -13,7 +13,6 @@ const listsByUser = require('../controllers/listsByUser.server.controller');
  * @apiSuccess {String} listsRelationships.list.identifier The List identifier.
  * @apiSuccess {String} listsRelationships.list.name  The name of the List.
  * @apiSuccess {String} [listsRelationships.list.description]   The description for the List.
- * @apiSuccess {String} [listsRelationships.alternativeEmail] An alternative email used to subscribe to this List.
  * @apiSuccess {String} [listsRelationships.frequency] How often is the email sent.
  * @apiSuccess {String} [listsRelationships.unsubscribeKey]   A key to be used to unsubscribe the user from this list.
  * @apiSuccess {String[]} [listsRelationships.products] List of products used by the User for this List.
@@ -27,7 +26,6 @@ const listsByUser = require('../controllers/listsByUser.server.controller');
  *          "name":"molestiae et nihil enim nostrum sequi nemo occaecati",
  *          "description":"ipsum ipsa nulla itaque\net quod esse aut fuga\nmaiores dignissimos voluptate laboriosam\nat autem reiciendis quas",
  *       },
- *       "alternativeEmail":"Bryana28@gmail.com",
  *       "frequency":"immediate",
  *       "unsubscribeKey": "SOMEKEY"
  *       "products":[
