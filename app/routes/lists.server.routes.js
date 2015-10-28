@@ -19,15 +19,16 @@ module.exports = (app) => {
      * @apiDefine ListResponse
      *
      * @apiSuccess {String} name  The name of the List.
-     * @apiSuccess {String} identifier A unique identifier for the list.
      * @apiSuccess {String} [description]   The description for the List.
      * @apiSuccess {Boolean} [inactive=false]   The list is not active.
+     * @apiSuccess {Object} externalIds External IDs.
+     * @apiSuccess {String} [externalIds.eBay] eBay ID.
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
      *     {
      *       "_id": "55719bbc18ef0a03008404cb",
-     *       "identifier": "deb15e25-b44c-4f4d-aa32-262214ff757c"
+     *       "externalIds": {},
      *       "name": "a eaque aut accusamus voluptatem pariatur",
      *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe",
      *       "inactive": false
@@ -48,7 +49,8 @@ module.exports = (app) => {
      * @apiSuccess {Object[]} lists The list of Lists.
      * @apiSuccess {ObjectId} list._id The List Object ID.
      * @apiSuccess {String} list.name  The name of the List.
-     * @apiSuccess {String} list.identifier  The unique identifier dor the List.
+     * @apiSuccess {Object} list.externalIds External IDs.
+     * @apiSuccess {String} [list.externalIds.eBay] eBay ID.
      * @apiSuccess {String} list.description   The description for the List.
      * @apiSuccess {Boolean} [list.inactive=false]   The list is not active.
      *
@@ -56,14 +58,16 @@ module.exports = (app) => {
      *     HTTP/1.1 200 OK
      *     [{
      *       "_id": "55719bbc18ef0a03008404cb",
-     *       "identifier":"80b99e3b-375b-4464-adc7-754b466e5204",
+     *       "externalIds": {},
      *       "name": "a eaque aut accusamus voluptatem pariatur",
      *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe",
      *       "inactive": true
      *     },
      *     {
      *       "_id": "55719bbc18ef0a030084048a",
-     *       "identifier":"80b99e3b-375b-4464-adc7-754b466e5205",
+     *       "externalIds": {
+     *          "eBay": "234134234234"
+     *       },
      *       "name": "commodi officiis natus",
      *       "description": "doloribus sunt qui qui voluptatem cumque voluptatem\nasperiores labore voluptatem saepe ratione\nea provident velit maiores non omnis quos temporibus\neum occaecati nostrum deserunt\neaque dicta cupiditate labore hic fugiat",
      *       "inactive": false
@@ -84,7 +88,8 @@ module.exports = (app) => {
          * @apiUse BasicAuthHeader
          *
          * @apiParam {String} name  The name of the List.
-         * @apiParam {String} identifier A unique identifier for the list.
+         * @apiParam {Object} externalIds External IDs.
+         * @apiParam {String} [externalIds.eBay] eBay ID.
          * @apiParam {String} [description]   The description for the List.
          * @apiParam {Boolean} [inactive=false]   The list is not active.
          *
