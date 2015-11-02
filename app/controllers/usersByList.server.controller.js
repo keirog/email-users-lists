@@ -94,6 +94,8 @@ exports.list = (req, res) => {
                                 userOutput.products = user.lists[0].products;
                             }
 
+                            userOutput.email = user.email;
+
                             next(null, userOutput);
                         },
                         // Callback
