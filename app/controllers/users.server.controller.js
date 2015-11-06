@@ -75,6 +75,7 @@ exports.list = (req, res) => {
         User.find(options, { __v: 0, createdOn: 0, _id: 0, lists: 0 })
             .limit(perPage)
             .skip(perPage * page)
+            .lean()
             .exec((findErr, users) => {
                 /* istanbul ignore if */
                 if (findErr) {
