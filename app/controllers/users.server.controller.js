@@ -17,6 +17,18 @@ exports.create = (req, res) => {
 
     logger.debug('Request to create a user received...');
     let userObj = req.body;
+    
+    if (!userObj.email) {
+        return res.status(400).send({
+            message: 'missing user email'
+        });
+    }
+    
+    if (!userObj.uuid) {
+        return res.status(400).send({
+            message: 'missing user uuid'
+        });
+    }
 
     manageUsers.manageExpiration(userObj);
 
