@@ -1,7 +1,7 @@
 'use strict';
 
 function manageExpiration (user) {
-    if (user.email.endsWith('@expired.com') || user.email.endsWith('@ftexpiredaccounts.com')) {
+    if (user.email && (user.email.endsWith('@expired.com') || user.email.endsWith('@ftexpiredaccounts.com'))) {
         user.expired = true;
     }
 }
