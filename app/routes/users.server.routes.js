@@ -7,6 +7,13 @@ const users = require('../controllers/users.server.controller');
  *
  * @apiSuccess {String} uuid  The UUID of the User.
  * @apiSuccess {String} email   The email for the User.
+ * @apiSuccess {String} firstName  The first name of the User.
+ * @apiSuccess {String} lastName  The last name of the User.
+ * @apiSuccess {Boolean} expired A flag for expired users.
+ * @apiSuccess {Boolean} manuallySuppressed A flag for manually suppressed users.
+ * @apiSuccess {Boolean} automaticallySuppressed A flag for automatically suppressed users.
+ * @apiSuccess {Boolean} externallySuppressed A flag for externally suppressed users.
+ *
  * @apiSuccess {[ObjectId[]]} list A list of Lists Relationships for the User.
  *
  * @apiSuccessExample Success-Response:
@@ -47,6 +54,7 @@ module.exports = (app) => {
          * @apiParam {Boolean} [expired=false] A flag for expired users.
          * @apiParam {Boolean} [manuallySuppressed=false] A flag for manually suppressed users.
          * @apiParam {Boolean} [automaticallySuppressed=false] A flag for automatically suppressed users.
+         * @apiParam {Boolean} [externallySuppressed=false] A flag for externallySuppressed suppressed users.
          * @apiParam {[ObjectId[]]} [list] A list of Lists the User is member of.
          *
          * @apiUse UserResponse
@@ -76,6 +84,8 @@ module.exports = (app) => {
          *
          * @apiSuccess {Object[]} users The list of Users.
          * @apiSuccess {String} user.uuid  The UUID of the User.
+         * @apiSuccess {String} user.firstName  The first name of the User.
+         * @apiSuccess {String} user.lastName  The last name of the User.
          * @apiSuccess {String} user.email   The email for the User.
          * @apiSuccess {Boolean} user.expired A flag for expired users.
          * @apiSuccess {Boolean} user.manuallySuppressed A flag for manually suppressed users.
@@ -149,8 +159,14 @@ module.exports = (app) => {
          *
          * @apiParam {String} uuid  The UUID of the User.
          * @apiParam {String} [email] The email of the User.
+         * @apiParam {String} [firstName] The first name of the User.
+         * @apiParam {String} [lastName] The last name of the User.
+         * @apiParam {Boolean} [expired=false] A flag for expired users.
+         * @apiParam {Boolean} [manuallySuppressed=false] A flag for manually suppressed users.
+         * @apiParam {Boolean} [automaticallySuppressed=false] A flag for automatically suppressed users.
+         * @apiParam {Boolean} [externallySuppressed=false] A flag for externallySuppressed suppressed users.         *
          *
-         * @apiUse UserResponse
+         *  @apiUse UserResponse
          *
          * @apiError UserNotFound The UUID of the User is not found.
          * @apiError Forbidden Lists cannot be edited via this method.
