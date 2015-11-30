@@ -19,7 +19,7 @@ module.exports = (app) => {
          *
          * @apiParam {Number} [p=1]  The pagination page to retrieve.
          * @apiParam {Number} [pp=100] The number of Users per page to retrieve.
-         * @apiParam {Boolean} [valid] Filter: retrieve only valid/invalid user. Valid: expired=false, automaticallySuppressed=false, manuallySuppressed=false
+         * @apiParam {Boolean} [valid] Filter: retrieve only valid/invalid user. Valid: expired=false, automaticallySuppressed=false, manuallySuppressed=false, externallySuppressed=false
          *
          * @apiSuccess {Object[]} userList relationships array.
          * @apiSuccess {String} userList.uuid  The UUID of the User.
@@ -27,6 +27,7 @@ module.exports = (app) => {
          * @apiSuccess {Boolean} userList.expired A flag for expired users.
          * @apiSuccess {Boolean} userList.manuallySuppressed A flag for manually suppressed users.
          * @apiSuccess {Boolean} userList.automaticallySuppressed A flag for automatically suppressed users.
+         * @apiSuccess {Boolean} userList.externallySuppressed A flag for automatically externally users.
          * @apiSuccess {String} [userList.frequency]   Indication on when the email has to be sent.
          * @apiSuccess {String} [userList.products]   An array of products for the specific user-list relationship.
          * @apiSuccess {String} [userList.unsubscribeKey]   A key to be used to unsubscribe the user from this list.

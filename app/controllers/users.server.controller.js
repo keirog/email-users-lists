@@ -59,8 +59,9 @@ exports.list = (req, res) => {
         options.expired = false;
         options.manuallySuppressed = false;
         options.automaticallySuppressed = false;
+        options.externallySuppressed = false;
     } else if (req.query.valid === 'false') {
-        options.$or = [{ expired: true }, { manuallySuppressed: true }, { automaticallySuppressed: true }];
+        options.$or = [{ expired: true }, { manuallySuppressed: true }, { automaticallySuppressed: true }, { externallySuppressed: true }];
     }
 
     User.count(options, (countErr, count) => {
