@@ -28,8 +28,9 @@ exports.list = (req, res) => {
         options.expired = false;
         options.manuallySuppressed = false;
         options.automaticallySuppressed = false;
+        options.externallySuppressed = false;
     } else if (req.query.valid === 'false') {
-        options.$or = [{ expired: true }, { manuallySuppressed: true }, { automaticallySuppressed: true }];
+        options.$or = [{ expired: true }, { manuallySuppressed: true }, { automaticallySuppressed: true }, { externallySuppressed: true }];
     }
 
     res.header('X-Page', page + 1);
@@ -76,7 +77,8 @@ exports.list = (req, res) => {
                                 uuid: user.uuid,
                                 expired: user.expired,
                                 manuallySuppressed: user.manuallySuppressed,
-                                automaticallySuppressed: user.automaticallySuppressed
+                                automaticallySuppressed: user.automaticallySuppressed,
+                                externallySuppressed: user.externallySuppressed
                             };
 
                             if (user.firstName) {
