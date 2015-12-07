@@ -9,8 +9,9 @@ function manageExpiration (user) {
 function manageSuppression (oldUser, newUser) {
     if (newUser.email && newUser.email !== oldUser.email) {
 
-        // Override the automaticallySuppressed tag if the user email changed
+        // Override the automaticallySuppressed/externallySuppressed tag if the user email changed
         oldUser.automaticallySuppressed = false;
+        oldUser.externallySuppressed = false;
     }
 }
 
