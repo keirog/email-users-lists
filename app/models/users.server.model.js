@@ -80,5 +80,7 @@ userSchema.path('email').validate((value) => {
         return /^[0-9A-F]+$/i.test(value);
     }, 'The email to save is not encrypted');
 
-userSchema.index({ "lists.list": 1, expired: 1, automaticallySuppressed: 1, manuallySuppressed: 1,  externallySuppressed: 1 });
+userSchema.index({  externallySuppressed: 1, automaticallySuppressed: 1, manuallySuppressed: 1, expired: 1, "lists.list": 1 });
+userSchema.index({  externallySuppressed: 1, automaticallySuppressed: 1, manuallySuppressed: 1, expired: 1 });
+
 mongoose.model('User', userSchema);
