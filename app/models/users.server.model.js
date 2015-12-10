@@ -25,7 +25,8 @@ const listRelationshipSchema = new Schema({
         }]
     },
     {
-        _id : false
+        _id : false,
+        read: 'secondaryPreferred'
     });
 
 const userSchema = new Schema({
