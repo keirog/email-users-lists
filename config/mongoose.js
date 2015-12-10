@@ -7,7 +7,7 @@ module.exports = function() {
 
     let opts = { replset: {readPreference: 'ReadPreference.SECONDARY_PREFERRED'} };
 
-    const db = mongoose.connect(config.db);
+    const db = mongoose.connect(config.db, opts);
 
     require('../app/models/lists.server.model');
     require('../app/models/users.server.model');
