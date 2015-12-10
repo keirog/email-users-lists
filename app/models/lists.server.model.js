@@ -25,6 +25,8 @@ const ListSchema = new Schema({
             trim: true
         }
     }
+}, {
+    read: 'secondaryPreferred'
 });
 
 mongoose.model('List', ListSchema);

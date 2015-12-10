@@ -5,9 +5,7 @@ const mongoose = require('mongoose');
 
 module.exports = function() {
 
-    let opts = {readPreference: 'ReadPreference.SECONDARY_PREFERRED' };
-
-    const db = mongoose.connect(config.db, opts);
+    const db = mongoose.connect(config.db);
 
     require('../app/models/lists.server.model');
     require('../app/models/users.server.model');
