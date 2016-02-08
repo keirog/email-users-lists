@@ -138,9 +138,9 @@ exports.read = (req, res) => {
 
 exports.update = (req, res, next) => {
 
-    logger.debug('Request to edit a user received...');
-
     let user = req.user;
+
+    logger.debug('Request to edit a user received...',  user);
 
     if (req.body.lists) {
         return res.status(403).send({
