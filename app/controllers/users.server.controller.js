@@ -140,7 +140,8 @@ exports.update = (req, res, next) => {
 
     let user = req.user;
 
-    logger.debug('Request to edit a user received...',  user);
+    logger.debug('Request to edit a user received');
+    logger.debug(req.body);
 
     if (req.body.lists) {
         return res.status(403).send({
