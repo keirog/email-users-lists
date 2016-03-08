@@ -19,6 +19,13 @@ const ListSchema = new Schema({
         default: false,
         index: true
     },
+    subscriptionLevel: {
+        type: String,
+        enum: ['Registered', 'Standard', 'Premium'],
+        default: 'Registered',
+        trim: true
+        
+    },
     externalIds: {
         eBay: {
             type: String,
