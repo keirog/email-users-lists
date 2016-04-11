@@ -31,6 +31,11 @@ const ListSchema = new Schema({
             type: String,
             trim: true
         }
+    },
+    consolidatedList: {
+        type: Schema.Types.ObjectId,
+        ref: 'List',
+        index: true
     }
 }, {
     read: 'secondaryPreferred'
