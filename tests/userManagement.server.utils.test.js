@@ -37,7 +37,7 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageExpiration(user);
 
-        (user.expired).should.be.true;
+        (user.expired).should.be.true();
 
 
         done();
@@ -47,7 +47,7 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageExpiration(user);
 
-        (user.expired).should.be.false;
+        (user.expired).should.be.false();
 
         done();
     });
@@ -58,7 +58,7 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageSuppression(user, userUpdate);
 
-        (user.automaticallySuppressed).should.be.true;
+        (user.automaticallySuppressed).should.be.false();
 
 
         done();
@@ -70,7 +70,7 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageSuppression(user, userUpdate);
 
-        (user.automaticallySuppressed).should.be.false;
+        (user.automaticallySuppressed).should.be.true();
 
         done();
     });
