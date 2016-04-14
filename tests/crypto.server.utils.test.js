@@ -15,5 +15,14 @@ describe('The crypto util', () => {
         done();
 
     });
+    
+    
+   it('is encrypts the lowercase version of the message', (done) => {
+
+        let message = 'ExampleEmail@example.com';
+        decrypt(encrypt(message)).should.match(message.toLocaleLowerCase());
+        done();
+
+    });
 
 });

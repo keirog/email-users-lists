@@ -128,7 +128,7 @@ describe('User CRUD tests:', () => {
             .expect(200)
             .end((userSaveErr, userSaveRes) => {
 
-                let newEmail = 'This is a different email';
+                let newEmail = 'this is a different email';
                 // Handle user save error
                 if (userSaveErr) {
                     done(userSaveErr);

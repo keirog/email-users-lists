@@ -6,6 +6,8 @@ const password = process.env.EMAIL_SIGNING_KEY;
 
 
 module.exports.encrypt = (text) => {
+    
+    text = text.toLowerCase();
 
     const cipher = crypto.createCipher(algorithm,password);
 
