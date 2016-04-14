@@ -144,6 +144,65 @@ describe('The users by list methods', () => {
         });
 
     });
+    
+    it('allows to return only the valid users', (done) => {
+        
+        user2.expired = true;
+
+        // Add the list to the second user
+        user2.lists.push({list: list._id, unsubscribeKey: 'SOMEKEY' });
+
+        // Create new user model instance
+        let userObj = new User(user2);
+
+        // Save the user
+        userObj.save(() => {
+
+            // Request users
+            request(app).get('/lists/' + list._id + '/users?valid')
+                .auth(config.authUser, config.authPassword)
+                .end((req, res) => {
+
+                    // Set assertion
+                    res.body.should.have.a.lengthOf(1);
+
+                    // Call the assertion callback
+                    done();
+                });
+
+        });
+
+    });
+    
+    
+   it('allows to return only the invalid users', (done) => {
+        
+        user2.expired = true;
+
+        // Add the list to the second user
+        user2.lists.push({list: list._id, unsubscribeKey: 'SOMEKEY' });
+
+        // Create new user model instance
+        let userObj = new User(user2);
+
+        // Save the user
+        userObj.save(() => {
+
+            // Request users
+            request(app).get('/lists/' + list._id + '/users?valid=false')
+                .auth(config.authUser, config.authPassword)
+                .end((req, res) => {
+
+                    // Set assertion
+                    res.body.should.have.a.lengthOf(1);
+
+                    // Call the assertion callback
+                    done();
+                });
+
+        });
+
+    });
 
     afterEach((done) => {
 
