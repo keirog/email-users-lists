@@ -17,7 +17,7 @@ exports.create = (req, res) => {
 
     logger.debug('Request to create a user received...');
     let userObj = req.body;
-    
+
     if (!userObj.email) {
         return res.status(400).send({
             message: 'missing user email'
@@ -74,6 +74,13 @@ exports.list = (req, res) => {
         options.externallySuppressed = false;
     } else if (req.query.valid === 'false') {
         options.$or = [{ expired: true }, { manuallySuppressed: true }, { automaticallySuppressed: true }, { externallySuppressed: true }];
+    }
+
+    /**
+     * The "email" filter
+     */
+    if (req.query.email) {
+      options.email = crypto.encrypt(req.query.email);
     }
 
     User.count(options, (countErr, count) => {

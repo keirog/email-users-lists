@@ -278,6 +278,32 @@ describe('User CRUD tests:', () => {
         });
     });
 
+    it('filters users by email', (done) => {
+
+        //Encrypt the emails, since we are going to directly save the user
+        user.email = crypto.encrypt(email);
+
+        // Save the user
+        user.save((saveErr) => {
+
+            if (saveErr) {
+                done(saveErr);
+            }
+
+            // Request users
+            request(app).get('/users?email=' + email)
+                .auth(config.authUser, config.authPassword)
+                .end((req, res) => {
+
+                    // Set assertion
+                    res.body.should.have.a.lengthOf(1);
+
+                    // Call the assertion callback
+                    done();
+                });
+
+        });
+    });
 
     it('should be able to get a single user', (done) => {
 
