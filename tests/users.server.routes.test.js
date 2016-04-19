@@ -304,6 +304,32 @@ describe('User CRUD tests:', () => {
 
         });
     });
+    
+     it('searches users by email', (done) => {
+
+        //Encrypt the emails, since we are going to directly save the user
+        user.email = crypto.encrypt(email);
+
+        // Save the user
+        user.save((saveErr) => {
+
+            if (saveErr) {
+                done(saveErr);
+            }
+            
+            agent.post('/users/search')
+                .auth(config.authUser, config.authPassword)
+                .send({email})
+                .expect(200)
+                .end((searchErr, searchRes) => {
+                    
+                    searchRes.body.should.have.a.lengthOf(1);
+                    done(searchErr);
+
+            });
+
+        });
+    });
 
     it('should be able to get a single user', (done) => {
 
