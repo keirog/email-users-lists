@@ -113,6 +113,44 @@ module.exports = (app) => {
          *
          */
         .get(users.list);
+        
+    app.route('/users/search')
+       /**
+         * @api {post} /users/search Search users matching a list of params.
+         * @apiVersion 0.3.0
+         * @apiName SearchUsers
+         * @apiGroup User
+         *
+         * @apiUse BasicAuthHeader
+         *
+         * @apiParam {Number} [p=1]  The pagination page to retrieve.
+         * @apiParam {Number} [pp=100] The number of Users per page to retrieve.
+         * @apiParam {Boolean} [valid] Filter: retrieve only valid/invalid user. Valid: expired=false, automaticallySuppressed=false, manuallySuppressed=false, externallySuppressed=false
+         * @apiParam {String} [email] Filter: retrieve only users matching the provided email.
+         * 
+         * @apiSuccess {Object[]} users The list of Users.
+         * @apiSuccess {String} user.uuid  The UUID of the User.
+         * @apiSuccess {String} user.firstName  The first name of the User.
+         * @apiSuccess {String} user.lastName  The last name of the User.
+         * @apiSuccess {String} user.email   The email for the User.
+         * @apiSuccess {Boolean} user.expired A flag for expired users.
+         * @apiSuccess {Boolean} user.manuallySuppressed A flag for manually suppressed users.
+         * @apiSuccess {Boolean} user.automaticallySuppressed A flag for automatically suppressed users.
+         * @apiSuccess {Boolean} user.externallySuppressed A flag for externally suppressed users.
+         *
+         * @apiSuccessExample Success-Response:
+         *     HTTP/1.1 200 OK
+         *    [{
+         *      "uuid": "deb15e25-b44c-4f4d-aa32-262214ff757c",
+         *      "email": "Jeramy32@yahoo.com",
+         *      "automaticallySuppressed":false,
+         *      "manuallySuppressed":false,
+         *      "expired":false,
+         *      externallySuppressed: false
+         *    }]
+         *
+         */ 
+        .post(users.search);     
 
     app.route('/users/:userUuid')
 

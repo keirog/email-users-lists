@@ -139,6 +139,94 @@ exports.list = (req, res) => {
 
 };
 
+exports.search = (req, res) => {
+
+    let t1 = Date.now();
+    logger.debug('Request to list the users received...');
+
+    let page = (Number(req.query.p) > 0 ? Number(req.query.p) : 1) - 1;
+    let perPage = (Number(req.query.pp) > 0 ? Number(req.query.pp) : 100);
+
+    res.header('X-Page', page + 1);
+    res.header('X-Per-Page', perPage);
+
+    let options = {};
+
+    /**
+     * The "valid" filter
+     */
+    if (req.query.valid === '' || req.query.valid === 'true') {
+        options.expired = false;
+        options.manuallySuppressed = false;
+        options.automaticallySuppressed = false;
+        options.externallySuppressed = false;
+    } else if (req.query.valid === 'false') {
+        options.$or = [{ expired: true }, { manuallySuppressed: true }, { automaticallySuppressed: true }, { externallySuppressed: true }];
+    }
+
+    /**
+     * The "email" search filter
+     */
+    if (req.body.email) {
+      options.email = crypto.encrypt(req.body.email);
+    }
+
+    User.count(options, (countErr, count) => {
+
+        let t2 = Date.now();
+        logger.debug('Users counted', { time: t2 - t1 });
+
+        res.header('X-Total-Count', count);
+
+        // Currently we do not retrieve the List relationships here. It can be changed if needed.
+
+        User.find(options, { __v: 0, createdOn: 0, _id: 0, lists: 0 })
+            .limit(perPage)
+            .skip(perPage * page)
+            .lean()
+            .exec((findErr, users) => {
+                /* istanbul ignore if */
+                if (findErr) {
+                    logger.warn(findErr);
+                    return res.status(400).send({
+                        //TODO: errorHandler.getErrorMessage(findErr)
+                        message: findErr
+                    });
+                }
+                else {
+                    let t3 = Date.now();
+                    logger.debug('Users found', { time: t3 - t2 });
+
+                    // Asynchronously decrypt the users array
+                    async.map(users,
+                        // Iterator
+                        (user, next) => {
+                            user.email = crypto.decrypt(user.email);
+                            next(null, user);
+                        },
+                        // Callback
+                        (encryptErr, decryptedUsers) => {
+                            /* istanbul ignore if */
+                            if (encryptErr) {
+                                logger.warn(encryptErr);
+                                return res.status(400).send({
+                                    message: encryptErr
+                                });
+                            }
+                            else {
+                                let t4 = Date.now();
+                                logger.debug('Users decrypted', { time:  t4 - t3 });
+                                res.json(decryptedUsers);
+                            }
+
+                    });
+                }
+            });
+
+    });
+
+};
+
 exports.read = (req, res) => {
     return res.json(req.user);
 };
