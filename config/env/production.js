@@ -7,5 +7,6 @@ const db = process.env.MONGOHQ_URL;
 const authUser = process.env.BASIC_AUTH_USER;
 const authPassword = process.env.BASIC_AUTH_PASSWORD;
 const unsubscribeSecret = process.env.UNSUBSCRIBE_SECRET;
+const sentryDSN = process.env.SENTRY_DSN;
 
-module.exports = { port, db, processId, logLevel, authUser, authPassword, unsubscribeSecret };
+module.exports = { port, db, processId, logLevel, authUser, authPassword, unsubscribeSecret, sentryDSN };

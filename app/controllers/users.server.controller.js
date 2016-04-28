@@ -9,6 +9,7 @@ const async = require('async');
 const crypto = require('../utils/crypto.server.utils');
 const manageUsers = require('../utils/userManagement.server.utils');
 const logger = require('../../config/logger');
+const sentry = require('../../config/sentry').init();
 
 // Models
 const User = mongoose.model('User');
@@ -39,6 +40,7 @@ exports.create = (req, res) => {
     user.save((saveErr) => {
         if (saveErr) {
             logger.warn(saveErr);
+						sentry.captureError(saveErr);
             return res.status(400).send({
                 message: saveErr
             });

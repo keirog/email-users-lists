@@ -63,8 +63,6 @@ describe('The lists by user methods', () => {
                         email: email,
                         lists: [{
                             list: resSave1._id,
-                            frequency: 'immediate',
-                            products: ['next'],
                             unsubscribeKey: 'SOMEKEY'
                         }, {
                             list: resSave3._id,

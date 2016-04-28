@@ -1,9 +1,13 @@
 'use strict';
 
+const config = require('./config');
+const dsn = config.sentryDSN;
+
 exports.init = () => {
-    const dsn = process.env.SENTRY_DSN;
-    if (dsn) {
-        const raven = require('raven');
-        return new raven.Client(dsn);
-    }
+  if (dsn) {
+    const raven = require('raven');
+    return new raven.Client(dsn, {logger: 'root'});
+  }
+  return {captureError: () => {}};
 };
+

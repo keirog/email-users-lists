@@ -71,7 +71,7 @@ const userSchema = new Schema({
         email: {
             type: String,
             trim: true,
-            index: true,
+            index: { unique: true },
             required: 'email cannot be blank'
         },
         lists: [listRelationshipSchema]

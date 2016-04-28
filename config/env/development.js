@@ -7,5 +7,6 @@ const db = process.env.MONGOHQ_URL || 'mongodb://localhost/ft-email-users-lists-
 const authUser = process.env.BASIC_AUTH_USER || 'development';
 const authPassword = process.env.BASIC_AUTH_PASSWORD || 'development';
 const unsubscribeSecret = process.env.UNSUBSCRIBE_SECRET || 'developmentSecret';
+const sentryDSN = process.env.SENTRY_DSN;
 
-module.exports = { port, db, processId, logLevel, authUser, authPassword, unsubscribeSecret };
+module.exports = { port, db, processId, logLevel, authUser, authPassword, unsubscribeSecret, sentryDSN};

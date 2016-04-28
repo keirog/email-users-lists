@@ -34,7 +34,7 @@ describe('The users by list methods', () => {
         list.save((errListSave, resListSave) => {
 
             let email = crypto.encrypt('email@email.com');
-            let alternativeEmail = crypto.encrypt('userByList@list.com');
+            let email2 = crypto.encrypt('email2@email.com');
 
             // Create a new user
             user1 = new User({
@@ -44,7 +44,6 @@ describe('The users by list methods', () => {
                 lastName: 'Dylan',
                 lists: [{
                     list: resListSave._id,
-                    alternativeEmail: alternativeEmail,
                     frequency: 'immediate',
                     products: ['next'],
                     unsubscribeKey: 'SOMEKEY'
@@ -55,7 +54,7 @@ describe('The users by list methods', () => {
                 // Create a new user
                 user2 = new User({
                     uuid: '849f3554-0acf-11e5-a6c0-1697f925ec7b',
-                    email: email,
+                    email: email2,
                     lists: []
                 });
 
