@@ -41,7 +41,7 @@ exports.create = (req, res) => {
         }
 
         // Send the decrypted emails back
-        user.email = userObj.email;
+        user.email = crypto.decrypt(userObj.email);
         return res.json(user);
 
     });
