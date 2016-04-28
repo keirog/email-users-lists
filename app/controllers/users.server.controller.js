@@ -25,12 +25,6 @@ exports.create = (req, res) => {
         });
     }
     
-    if (!userObj.uuid) {
-        return res.status(400).send({
-            message: 'missing user uuid'
-        });
-    }
-
     manageUsers.manageExpiration(userObj);
 
     // Encrypt the email

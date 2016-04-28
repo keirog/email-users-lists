@@ -70,12 +70,12 @@ describe('User Model Unit Tests:', () => {
             });
         });
 
-        it('should throw an error trying to save without uuid', (done) => {
+        it('should not throw an error trying to save without uuid', (done) => {
 
             user.uuid = '';
 
             return user.save((err) => {
-                should.exist(err);
+                should.not.exist(err);
                 done();
             });
         });
