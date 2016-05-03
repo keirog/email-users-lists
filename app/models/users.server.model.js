@@ -32,7 +32,8 @@ const listRelationshipSchema = new Schema({
 const userSchema = new Schema({
         uuid: {
             type: String,
-            trim: true
+            trim: true,
+            index: {unique: true, sparse: true}
         },
         firstName: {
             type: String,
@@ -82,6 +83,5 @@ userSchema.path('email').validate((value) => {
 
 userSchema.index({  externallySuppressed: 1, automaticallySuppressed: 1, manuallySuppressed: 1, expired: 1, "lists.list": 1 });
 userSchema.index({  externallySuppressed: 1, automaticallySuppressed: 1, manuallySuppressed: 1, expired: 1 });
-userSchema.index({uuid: 1}, {unique: true, partialFilterExpression: {uuid : {$exists: true}}});
 
 mongoose.model('User', userSchema);
