@@ -151,6 +151,9 @@ module.exports = (app) => {
          *
          */ 
         .post(users.search);     
+    
+    app.route('/users/update-one')
+      .post(users.updateOne);
 
     app.route('/users/:userUuid')
 
@@ -215,7 +218,7 @@ module.exports = (app) => {
          *       "message": "Forbidden. Lists cannot be edited via this method"
          *     }
          */
-        .patch(users.update);
+        .patch(users.patch);
 
     app.param('userUuid', users.userByUuid);
 };

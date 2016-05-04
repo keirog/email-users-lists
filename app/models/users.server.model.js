@@ -2,6 +2,7 @@
 
 // External modules
 const mongoose = require('mongoose');
+const immutablePlugin = require('mongoose-immutable');
 
 const Schema = mongoose.Schema;
 
@@ -33,7 +34,8 @@ const userSchema = new Schema({
         uuid: {
             type: String,
             trim: true,
-            index: {unique: true, sparse: true}
+            index: {unique: true, sparse: true},
+            immutable: true
         },
         firstName: {
             type: String,
@@ -75,6 +77,8 @@ const userSchema = new Schema({
         },
         lists: [listRelationshipSchema]
     });
+
+userSchema.plugin(immutablePlugin);
 
 //We always want emails to be encrypted
 userSchema.path('email').validate((value) => {

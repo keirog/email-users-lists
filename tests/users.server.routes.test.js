@@ -21,7 +21,6 @@ const User = mongoose.model('User');
 let list, user;
 
 let email = 'user@email.com';
-let alternativeEmail = 'altuser@email.com';
 
 // List routes tests
 describe('User CRUD tests:', () => {
@@ -47,9 +46,6 @@ describe('User CRUD tests:', () => {
                 lastName: 'Dylan',
                 lists: [{
                     list: res._id,
-                    alternativeEmail: alternativeEmail,
-                    frequency: 'immediate',
-                    products: ['next'],
                     unsubscribeKey: 'SOMEKEY'
                 }]
             });
@@ -119,7 +115,7 @@ describe('User CRUD tests:', () => {
             });
     });
 
-    it('should be able to update a user', (done) => {
+    it('should be able to patch a user', (done) => {
 
         // Save a new user
         agent.post('/users')
@@ -164,7 +160,7 @@ describe('User CRUD tests:', () => {
             });
     });
 
-    it('should not be able to update a user deleting its email', (done) => {
+    it('should not be able to patch a user deleting its email', (done) => {
 
         // Save a new user
         agent.post('/users')
@@ -250,11 +246,264 @@ describe('User CRUD tests:', () => {
 
     });
 
+    it('should be able to update one user searched by uuid', (done) => {
+
+        // Save a new user
+        agent.post('/users')
+            .auth(config.authUser, config.authPassword)
+            .send(user)
+            .expect(200)
+            .end((userSaveErr, userSaveRes) => {
+
+                // Handle user save error
+                if (userSaveErr) {
+                    done(userSaveErr);
+                }
+
+                let updateObj = {
+                    key: {
+                      uuid: user.uuid
+                    },
+                    user: {
+                      manuallySuppressed: true
+                    }
+                };
+
+                // Update an existing user
+                agent.post('/users/update-one')
+                    .auth(config.authUser, config.authPassword)
+                    .send(updateObj)
+                    .expect(200)
+                    .end((userUpdateErr, userUpdateRes) => {
+
+                        // Handle user update error
+                        if (userUpdateErr) {
+                            done(userUpdateErr);
+                        }
+
+                        // Set assertions
+                        (userUpdateRes.body.uuid).should.match(userSaveRes.body.uuid);
+                        (userUpdateRes.body.manuallySuppressed).should.be.true();
+
+                        // Call the assertion callback
+                        done();
+                    });
+            });
+    });
+
+    it('should be able to update one user searched by email', (done) => {
+
+        // Save a new user
+        agent.post('/users')
+            .auth(config.authUser, config.authPassword)
+            .send(user)
+            .expect(200)
+            .end((userSaveErr, userSaveRes) => {
+
+                // Handle user save error
+                if (userSaveErr) {
+                    done(userSaveErr);
+                }
+
+                let updateObj = {
+                    key: {
+                      email
+                    },
+                    user: {
+                      manuallySuppressed: true
+                    }
+                };
+
+                // Update an existing user
+                agent.post('/users/update-one')
+                    .auth(config.authUser, config.authPassword)
+                    .send(updateObj)
+                    .expect(200)
+                    .end((userUpdateErr, userUpdateRes) => {
+
+                        // Handle user update error
+                        if (userUpdateErr) {
+                            done(userUpdateErr);
+                        }
+
+                        // Set assertions
+                        (userUpdateRes.body.uuid).should.match(userSaveRes.body.uuid);
+                        (userUpdateRes.body.manuallySuppressed).should.be.true();
+
+                        // Call the assertion callback
+                        done();
+                    });
+            });
+    });
+
+    it('should not update the uuid field', (done) => {
+
+        // Save a new user
+        agent.post('/users')
+            .auth(config.authUser, config.authPassword)
+            .send(user)
+            .expect(200)
+            .end((userSaveErr, userSaveRes) => {
+
+                // Handle user save error
+                if (userSaveErr) {
+                    done(userSaveErr);
+                }
+
+                let updateObj = {
+                    key: {
+                      uuid: user.uuid
+                    },
+                    user: {
+                      uuid: 'wontBeUpdated',
+                      manuallySuppressed: true
+                    }
+                };
+
+                // Update an existing user
+                agent.post('/users/update-one')
+                    .auth(config.authUser, config.authPassword)
+                    .send(updateObj)
+                    .expect(200)
+                    .end((userUpdateErr, userUpdateRes) => {
+
+                        // Handle user update error
+                        if (userUpdateErr) {
+                            done(userUpdateErr);
+                        }
+
+                        // Set assertions
+                        (userUpdateRes.body.uuid).should.match(userSaveRes.body.uuid);
+                        (userUpdateRes.body.manuallySuppressed).should.be.true();
+
+                        // Call the assertion callback
+                        done();
+                    });
+            });
+    });
+
+    it('should not be able to update user lists', (done) => {
+
+        let updateObj = {
+            key: {
+              uuid: user.uuid
+            },
+            user: {
+              lists: []
+            }
+        };
+
+        // Update an existing user
+        agent.post('/users/update-one')
+            .auth(config.authUser, config.authPassword)
+            .send(updateObj)
+            .expect(403)
+            .end((userUpdateErr, userUpdateRes) => {
+
+                // Handle user update error
+                if (userUpdateErr) {
+                    done(userUpdateErr);
+                }
+
+                // Set assertions
+                (userUpdateRes.body).should.have.property('message');
+
+                // Call the assertion callback
+                done();
+            });
+    });
+    
+    it('throws an error if a key object is not provided', done => {
+
+        let updateObj = {
+            user: {
+              manuallySuppressed: true
+            }
+        };
+
+        // Update an existing user
+        agent.post('/users/update-one')
+            .auth(config.authUser, config.authPassword)
+            .send(updateObj)
+            .expect(400)
+            .end((userUpdateErr, userUpdateRes) => {
+
+                // Handle user update error
+                if (userUpdateErr) {
+                    done(userUpdateErr);
+                }
+
+                // Set assertions
+                (userUpdateRes.body).should.have.property('message');
+
+                // Call the assertion callback
+                done();
+            });
+    });
+
+    it('throws an error if a user object is not provided', done => {
+
+        let updateObj = {
+            key: {
+              uuid: user.uuid 
+            }
+        };
+
+        // Update an existing user
+        agent.post('/users/update-one')
+            .auth(config.authUser, config.authPassword)
+            .send(updateObj)
+            .expect(400)
+            .end((userUpdateErr, userUpdateRes) => {
+
+                // Handle user update error
+                if (userUpdateErr) {
+                    done(userUpdateErr);
+                }
+
+                // Set assertions
+                (userUpdateRes.body).should.have.property('message');
+
+                // Call the assertion callback
+                done();
+            });
+    });
+
+    it('throws an error if key object doesnt contain an email or uuid', done => {
+
+        let updateObj = {
+            key: {
+              manuallySuppressed: true 
+            },
+            user: {
+              manuallySuppressed: false
+            }
+        };
+
+        // Update an existing user
+        agent.post('/users/update-one')
+            .auth(config.authUser, config.authPassword)
+            .send(updateObj)
+            .expect(400)
+            .end((userUpdateErr, userUpdateRes) => {
+
+                // Handle user update error
+                if (userUpdateErr) {
+                    done(userUpdateErr);
+                }
+
+                // Set assertions
+                (userUpdateRes.body).should.have.property('message');
+
+                // Call the assertion callback
+                done();
+            });
+    });
+    
     it('should be able to get a list of users', (done) => {
 
         //Encrypt the emails, since we are going to directly save the user
         user.email = crypto.encrypt(email);
-        user.lists[0].alternativeEmail = crypto.encrypt(alternativeEmail);
 
         // Save the user
         user.save((saveErr) => {
@@ -335,7 +584,6 @@ describe('User CRUD tests:', () => {
 
         //Encrypt the emails, since we are going to directly save the user
         user.email = crypto.encrypt(email);
-        user.lists[0].alternativeEmail = crypto.encrypt(alternativeEmail);
 
         // Save the user
         user.save(() => {
@@ -372,7 +620,6 @@ describe('User CRUD tests:', () => {
 
         //Encrypt the emails, since we are going to directly save the user
         user.email = crypto.encrypt(email);
-        user.lists[0].alternativeEmail = crypto.encrypt(alternativeEmail);
 
         // Create new user model instance
         let userObj = new User(user);
@@ -414,7 +661,6 @@ describe('User CRUD tests:', () => {
 
         //Encrypt the emails, since we are going to directly save the user
         user.email = crypto.encrypt(email);
-        user.lists[0].alternativeEmail = crypto.encrypt(alternativeEmail);
 
         // Create new user model instance
         let userObj = new User(user);

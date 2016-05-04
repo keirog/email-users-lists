@@ -24,7 +24,7 @@ exports.create = (req, res) => {
             message: 'missing user email'
         });
     }
-    
+
     manageUsers.manageExpiration(userObj);
 
     // Encrypt the email
@@ -227,7 +227,7 @@ exports.read = (req, res) => {
     return res.json(req.user);
 };
 
-exports.update = (req, res, next) => {
+exports.patch = (req, res, next) => {
 
     let user = req.user;
 
@@ -270,6 +270,72 @@ exports.update = (req, res, next) => {
         else {
             user.email = crypto.decrypt(user.email);
             res.json(user);
+        }
+    });
+};
+
+exports.updateOne = (req, res, next) => {
+
+    if (!req.body.key || !req.body.user) {
+      return res.status(400)
+        .send({message: 'Please provide search key and update'});
+    }
+
+    if (req.body.user && req.body.user.lists) {
+        return res.status(403).send({
+            message: 'Forbidden. Lists cannot be edited via this method'
+        });
+    }
+
+    let key = req.body.key;
+    let searchObj = {};
+
+    if (key.email) {
+      searchObj.email = crypto.encrypt(key.email);
+    } else if (key.uuid) {
+      searchObj.uuid = key.uuid;
+    } else {
+      return res.status(400)
+        .send({message: 'Please search by uuid or email'});
+    }
+
+    User.findOne(searchObj).exec((findErr, user) => {
+        /* istanbul ignore next */
+        if (findErr) {
+            logger.warn(findErr);
+            return next(findErr);
+        }
+        else if (user) {
+            user.email = crypto.decrypt(user.email);
+            manageUsers.manageSuppression(user, req.body.user);
+            user = extend(user, req.body.user);
+            manageUsers.manageExpiration(user);
+            user.email = crypto.encrypt(user.email);
+            user = user.toObject();
+            delete user._id;
+
+            User.findOneAndUpdate(searchObj, user,
+                {runValidators: true, new: true}, (updateErr, updatedUser) => {
+
+                /* istanbul ignore if */
+                if (updateErr) {
+                    logger.warn(updateErr);
+                    return res.status(400).send({
+                        //TODO: errorHandler.getErrorMessage(err)
+                        message: updateErr
+                    });
+                }
+                else {
+                    updatedUser.email = crypto.decrypt(updatedUser.email);
+                    res.json(updatedUser);
+                }
+            });
+        }
+        else {
+            return res.status(404).send({
+                message: 'User not found'
+            });
+
         }
     });
 };
