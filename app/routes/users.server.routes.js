@@ -153,6 +153,60 @@ module.exports = (app) => {
         .post(users.search);     
     
     app.route('/users/update-one')
+       /**
+         * @api {post} /users/update-one Update user located by email or uuid.
+         * @apiVersion 0.3.0
+         * @apiName UpdateUser
+         * @apiGroup User
+         *
+         * @apiUse BasicAuthHeader
+         *
+         * @apiParam {Object} key Object containing property used to locate the
+         * user to update. One property is mandatory.
+         * @apiParam {String} [key.uuid] The UUID of the user to edit 
+         * @apiParam {String} [key.email] The email of the user to edit 
+         * @apiParam {Object} user Object containing the properties of the user
+         * to be updated
+         * @apiParam {String} [user.uuid]  The UUID of the User.
+         * @apiParam {String} [user.firstName]  The first name of the User.
+         * @apiParam {String} [user.lastName]  The last name of the User.
+         * @apiParam {String} [user.email]  The email for the User.
+         * @apiParam {Boolean} [user.expired] A flag for expired users.
+         * @apiParam {Boolean} [user.manuallySuppressed] A flag for manually suppressed users.
+         * @apiParam {Boolean} [user.automaticallySuppressed] A flag for automatically suppressed users.
+         * @apiParam {Boolean} [user.externallySuppressed] A flag for externally suppressed users.
+         *
+         * @apiParamExample {json} Request-Example:
+         *    {
+         *      "key": {
+         *        "email": "Jeramy32@yahoo.com"
+         *      },
+         *      "user": {
+         *        "manuallySuppressed": true
+         *      }
+         *    }
+         * 
+         * @apiSuccess {String} uuid  The UUID of the User.
+         * @apiSuccess {String} firstName  The first name of the User.
+         * @apiSuccess {String} lastName  The last name of the User.
+         * @apiSuccess {String} email   The email for the User.
+         * @apiSuccess {Boolean} expired A flag for expired users.
+         * @apiSuccess {Boolean} manuallySuppressed A flag for manually suppressed users.
+         * @apiSuccess {Boolean} automaticallySuppressed A flag for automatically suppressed users.
+         * @apiSuccess {Boolean} externallySuppressed A flag for externally suppressed users.
+         *
+         * @apiSuccessExample Success-Response:
+         *     HTTP/1.1 200 OK
+         *    {
+         *      "uuid": "deb15e25-b44c-4f4d-aa32-262214ff757c",
+         *      "email": "Jeramy32@yahoo.com",
+         *      "automaticallySuppressed": false,
+         *      "manuallySuppressed": true,
+         *      "expired": false,
+         *      "externallySuppressed": false
+         *    }
+         *
+         */ 
       .post(users.updateOne);
 
     app.route('/users/:userUuid')
