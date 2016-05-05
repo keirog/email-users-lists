@@ -336,52 +336,6 @@ describe('User CRUD tests:', () => {
             });
     });
 
-    it('should not update the uuid field', (done) => {
-
-        // Save a new user
-        agent.post('/users')
-            .auth(config.authUser, config.authPassword)
-            .send(user)
-            .expect(200)
-            .end((userSaveErr, userSaveRes) => {
-
-                // Handle user save error
-                if (userSaveErr) {
-                    done(userSaveErr);
-                }
-
-                let updateObj = {
-                    key: {
-                      uuid: user.uuid
-                    },
-                    user: {
-                      uuid: 'wontBeUpdated',
-                      manuallySuppressed: true
-                    }
-                };
-
-                // Update an existing user
-                agent.post('/users/update-one')
-                    .auth(config.authUser, config.authPassword)
-                    .send(updateObj)
-                    .expect(200)
-                    .end((userUpdateErr, userUpdateRes) => {
-
-                        // Handle user update error
-                        if (userUpdateErr) {
-                            done(userUpdateErr);
-                        }
-
-                        // Set assertions
-                        (userUpdateRes.body.uuid).should.match(userSaveRes.body.uuid);
-                        (userUpdateRes.body.manuallySuppressed).should.be.true();
-
-                        // Call the assertion callback
-                        done();
-                    });
-            });
-    });
-
     it('should not be able to update user lists', (done) => {
 
         let updateObj = {

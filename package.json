@@ -40,7 +40,6 @@
     "lodash": "^3.10.1",
     "mongoose": "^4.2.5",
     "mongoose-fakery": "^0.1.7",
-    "mongoose-immutable": "0.0.2",
     "raven": "^0.8.1",
     "winston": "^2.1.0",
     "winston-sentry": "0.1.1"
