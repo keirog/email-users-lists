@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const basicAuth = require('basic-auth-connect');
+const dbDown = require('../app/utils/dbDown.server.utils');
 
 
 const config = require('./config');
@@ -30,6 +31,7 @@ module.exports = () => {
     require('../app/routes/__health.server.routes')(app);
     require('../app/routes/__gtg.server.routes')(app);
 
+    app.use(dbDown);
     // Authenticator
     app.use(basicAuth(config.authUser, config.authPassword));
 
