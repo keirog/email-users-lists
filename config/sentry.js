@@ -10,4 +10,3 @@ exports.init = () => {
   }
   return {captureError: () => {}};
 };
-

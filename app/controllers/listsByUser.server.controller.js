@@ -137,10 +137,40 @@ exports.delete = (req, res) => {
             res.json(decryptedUser.lists);
         }
     });
-
-
-
-
-
 };
 
+exports.deleteAll = (req, res) => {
+
+    //We have a valid user uuid and list _id
+    let user = req.user;
+
+    // Remove the list from the user
+    user.lists = [];
+
+    // Save a copy of the decrypted user that will be used in the response
+    let decryptedUser = JSON.parse(JSON.stringify(user));
+
+    // At this point the emails have been decrypted. We do not want that!
+    user.email = crypto.encrypt(user.email);
+
+    // Create updated user
+    let  updatedUser = user.toObject();
+
+    // Delete _id property
+    delete updatedUser._id;
+
+    // Update
+    User.update({uuid: updatedUser.uuid}, updatedUser, { runValidators: true }, (updateErr) => {
+
+        /* istanbul ignore if */
+        if (updateErr) {
+            return res.status(400).json({
+                //TODO: errorHandler.getErrorMessage(updateErr)
+                message: updateErr
+            });
+        }
+        else {
+            res.json(decryptedUser.lists);
+        }
+    });
+};
