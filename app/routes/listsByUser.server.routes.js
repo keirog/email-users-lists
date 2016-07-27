@@ -99,6 +99,9 @@ module.exports = (app) => {
          */
         .delete(listsByUser.delete);
 
+    app.route('/users/:userUuid/lists')
+        .delete(listsByUser.deleteAll);
+
     app.param('userUuid', users.userByUuid);
     app.param('listId', lists.listById);
 };
