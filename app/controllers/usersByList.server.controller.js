@@ -53,7 +53,7 @@ exports.list = (req, res) => {
             .exec((err, users) => {
                 /* istanbul ignore if */
                 if (err) {
-                    return res.status(400).send({
+                    return res.status(400).json({
                         //TODO: errorHandler.getErrorMessage(err)
                         message: err
                     });
@@ -105,7 +105,7 @@ exports.list = (req, res) => {
                         (encryptErr, usersOutput) => {
                             /* istanbul ignore if */
                             if (encryptErr) {
-                                return res.status(400).send({
+                                return res.status(400).json({
                                     message: encryptErr
                                 });
                             }

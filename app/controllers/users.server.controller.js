@@ -20,7 +20,7 @@ exports.create = (req, res) => {
     let userObj = req.body;
 
     if (!userObj.email) {
-        return res.status(400).send({
+        return res.status(400).json({
             message: 'missing user email'
         });
     }
@@ -35,7 +35,7 @@ exports.create = (req, res) => {
         if (saveErr) {
             logger.warn(saveErr);
 						sentry.captureError(saveErr);
-            return res.status(400).send({
+            return res.status(400).json({
                 message: saveErr
             });
         }
@@ -96,7 +96,7 @@ exports.list = (req, res) => {
                 /* istanbul ignore if */
                 if (findErr) {
                     logger.warn(findErr);
-                    return res.status(400).send({
+                    return res.status(400).json({
                         //TODO: errorHandler.getErrorMessage(findErr)
                         message: findErr
                     });
@@ -117,7 +117,7 @@ exports.list = (req, res) => {
                             /* istanbul ignore if */
                             if (encryptErr) {
                                 logger.warn(encryptErr);
-                                return res.status(400).send({
+                                return res.status(400).json({
                                     message: encryptErr
                                 });
                             }
@@ -184,7 +184,7 @@ exports.search = (req, res) => {
                 /* istanbul ignore if */
                 if (findErr) {
                     logger.warn(findErr);
-                    return res.status(400).send({
+                    return res.status(400).json({
                         //TODO: errorHandler.getErrorMessage(findErr)
                         message: findErr
                     });
@@ -205,7 +205,7 @@ exports.search = (req, res) => {
                             /* istanbul ignore if */
                             if (encryptErr) {
                                 logger.warn(encryptErr);
-                                return res.status(400).send({
+                                return res.status(400).json({
                                     message: encryptErr
                                 });
                             }
@@ -262,7 +262,7 @@ exports.patch = (req, res, next) => {
         /* istanbul ignore if */
         if (updateErr) {
             logger.warn(updateErr);
-            return res.status(400).send({
+            return res.status(400).json({
                 //TODO: errorHandler.getErrorMessage(err)
                 message: updateErr
             });
@@ -320,7 +320,7 @@ exports.updateOne = (req, res, next) => {
                 /* istanbul ignore if */
                 if (updateErr) {
                     logger.warn(updateErr);
-                    return res.status(400).send({
+                    return res.status(400).json({
                         //TODO: errorHandler.getErrorMessage(err)
                         message: updateErr
                     });
@@ -332,7 +332,7 @@ exports.updateOne = (req, res, next) => {
             });
         }
         else {
-            return res.status(404).send({
+            return res.status(404).json({
                 message: 'User not found'
             });
 
@@ -355,7 +355,7 @@ exports.userByUuid = (req, res, next, uuid) => {
             return next();
         }
         else {
-            return res.status(404).send({
+            return res.status(404).json({
                 message: 'User not found'
             });
 
