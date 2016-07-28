@@ -162,9 +162,11 @@ exports.search = (req, res) => {
 
     /**
      * The "email" search filter
+     * Single email or Array of emails
      */
     if (req.body.email) {
-      options.email = crypto.encrypt(req.body.email);
+      options.email = !Array.isArray(req.body.email) ? crypto.encrypt(req.body.email) :
+        { $in: req.body.email.map(email => crypto.encrypt(email)) };
     }
 
     User.count(options, (countErr, count) => {
