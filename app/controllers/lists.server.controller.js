@@ -11,7 +11,7 @@ exports.create = (req, res) => {
     let list = new List(req.body);
     list.save((err) => {
         if (err) {
-            return res.status(400).send({
+            return res.status(400).json({
                 //TODO: errorHandler.getErrorMessage(err)
                 message: err
             });
@@ -30,7 +30,7 @@ exports.list = (req, res) => {
         .exec((err, lists) => {
             /* istanbul ignore if */
             if (err) {
-                return res.status(400).send({
+                return res.status(400).json({
                     //TODO: errorHandler.getErrorMessage(err)
                     message: err
                 });
@@ -53,7 +53,7 @@ exports.update = (req, res, next) => {
 
     list.save((err) => {
         if (err) {
-            return res.status(400).send({
+            return res.status(400).json({
                 //TODO: errorHandler.getErrorMessage(err)
                 message: err
             });
@@ -69,7 +69,7 @@ exports.listById = (req, res, next, id) => {
     List.findOne({ _id: id }, (err, list) => {
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            return res.status(400).send({
+            return res.status(400).json({
                 message: 'List is invalid'
             });
         }
@@ -83,7 +83,7 @@ exports.listById = (req, res, next, id) => {
             next();
         }
         else {
-            return res.status(404).send({
+            return res.status(404).json({
                 message: 'List not found'
             });
         }

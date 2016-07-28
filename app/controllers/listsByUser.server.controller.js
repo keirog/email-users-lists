@@ -26,7 +26,7 @@ exports.list = (req, res) => {
             /* istanbul ignore if */
             if (err) {
 
-                return res.status(400).send({
+                return res.status(400).json({
                     message: err
                 });
             }
@@ -87,7 +87,7 @@ exports.add = (req, res) => {
 
             /* istanbul ignore if */
             if (updateErr) {
-                return res.status(400).send({
+                return res.status(400).json({
                     //TODO: errorHandler.getErrorMessage(err)
                     message: updateErr
                 });
@@ -128,7 +128,7 @@ exports.delete = (req, res) => {
 
         /* istanbul ignore if */
         if (updateErr) {
-            return res.status(400).send({
+            return res.status(400).json({
                 //TODO: errorHandler.getErrorMessage(updateErr)
                 message: updateErr
             });
