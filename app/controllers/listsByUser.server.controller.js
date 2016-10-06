@@ -109,7 +109,7 @@ exports.delete = (req, res) => {
     let listId = list._id;
 
     // Remove the list from the user
-    user.lists = _.reject(user.lists, 'list', listId);
+    user.lists = _.reject(user.lists, { list: listId });
 
     // Save a copy of the decrypted user that will be used in the response
     let decryptedUser = JSON.parse(JSON.stringify(user));

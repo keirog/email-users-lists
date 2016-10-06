@@ -148,7 +148,6 @@ describe('The lists by user methods', () => {
 
                         // Set assertions
                         listDeleteRes.body.should.have.a.lengthOf(1);
-                        //listDeleteRes.body.should.be.an.Object.with.property('message', 'Invalid user uuid provided');
 
                         // Call the assertion callback
                         done();

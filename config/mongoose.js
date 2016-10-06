@@ -5,7 +5,7 @@ const config = require('./config');
 const logger = require('./logger');
 
 module.exports = () => {
-  mongoose.promise = global.Promise;
+  mongoose.Promise = global.Promise;
   const db = mongoose.connection;
 
 	require('../app/models/lists.server.model');

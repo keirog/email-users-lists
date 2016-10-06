@@ -37,7 +37,7 @@
     "gulp-istanbul": "^0.10.2",
     "gulp-jshint": "^1.12.0",
     "gulp-mocha": "^2.1.3",
-    "lodash": "^3.10.1",
+    "lodash": "^4.16.3",
     "mongoose": "^4.2.5",
     "mongoose-fakery": "^0.1.7",
     "raven": "^0.8.1",
@@ -45,7 +45,6 @@
     "winston-sentry": "0.1.1"
   },
   "devDependencies": {
-    "agent": "^0.2.1",
     "should": "^7.1.1",
     "supertest": "^1.1.0"
   },
