@@ -73,6 +73,9 @@ const userSchema = new Schema({
             index: { unique: true },
             required: 'email cannot be blank'
         },
+        metadata: {
+          type: {}
+        },
         lists: [listRelationshipSchema]
     });
 
