@@ -52,6 +52,26 @@ const userSchema = new Schema({
             default: false,
             index: true
         },
+        suppressedNewsletter: {
+            type: Boolean,
+            default: false,
+            index: true
+        },
+        suppressedMarketing: {
+            type: Boolean,
+            default: false,
+            index: true
+        },
+        suppressedRecommendation: {
+            type: Boolean,
+            default: false,
+            index: true
+        },
+        suppressedAccount: {
+            type: Boolean,
+            default: false,
+            index: true
+        },
         manuallySuppressed: {
             type: Boolean,
             default: false,
