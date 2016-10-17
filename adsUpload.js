@@ -5,13 +5,14 @@ const csv = require('fast-csv');
 const fs = require('fs');
 const omit = require('lodash/omit');
 const config = require('./config/config');
-const async = require('async');
+const eachLimit = require('async/eachLimit');
 
 const stream = fs.createReadStream("./ads-data.csv");
+const users = [];
+let count = 0;
 
-const csvStream = csv({ headers: true })
-  .transform((data, next) => {
-    console.log(data.uuid);
+function patchUsers() {
+  eachLimit(users, 20, (user, cb) => {
     const options = {
       method: 'patch',
       headers: {
@@ -19,29 +20,34 @@ const csvStream = csv({ headers: true })
         Authorization: config.authUser
       },
       body: JSON.stringify({
-        metadata: omit(data, 'uuid')
+        metadata: omit(user, 'uuid')
       })
     };
 
-    fetch(`https://email-webservices.ft.com/users/${data.uuid}`, options)
+    fetch(`https://email-webservices.ft.com/users/${user.uuid}`, options)
       .then(res => {
-        console.log(res.status);
         return res.json();
       })
       .then(jsonRes => {
-        next();
+        console.log(++count);
+        cb();
       })
       .catch((err) => {
+        console.log(++count);
         console.log(err)
-        next();
+        cb();
       });
-  })
-  .on('data', (data) => {
-    console.log(data);
-  })
-  .on('end', () => {
-    console.log('end');
   });
+}
 
+  const csvStream = csv({ headers: true })
+    .on('data', (data) => {
+      users.push(data);
+    })
+    .on('end', () => {
+      console.log('end');
+      console.log(users.length);
+      patchUsers();
+    });
 
 stream.pipe(csvStream);
