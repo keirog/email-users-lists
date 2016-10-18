@@ -25,7 +25,7 @@ describe('The metadata by list method', () => {
         metadata.save(() => {
 
             // Request users
-            request(app).get('/metadata')
+              request(app).get('/users/metadata')
                 .auth(config.authUser, config.authPassword)
                 .end((req, res) => {
 
