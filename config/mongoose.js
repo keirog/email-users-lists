@@ -10,6 +10,7 @@ module.exports = () => {
 
 	require('../app/models/lists.server.model');
 	require('../app/models/users.server.model');
+	require('../app/models/metadata.server.model');
 
   db.once('open', () => {
     logger.info('Database open');
