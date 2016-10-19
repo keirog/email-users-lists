@@ -24,7 +24,9 @@ describe('The manageExpiration util', () => {
             lists: [],
             automaticallySuppressed: true,
             manuallySuppressed: false,
-            expired:false
+            expiredUser:{
+              value: false
+            }
         };
 
         done();
@@ -37,7 +39,7 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageExpiration(user);
 
-        (user.expired).should.be.true();
+        (user.expiredUser.value).should.be.true();
 
 
         done();
@@ -47,7 +49,7 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageExpiration(user);
 
-        (user.expired).should.be.false();
+        (user.expiredUser.value).should.be.false();
 
         done();
     });
