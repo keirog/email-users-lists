@@ -35,6 +35,7 @@ module.exports = () => {
     // Authenticator
     app.use(basicAuth(config.authUser, config.authPassword));
 
+    require('../app/routes/metadata.server.routes.js')(app);
     require('../app/routes/users.server.routes.js')(app);
     require('../app/routes/lists.server.routes.js')(app);
     require('../app/routes/listsByUser.server.routes.js')(app);

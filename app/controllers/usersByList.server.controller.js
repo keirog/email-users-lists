@@ -78,7 +78,8 @@ exports.list = (req, res) => {
                                 expired: user.expired,
                                 manuallySuppressed: user.manuallySuppressed,
                                 automaticallySuppressed: user.automaticallySuppressed,
-                                externallySuppressed: user.externallySuppressed
+                                externallySuppressed: user.externallySuppressed,
+                                metadata: user.metadata
                             };
 
                             if (user.firstName) {
