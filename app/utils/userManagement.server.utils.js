@@ -5,9 +5,13 @@ function manageExpiration (user) {
         user.email.endsWith('@ftexpiredaccounts.com') ||
         user.email.endsWith('@ftexpiredaccount.com') ||
         user.email.endsWith('@retired.com'))) {
-        user.expired = true;
+        user.expiredUser = {
+          value: true
+        };
     } else {
-        user.expired = false;
+        user.expiredUser = {
+          value: false
+        };
     }
 }
 

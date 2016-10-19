@@ -52,6 +52,16 @@ const userSchema = new Schema({
     default: false,
     index: true
   },
+  expiredUser: {
+    value: {
+      type: Boolean,
+      default: false,
+      index: true
+    },
+    updatedAt: {
+      type: Date
+    }
+  },
   suppressedNewsletter: {
     value: {
       type: Boolean,
@@ -132,10 +142,16 @@ const userSchema = new Schema({
 });
 
 userSchema.pre('save', function (next) {
-  for (const suppressionType of ['Account', 'Recommendation', 'Marketing', 'Newsletter']) {
-    const field = `suppressed${suppressionType}`;
-    if (this.isModified(field)) {
-      this[field].updatedAt = new Date();
+  const suppresstionTypes = [
+    'suppressionAccount',
+    'suppressionRecommendation',
+    'suppressionMarketing',
+    'suppressionNewsletter',
+    'expiredUser'
+  ];
+  for (const suppressionType of suppressionTypes) {
+    if (this.isModified(suppressionType)) {
+      this[suppressionType].updatedAt = new Date();
     }
   }
   next();
