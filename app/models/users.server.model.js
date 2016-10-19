@@ -143,10 +143,10 @@ const userSchema = new Schema({
 
 userSchema.pre('save', function (next) {
   const suppressionTypes = [
-    'suppressionAccount',
-    'suppressionRecommendation',
-    'suppressionMarketing',
-    'suppressionNewsletter',
+    'suppressedAccount',
+    'suppressedRecommendation',
+    'suppressedMarketing',
+    'suppressedNewsletter',
     'expiredUser'
   ];
   for (const suppressionType of suppressionTypes) {
