@@ -43,25 +43,43 @@ User.findOne(query)
             hasDocs = false;
             return next();
           }
-          
+
           objectId = docs[docs.length -1];
-          
+
           async.each(docs, (user, cb) => {
 
-            if (user.manuallySuppressed || user.automaticallySuppressed) {
-              user.suppressedNewsletter = true;
-              user.suppressedMarketing = true;
-              user.suppressedRecommendation = true;
-              user.suppressedAccount = true;
+            if (user.manuallySuppressed)   {
+              user.suppressedNewsletter.value = true;
+              user.suppressedNewsletter.reason = 'Manually suppressed by Product Support';
+              user.suppressedMarketing.value = true;
+              user.suppressedMarketing.reason = 'Manually suppressed by Product Support';
+              user.suppressedRecommendation.value = true;
+              user.suppressedRecommendation.reason = 'Manually suppressed by Product Support';
+              user.suppressedAccount.value = true;
+              user.suppressedAccount.reason = 'Manually suppressed by Product Support';
+              user.save()
+                .then(() => cb())
+                .catch(cb);
+
+            } else if (user.automaticallySuppressed) {
+              user.suppressedNewsletter.value = true;
+              user.suppressedNewsletter.reason = 'Automatically suppressed by Sparkpost';
+              user.suppressedMarketing.value = true;
+              user.suppressedMarketing.reason = 'Automatically suppressed by Sparkpost'
+              user.suppressedRecommendation.value = true;
+              user.suppressedRecommendation.reason = 'Automatically suppressed by Sparkpost'
+              user.suppressedAccount.value = true;
+              user.suppressedAccount.reason = 'Automatically suppressed by Sparkpost';
               user.save()
                 .then(() => cb())
                 .catch(cb);
 
             } else if (user.externallySuppressed) {
-              user.suppressedMarketing = true;
-              user.suppressedNewsletter = false;
-              user.suppressedRecommendation = false;
-              user.suppressedAccount = false;
+              user.suppressedMarketing.value = true;
+              user.suppressedMarketing.reason = 'Previously suppressed by Exact Target or eDialog';
+              user.suppressedNewsletter.value = false;
+              user.suppressedRecommendation.value = false;
+              user.suppressedAccount.value = false;
               user.lists = [];
               user.save()
                 .then(() => cb())
