@@ -142,7 +142,7 @@ const userSchema = new Schema({
 });
 
 userSchema.pre('save', function (next) {
-  const suppresstionTypes = [
+  const suppressionTypes = [
     'suppressionAccount',
     'suppressionRecommendation',
     'suppressionMarketing',
