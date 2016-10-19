@@ -252,14 +252,8 @@ exports.patch = (req, res, next) => {
         user.email = crypto.encrypt(user.email);
     }
 
-    // Create updated user
-    let  updatedUser = user.toObject();
-
-    // Delete _id property
-    delete updatedUser._id;
-
     // Update
-    User.update({uuid: updatedUser.uuid}, updatedUser, { runValidators: true }, (updateErr) => {
+    user.save((updateErr) => {
 
         /* istanbul ignore if */
         if (updateErr) {
@@ -344,7 +338,7 @@ exports.updateOne = (req, res, next) => {
 
 exports.userByUuid = (req, res, next, uuid) => {
 
-    User.findOne({ uuid: uuid }, { __v: 0, createdOn: 0, _id: 0 }, (findErr, user) => {
+    User.findOne({ uuid: uuid }, { __v: 0, createdOn: 0 }, (findErr, user) => {
         /* istanbul ignore next */
         if (findErr) {
             logger.warn(findErr);

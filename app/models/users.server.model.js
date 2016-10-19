@@ -60,6 +60,9 @@ const userSchema = new Schema({
     },
     reason: {
       type: String
+    },
+    updatedAt: {
+      type: Date
     }
   },
   suppressedMarketing: {
@@ -70,6 +73,9 @@ const userSchema = new Schema({
     },
     reason: {
       type: String
+    },
+    updatedAt: {
+      type: Date
     }
   },
   suppressedRecommendation: {
@@ -80,6 +86,9 @@ const userSchema = new Schema({
     },
     reason: {
       type: String
+    },
+    updatedAt: {
+      type: Date
     }
   },
   suppressedAccount: {
@@ -90,6 +99,9 @@ const userSchema = new Schema({
     },
     reason: {
       type: String
+    },
+    updatedAt: {
+      type: Date
     }
   },
   manuallySuppressed: {
@@ -117,6 +129,16 @@ const userSchema = new Schema({
     type: {}
   },
   lists: [listRelationshipSchema]
+});
+
+userSchema.pre('save', function (next) {
+  for (const suppressionType of ['Account', 'Recommendation', 'Marketing', 'Newsletter']) {
+    const field = `suppressed${suppressionType}`;
+    if (this.isModified(field)) {
+      this[field].updatedAt = new Date();
+    }
+  }
+  next();
 });
 
 //We always want emails to be encrypted
