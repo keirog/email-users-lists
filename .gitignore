@@ -7,3 +7,4 @@ docs
 # Files
 .DS_Store
 .env
+*.csv
