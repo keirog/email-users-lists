@@ -130,20 +130,20 @@ module.exports = (app) => {
          *    [{
          *      "uuid": "deb15e25-b44c-4f4d-aa32-262214ff757c",
          *      "email": "Jeramy32@yahoo.com",
-         *      "suppressedNewsletter": { value: false },
-         *      "suppressedMarketing": { value: false },
-         *      "suppressedRecommendation": { value: false },
-         *      "suppressedAccount": { value: true, reason: "BOUNCE: invalid recipient" },
-         *      "expiredUser": { value: false }
+         *      "suppressedNewsletter": { "value": false },
+         *      "suppressedMarketing": { "value": false },
+         *      "suppressedRecommendation": { "value": false },
+         *      "suppressedAccount": { "value": true, "reason": "BOUNCE: invalid recipient" },
+         *      "expiredUser": { "value": false }
          *    },
          *    {
          *      "uuid": "3af4c3fd-2cbd-48bc-b87f-2664ef33c103",
          *      "email": "Oleta79@hotmail.com",
-         *      "suppressedNewsletter": { value: false },
-         *      "suppressedMarketing": { value: false },
-         *      "suppressedRecommendation": { value: false },
-         *      "suppressedAccount": { value: false },
-         *      "expiredUser": { value: false }
+         *      "suppressedNewsletter": { "value": false },
+         *      "suppressedMarketing": { "value": false },
+         *      "suppressedRecommendation": { "value": false },
+         *      "suppressedAccount": { "value": false },
+         *      "expiredUser": { "value": false }
          *    }]
          *
          */
@@ -190,11 +190,11 @@ module.exports = (app) => {
          *    [{
          *      "uuid": "deb15e25-b44c-4f4d-aa32-262214ff757c",
          *      "email": "Jeramy32@yahoo.com",
-         *      "suppressedNewsletter": { value: false },
-         *      "suppressedMarketing": { value: false },
-         *      "suppressedRecommendation": { value: false },
-         *      "suppressedAccount": { value: true, reason: "BOUNCE: invalid recipient" },
-         *      "expiredUser": { value: false }
+         *      "suppressedNewsletter": { "value": false },
+         *      "suppressedMarketing": { "value": false },
+         *      "suppressedRecommendation": { "value": false },
+         *      "suppressedAccount": { "value": true, "reason": "BOUNCE: invalid recipient" },
+         *      "expiredUser": { "value": false }
          *    }]
          *
          */
@@ -262,11 +262,11 @@ module.exports = (app) => {
          *    {
          *      "uuid": "deb15e25-b44c-4f4d-aa32-262214ff757c",
          *      "email": "Jeramy32@yahoo.com",
-         *      "suppressedNewsletter": { value: false },
-         *      "suppressedMarketing": { value: false },
-         *      "suppressedRecommendation": { value: false },
-         *      "suppressedAccount": { value: true, reason: "BOUNCE: invalid recipient" },
-         *      "expiredUser": { value: false }
+         *      "suppressedNewsletter": { "value": false },
+         *      "suppressedMarketing": { "value": false },
+         *      "suppressedRecommendation": { "value": false },
+         *      "suppressedAccount": { "value": true, "reason": "BOUNCE: invalid recipient" },
+         *      "expiredUser": { "value": false }
          *    }
          *
          */
