@@ -19,15 +19,27 @@ module.exports = (app) => {
          *
          * @apiParam {Number} [p=1]  The pagination page to retrieve.
          * @apiParam {Number} [pp=100] The number of Users per page to retrieve.
-         * @apiParam {Boolean} [valid] Filter: retrieve only valid/invalid user. Valid: expired=false, automaticallySuppressed=false, manuallySuppressed=false, externallySuppressed=false
+         * @apiParam {Boolean} [valid] Filter: retrieve only valid/invalid user. Valid: only returns users not suppressed for supplied categories.
+         * If no categegory supplied then all categories are sconsidered.
+         * @apiParam {String} [categories="all categories"] A comma separated list of categories to consider for validity, if `valid` is supplied.
          *
          * @apiSuccess {Object[]} userList relationships array.
          * @apiSuccess {String} userList.uuid  The UUID of the User.
          * @apiSuccess {String} userList.email   The email the User for the specific List.
-         * @apiSuccess {Boolean} userList.expired A flag for expired users.
-         * @apiSuccess {Boolean} userList.manuallySuppressed A flag for manually suppressed users.
-         * @apiSuccess {Boolean} userList.automaticallySuppressed A flag for automatically suppressed users.
-         * @apiSuccess {Boolean} userList.externallySuppressed A flag for automatically externally users.
+         * @apiSuccess {Object} user.suppressedNewsletter An object containing newsletter category suppressions.
+         * @apiSuccess {Boolean} user.suppressedNewsletter.value A flag for Newsletter category suppressed users.
+         * @apiSuccess {String} [user.suppressedNewsletter.reason] A reason for Newsletter category suppressed users.
+         * @apiSuccess {Object} user.suppressedMarketing An object containing marketing category suppressions.
+         * @apiSuccess {Boolean} user.suppressedMarketing.value A flag for Marketing category suppressed users.
+         * @apiSuccess {String} [user.suppressedMarketing.reason] A reason for Marketing category suppressed users.
+         * @apiSuccess {Object} user.suppressedRecommendation An object containing recommendation category suppressions.
+         * @apiSuccess {Boolean} user.suppressedRecommendation.value A flag for Recommendation category suppressed users.
+         * @apiSuccess {String} [user.suppressedRecommendation.reason] A reason for Recommendation category suppressed users.
+         * @apiSuccess {Object} user.suppressedAccount An object containing account category suppressions.
+         * @apiSuccess {Boolean} user.suppressedAccount.value A flag for Account category suppressed users.
+         * @apiSuccess {String} [user.suppressedAccount.reason] A reason for Account category suppressed users.
+         * @apiSuccess {Object} user.expiredUser An object containing expired user info.
+         * @apiSuccess {Boolean} user.expiredUser.value A flag for Expired users.
          * @apiSuccess {String} [userList.frequency]   Indication on when the email has to be sent.
          * @apiSuccess {String} [userList.products]   An array of products for the specific user-list relationship.
          * @apiSuccess {String} [userList.unsubscribeKey]   A key to be used to unsubscribe the user from this list.
