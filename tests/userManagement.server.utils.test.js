@@ -60,8 +60,10 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageSuppression(user, userUpdate);
 
-        (user.automaticallySuppressed).should.be.false();
-
+        (user.suppressedNewsletter.value).should.be.false();
+        (user.suppressedMarketing.value).should.be.false();
+        (user.suppressedRecommendation.value).should.be.false();
+        (user.suppressedAccount.value).should.be.false();
 
         done();
     });

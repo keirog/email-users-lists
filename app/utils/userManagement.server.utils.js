@@ -1,28 +1,22 @@
 'use strict';
 
-function manageExpiration (user) {
-    if (user.email && (user.email.endsWith('@expired.com') ||
-        user.email.endsWith('@ftexpiredaccounts.com') ||
-        user.email.endsWith('@ftexpiredaccount.com') ||
-        user.email.endsWith('@retired.com'))) {
-        user.expiredUser = {
-          value: true
-        };
-    } else {
-        user.expiredUser = {
-          value: false
-        };
-    }
+const expiredDomains = ['@expired.com', '@ftexpiredaccounts.com', '@ftexpiredaccount.com', '@retired.com'];
+function manageExpiration(user) {
+    user.expiredUser = {
+        value: expiredDomains.some(d => user.email.endsWith(d))
+    };
 }
 
 function manageSuppression (oldUser, newUser) {
     if (newUser.email && newUser.email !== oldUser.email) {
-
-        // Override the automaticallySuppressed/externallySuppressed tag if the user email changed
-        oldUser.automaticallySuppressed = false;
-        oldUser.externallySuppressed = false;
+        oldUser.suppressedNewsletter = { value: false };
+        oldUser.suppressedMarketing = { value: false };
+        oldUser.suppressedRecommendation = { value: false };
+        oldUser.suppressedAccount = { value: false };
     }
 }
 
-exports.manageExpiration = manageExpiration;
-exports.manageSuppression = manageSuppression;
+module.exports = {
+    manageExpiration,
+    manageSuppression
+};
