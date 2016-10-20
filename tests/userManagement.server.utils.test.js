@@ -9,9 +9,10 @@ const User = mongoose.model('User');
 
 const manageUsers = require('../app/utils/userManagement.server.utils');
 
-let user;
 
 describe('The manageExpiration util', () => {
+    let user,
+        reason = "reason";
 
     beforeEach((done) => {
 
@@ -22,11 +23,11 @@ describe('The manageExpiration util', () => {
             firstName: 'Bob',
             lastName: 'Dylan',
             lists: [],
-            automaticallySuppressed: true,
-            manuallySuppressed: false,
-            expiredUser:{
-              value: false
-            }
+            suppressedNewsletter: { value: true, reason },
+            suppressedMarketing: { value: false },
+            suppressedRecommendation: { value: false },
+            suppressedAccount: { value: false },
+            expiredUser: { value: false }
         };
 
         done();
@@ -74,7 +75,8 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageSuppression(user, userUpdate);
 
-        (user.automaticallySuppressed).should.be.true();
+        (user.suppressedNewsletter.value).should.be.true();
+        (user.suppressedNewsletter.reason).should.equal(reason);
 
         done();
     });
