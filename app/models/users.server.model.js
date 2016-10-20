@@ -11,18 +11,10 @@ const listRelationshipSchema = new Schema({
     ref: 'List',
     index: true
   },
-  frequency: {
-    type: String,
-    trim: true
-  },
   unsubscribeKey: {
     type: String,
     required: 'Missing the unsubscribeKey'
-  },
-  products: [{
-    type: String,
-    trim: true
-  }]
+  }
 },
 {
   _id : false,

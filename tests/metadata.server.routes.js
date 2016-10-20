@@ -3,6 +3,7 @@
 // Our modules
 const app = require('../server');
 const config = require('../config/config');
+const tearDownDb = require('./utils/tearDownDb');
 
 // External modules
 const should = require('should');
@@ -14,6 +15,8 @@ const agent = request.agent(app);
 const Metadata = mongoose.model('Metadata');
 
 describe('The metadata by list method', () => {
+
+    beforeEach(tearDownDb);
 
     it('lists the user members of the provided list', (done) => {
 

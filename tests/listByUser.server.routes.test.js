@@ -4,6 +4,7 @@
 const app = require('../server');
 const crypto = require('../app/utils/crypto.server.utils');
 const config = require('../config/config');
+const tearDownDb = require('./utils/tearDownDb');
 
 // External modules
 const should = require('should');
@@ -19,63 +20,63 @@ const User = mongoose.model('User');
 let list1, list2, list3, user;
 
 describe('The lists by user methods', () => {
-
     beforeEach((done) => {
+        tearDownDb(() => {
+            // Create new list
+            list1 = new List({
+                externalIds: {
+                    eBay: "234134234234"
+                },
+                name: 'An Example List',
+                description: 'A description for the example list'
+            });
 
-        // Create new list
-        list1 = new List({
-            externalIds: {
-                eBay: "234134234234"
-            },
-            name: 'An Example List',
-            description: 'A description for the example list'
-        });
+            // Create another list
+            list2 = new List({
+                externalIds: {
+                    eBay: "35454535"
+                },
+                name: 'An Second Example List',
+                description: 'A description for the second example list'
+            });
 
-        // Create another list
-        list2 = new List({
-            externalIds: {
-                eBay: "35454535"
-            },
-            name: 'An Second Example List',
-            description: 'A description for the second example list'
-        });
+            // Create another list
+            list3 = new List({
+                externalIds: {
+                    eBay: "76856856"
+                },
+                name: 'An Third Example List',
+                description: 'A description for the third example list'
+            });
 
-        // Create another list
-        list3 = new List({
-            externalIds: {
-                eBay: "76856856"
-            },
-            name: 'An Third Example List',
-            description: 'A description for the third example list'
-        });
+            list1.save((errSave1, resSave1) => {
 
-        list1.save((errSave1, resSave1) => {
+                list3.save((errSave3, resSave3) => {
 
-            list3.save((errSave3, resSave3) => {
+                    list2.save(() => {
 
-                list2.save(() => {
+                        let email = crypto.encrypt('email@email.com');
 
-                    let email = crypto.encrypt('email@email.com');
+                        // Create a new user
+                        user = new User({
+                            uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
+                            email: email,
+                            lists: [{
+                                list: resSave1._id,
+                                unsubscribeKey: 'SOMEKEY6'
+                            }, {
+                                list: resSave3._id,
+                                unsubscribeKey: 'SOMEKEY7'
+                            }]
+                        });
 
-                    // Create a new user
-                    user = new User({
-                        uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                        email: email,
-                        lists: [{
-                            list: resSave1._id,
-                            unsubscribeKey: 'SOMEKEY'
-                        }, {
-                            list: resSave3._id,
-                            unsubscribeKey: 'SOMEKEY'
-                        }]
+                        done();
+
                     });
-
-                    done();
 
                 });
 
             });
-
         });
 
     });
@@ -270,8 +271,6 @@ describe('The lists by user methods', () => {
                 .auth(config.authUser, config.authPassword)
                 .send({
                     list: list2._id,
-                    frequency: 'immediate',
-                    products: ['next'],
                     alternativeEmail: 'testEmail@email.com'
                 })
                 .expect(200)
@@ -323,9 +322,7 @@ describe('The lists by user methods', () => {
                 agent.post('/users/' + 'wrongUuid' + '/lists')
                     .auth(config.authUser, config.authPassword)
                     .send({
-                        list: list2._id,
-                        frequency: 'immediate',
-                        products: ['next']
+                        list: list2._id
                     })
                     .expect(404)
                     .end((listDeleteErr, listDeleteRes) => {
@@ -352,8 +349,6 @@ describe('The lists by user methods', () => {
                 .auth(config.authUser, config.authPassword)
                 .send({
                     list: list1._id,
-                    frequency: 'immediate',
-                    products: ['next']
                 })
                 .expect(200)
                 .end((listSaveErr) => {

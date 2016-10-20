@@ -10,6 +10,7 @@ const crypto = require('../utils/crypto.server.utils');
 const manageUsers = require('../utils/userManagement.server.utils');
 const logger = require('../../config/logger');
 const sentry = require('../../config/sentry').init();
+const validationCategories = require('../utils/validationCategories.server.utils');
 
 // Models
 const User = mongoose.model('User');
@@ -34,7 +35,7 @@ exports.create = (req, res) => {
     user.save((saveErr) => {
         if (saveErr) {
             logger.warn(saveErr);
-						sentry.captureError(saveErr);
+            sentry.captureError(saveErr);
             return res.status(400).json({
                 message: saveErr
             });
@@ -63,20 +64,26 @@ exports.list = (req, res) => {
     /**
      * The "valid" filter
      */
-    if (req.query.valid === '' || req.query.valid === 'true') {
-        options.expired = false;
-        options.manuallySuppressed = false;
-        options.automaticallySuppressed = false;
-        options.externallySuppressed = false;
-    } else if (req.query.valid === 'false') {
-        options.$or = [{ expired: true }, { manuallySuppressed: true }, { automaticallySuppressed: true }, { externallySuppressed: true }];
+    try {
+        if (req.query.valid === '' || req.query.valid === 'true') {
+            options = validationCategories(req.query, false);
+        } else if (req.query.valid === 'false') {
+            const validatedCategories = validationCategories(req.query, true);
+            options = {
+                $or: Object.keys(validatedCategories).map((key) => ({
+                    [key]: validatedCategories[key]
+                }))
+            };
+        }
+    } catch ({message}) {
+        return res.status(400).json({ message });
     }
 
     /**
      * The "email" filter
      */
     if (req.query.email) {
-      options.email = crypto.encrypt(req.query.email);
+        options.email = crypto.encrypt(req.query.email);
     }
 
     User.count(options, (countErr, count) => {
@@ -123,11 +130,11 @@ exports.list = (req, res) => {
                             }
                             else {
                                 let t4 = Date.now();
-                                logger.debug('Users decrypted', { time:  t4 - t3 });
+                                logger.debug('Users decrypted', { time: t4 - t3 });
                                 res.json(decryptedUsers);
                             }
 
-                    });
+                        });
                 }
             });
 
@@ -151,13 +158,19 @@ exports.search = (req, res) => {
     /**
      * The "valid" filter
      */
-    if (req.query.valid === '' || req.query.valid === 'true') {
-        options.expired = false;
-        options.manuallySuppressed = false;
-        options.automaticallySuppressed = false;
-        options.externallySuppressed = false;
-    } else if (req.query.valid === 'false') {
-        options.$or = [{ expired: true }, { manuallySuppressed: true }, { automaticallySuppressed: true }, { externallySuppressed: true }];
+    try {
+        if (req.query.valid === '' || req.query.valid === 'true') {
+            options = validationCategories(req.query, false);
+        } else if (req.query.valid === 'false') {
+            const validatedCategories = validationCategories(req.query, true);
+            options = {
+                $or: Object.keys(validatedCategories).map((key) => ({
+                    [key]: validatedCategories[key]
+                }))
+            };
+        }
+    } catch ({message}) {
+        return res.status(400).json({ message });
     }
 
     /**
@@ -165,8 +178,8 @@ exports.search = (req, res) => {
      * Single email or Array of emails
      */
     if (req.body.email) {
-      options.email = !Array.isArray(req.body.email) ? crypto.encrypt(req.body.email) :
-        { $in: req.body.email.map(email => crypto.encrypt(email)) };
+        options.email = !Array.isArray(req.body.email) ? crypto.encrypt(req.body.email) :
+            { $in: req.body.email.map(email => crypto.encrypt(email)) };
     }
 
     User.count(options, (countErr, count) => {
@@ -213,11 +226,11 @@ exports.search = (req, res) => {
                             }
                             else {
                                 let t4 = Date.now();
-                                logger.debug('Users decrypted', { time:  t4 - t3 });
+                                logger.debug('Users decrypted', { time: t4 - t3 });
                                 res.json(decryptedUsers);
                             }
 
-                    });
+                        });
                 }
             });
 
@@ -273,8 +286,8 @@ exports.patch = (req, res, next) => {
 exports.updateOne = (req, res, next) => {
 
     if (!req.body.key || !req.body.user) {
-      return res.status(400)
-        .send({message: 'Please provide search key and update'});
+        return res.status(400)
+            .send({ message: 'Please provide search key and update' });
     }
 
     if (req.body.user && req.body.user.lists) {
@@ -287,12 +300,12 @@ exports.updateOne = (req, res, next) => {
     let searchObj = {};
 
     if (key.email) {
-      searchObj.email = crypto.encrypt(key.email);
+        searchObj.email = crypto.encrypt(key.email);
     } else if (key.uuid) {
-      searchObj.uuid = key.uuid;
+        searchObj.uuid = key.uuid;
     } else {
-      return res.status(400)
-        .send({message: 'Please search by uuid or email'});
+        return res.status(400)
+            .send({ message: 'Please search by uuid or email' });
     }
 
     User.findOne(searchObj).exec((findErr, user) => {
@@ -311,21 +324,21 @@ exports.updateOne = (req, res, next) => {
             delete user._id;
 
             User.findOneAndUpdate(searchObj, user,
-                {runValidators: true, new: true}, (updateErr, updatedUser) => {
+                { runValidators: true, new: true }, (updateErr, updatedUser) => {
 
-                /* istanbul ignore if */
-                if (updateErr) {
-                    logger.warn(updateErr);
-                    return res.status(400).json({
-                        //TODO: errorHandler.getErrorMessage(err)
-                        message: updateErr
-                    });
-                }
-                else {
-                    updatedUser.email = crypto.decrypt(updatedUser.email);
-                    res.json(updatedUser);
-                }
-            });
+                    /* istanbul ignore if */
+                    if (updateErr) {
+                        logger.warn(updateErr);
+                        return res.status(400).json({
+                            //TODO: errorHandler.getErrorMessage(err)
+                            message: updateErr
+                        });
+                    }
+                    else {
+                        updatedUser.email = crypto.decrypt(updatedUser.email);
+                        res.json(updatedUser);
+                    }
+                });
         }
         else {
             return res.status(404).json({

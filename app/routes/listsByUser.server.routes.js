@@ -13,9 +13,7 @@ const listsByUser = require('../controllers/listsByUser.server.controller');
  * @apiSuccess {Object} listsRelationships.list.externalIds External IDs.
  * @apiSuccess {String} [listsRelationships.list.externalIds.eBay] eBay ID.
  * @apiSuccess {String} [listsRelationships.list.description]   The description for the List.
- * @apiSuccess {String} [listsRelationships.frequency] How often is the email sent.
  * @apiSuccess {String} [listsRelationships.unsubscribeKey]   A key to be used to unsubscribe the user from this list.
- * @apiSuccess {String[]} [listsRelationships.products] List of products used by the User for this List.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -26,11 +24,7 @@ const listsByUser = require('../controllers/listsByUser.server.controller');
  *          "name":"molestiae et nihil enim nostrum sequi nemo occaecati",
  *          "description":"ipsum ipsa nulla itaque\net quod esse aut fuga\nmaiores dignissimos voluptate laboriosam\nat autem reiciendis quas",
  *       },
- *       "frequency":"immediate",
  *       "unsubscribeKey": "SOMEKEY"
- *       "products":[
- *          "ft.com"
- *       ]
  *    }]
  *
  * @apiError UserNotFound The User UUID provided is not valid.
@@ -74,8 +68,6 @@ module.exports = (app) => {
          *
          * @apiParam {String} userUuid User unique UUID.
          * @apiParam {ObjectId} list List unique ID.
-         * @apiParam {String} frequency How often to send the email. E.g. 'immediate'.
-         * @apiParam {String[]} products List of products used by the User for this List.
          *
          * @apiUse ListByUserResponse
          */

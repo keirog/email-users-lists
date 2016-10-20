@@ -2,20 +2,13 @@
 
 const should = require('should');
 const mongoose = require('mongoose');
-
-
-const User = mongoose.model('User');
-
-
 const manageUsers = require('../app/utils/userManagement.server.utils');
-
 
 describe('The manageExpiration util', () => {
     let user,
         reason = "reason";
 
     beforeEach((done) => {
-
         // Create a new user
         user = {
             uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
