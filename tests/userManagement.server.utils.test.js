@@ -9,9 +9,10 @@ const User = mongoose.model('User');
 
 const manageUsers = require('../app/utils/userManagement.server.utils');
 
-let user;
 
 describe('The manageExpiration util', () => {
+    let user,
+        reason = "reason";
 
     beforeEach((done) => {
 
@@ -22,9 +23,11 @@ describe('The manageExpiration util', () => {
             firstName: 'Bob',
             lastName: 'Dylan',
             lists: [],
-            automaticallySuppressed: true,
-            manuallySuppressed: false,
-            expired:false
+            suppressedNewsletter: { value: true, reason },
+            suppressedMarketing: { value: false },
+            suppressedRecommendation: { value: false },
+            suppressedAccount: { value: false },
+            expiredUser: { value: false }
         };
 
         done();
@@ -37,7 +40,7 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageExpiration(user);
 
-        (user.expired).should.be.true();
+        (user.expiredUser.value).should.be.true();
 
 
         done();
@@ -47,7 +50,7 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageExpiration(user);
 
-        (user.expired).should.be.false();
+        (user.expiredUser.value).should.be.false();
 
         done();
     });
@@ -58,8 +61,10 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageSuppression(user, userUpdate);
 
-        (user.automaticallySuppressed).should.be.false();
-
+        (user.suppressedNewsletter.value).should.be.false();
+        (user.suppressedMarketing.value).should.be.false();
+        (user.suppressedRecommendation.value).should.be.false();
+        (user.suppressedAccount.value).should.be.false();
 
         done();
     });
@@ -70,7 +75,8 @@ describe('The manageExpiration util', () => {
 
         manageUsers.manageSuppression(user, userUpdate);
 
-        (user.automaticallySuppressed).should.be.true();
+        (user.suppressedNewsletter.value).should.be.true();
+        (user.suppressedNewsletter.reason).should.equal(reason);
 
         done();
     });
