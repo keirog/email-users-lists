@@ -53,8 +53,6 @@ function createFakeUser (next) {
                     email: crypto.encrypt(faker.internet.email()),
                     lists: [{
                         list: listId,
-                        frequency: faker.random.arrayElement(['immediate', 'digest']),
-                        products: [faker.random.arrayElement(['next', 'ft.com'])],
                         unsubscribeKey: unsubscribeEncryption.encrypt({
                             uuid: uuid,
                             listId: listId

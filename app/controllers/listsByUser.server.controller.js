@@ -58,8 +58,6 @@ exports.add = (req, res) => {
             list: listId
         };
 
-        newRelationship.frequency = bodyListRelationship.frequency;
-        newRelationship.products = bodyListRelationship.products;
         newRelationship.unsubscribeKey = unsubscribeEncryption.encrypt({
             uuid: user.uuid,
             listId: listId

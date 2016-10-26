@@ -7,6 +7,7 @@ const async = require('async');
 // Our modules
 const crypto = require('../utils/crypto.server.utils');
 const logger = require('../../config/logger');
+const validationCategories = require('../utils/validationCategories.server.utils');
 
 // Models
 const List = mongoose.model('List');
@@ -24,13 +25,19 @@ exports.list = (req, res) => {
     /**
      * The "valid" filter
      */
-    if (req.query.valid === '' || req.query.valid === 'true') {
-        options.expired = false;
-        options.manuallySuppressed = false;
-        options.automaticallySuppressed = false;
-        options.externallySuppressed = false;
-    } else if (req.query.valid === 'false') {
-        options.$or = [{ expired: true }, { manuallySuppressed: true }, { automaticallySuppressed: true }, { externallySuppressed: true }];
+    try {
+        if (req.query.valid === '' || req.query.valid === 'true') {
+            options = validationCategories(req.query, false);
+        } else if (req.query.valid === 'false') {
+            const validatedCategories = validationCategories(req.query, true);
+            options = {
+                $or: Object.keys(validatedCategories).map((key) => ({
+                    [key]: validatedCategories[key]
+                }))
+            };
+        }
+    } catch ({message}) {
+        return res.status(400).json({ message });
     }
 
     res.header('X-Page', page + 1);
@@ -46,7 +53,7 @@ exports.list = (req, res) => {
 
         res.header('X-Total-Count', count);
 
-        User.find(options, {__v: 0, createdOn: 0, _id: 0 })
+        User.find(options, {__v: 0, createdOn: 0, _id: 0, list: 0 })
             .limit(perPage)
             .skip(perPage * page)
             .lean()
@@ -67,39 +74,15 @@ exports.list = (req, res) => {
                         // Iterator
                         (user, next) => {
                             user.email = crypto.decrypt(user.email);
-
-                            //Return only the list we are asking for
-                            user.lists = user.lists.filter((listRelationship) => {
-                                return listRelationship.list.toString() === listId.toString();
-                            });
-
-                            let userOutput = {
-                                uuid: user.uuid,
-                                expired: user.expired,
-                                manuallySuppressed: user.manuallySuppressed,
-                                automaticallySuppressed: user.automaticallySuppressed,
-                                externallySuppressed: user.externallySuppressed,
-                                metadata: user.metadata
+                            const defaultUser = {
+                                suppressedNewsletter: { value: false },
+                                suppressedMarketing: { value: false },
+                                suppressedRecommendation: { value: false },
+                                suppressedAccount: { value: false },
+                                expiredUser: { value: false },
                             };
 
-                            if (user.firstName) {
-                                userOutput.firstName = user.firstName;
-                            }
-
-                            if (user.lastName) {
-                                userOutput.lastName = user.lastName;
-                            }
-
-                            if (user.lists[0].frequency) {
-                                userOutput.frequency = user.lists[0].frequency;
-                            }
-
-                            if (user.lists[0].products && user.lists[0].products.length) {
-                                userOutput.products = user.lists[0].products;
-                            }
-
-                            userOutput.email = user.email;
-
+                            const userOutput = Object.assign({}, defaultUser, user);
                             next(null, userOutput);
                         },
                         // Callback

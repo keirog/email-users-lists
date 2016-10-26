@@ -3,6 +3,7 @@
 // Our modules
 const app = require('../server');
 const config = require('../config/config');
+const tearDownDb = require('./utils/tearDownDb');
 
 // External modules
 const should = require('should');
@@ -21,18 +22,17 @@ let list;
 describe('List CRUD tests:', () => {
 
     beforeEach((done) => {
+        tearDownDb(() => {
+            list = new List ({
+                externalIds: {
+                    eBay: "234134234234"
+                },
+                name:   'An Example List',
+                description: 'A description for the list list'
+            });
 
-        // Create new list
-        list = new List ({
-            externalIds: {
-                eBay: "234134234234"
-            },
-            name:   'An Example List',
-            description: 'A description for the list list'
+            done();
         });
-
-        done();
-
     });
 
     it('should be able to save a list', (done) => {

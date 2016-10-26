@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 /**
  * Internal Modules
  */
+const tearDownDb = require('./utils/tearDownDb');
 
 const app = require('../server');
 const crypto = require('../app/utils/crypto.server.utils');
@@ -27,29 +28,29 @@ let user;
  */
 describe('User Model Unit Tests:', () => {
     beforeEach((done) => {
-
-        list = new List ({
-            externalIds: {
-                eBay: "234134234234"
-            },
-            name:   'An Example List',
-            description: 'A description for the list list'
-        });
-
-        list.save((err, res) => {
-            user = new User ({
-                uuid:     '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                email:    crypto.encrypt('email@list.com'),
-                firstName: "Bob",
-                lastName: "Dylan",
-                lists: [{
-                    list: res._id,
-                    unsubscribeKey: 'SOMEKEY'
-                }]
+        tearDownDb(() => {
+            list = new List ({
+                externalIds: {
+                    eBay: "234134234234"
+                },
+                name:   'An Example List',
+                description: 'A description for the list list'
             });
-            done();
-        });
 
+            list.save((err, res) => {
+                user = new User ({
+                    uuid:     '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
+                    email:    crypto.encrypt('email@list.com'),
+                    firstName: "Bob",
+                    lastName: "Dylan",
+                    lists: [{
+                        list: res._id,
+                        unsubscribeKey: 'SOMEKEY1'
+                    }]
+                });
+                done();
+            });
+        });
     });
 
     describe('Method Save', () => {

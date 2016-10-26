@@ -5,6 +5,7 @@
 const app = require('../server');
 const crypto = require('../app/utils/crypto.server.utils');
 const config = require('../config/config');
+const tearDownDb = require('./utils/tearDownDb');
 
 // External modules
 const should = require('should');
@@ -27,33 +28,34 @@ describe('User CRUD tests:', () => {
 
     beforeEach((done) => {
 
-        // Create new list
-        list = new List({
-            externalIds: {
-                eBay: "234134234234"
-            },
-            name: 'An Example List',
-            description: 'A description for the example list'
-        });
-
-        list.save((err, res) => {
-
-            // Create a new user
-            user = new User({
-                uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                email: email,
-                firstName: 'Bob',
-                lastName: 'Dylan',
-                lists: [{
-                    list: res._id,
-                    unsubscribeKey: 'SOMEKEY'
-                }]
+        tearDownDb(() => {
+            // Create new list
+            list = new List({
+                externalIds: {
+                    eBay: "234134234234"
+                },
+                name: 'An Example List',
+                description: 'A description for the example list'
             });
 
-            done();
+            list.save((err, res) => {
 
+                // Create a new user
+                user = new User({
+                    uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
+                    email: email,
+                    firstName: 'Bob',
+                    lastName: 'Dylan',
+                    lists: [{
+                        list: res._id,
+                        unsubscribeKey: 'SOMEKEY2'
+                    }]
+                });
+
+                done();
+
+            });
         });
-
     });
 
     it('should be able to save a user', (done) => {
@@ -265,7 +267,10 @@ describe('User CRUD tests:', () => {
                       uuid: user.uuid
                     },
                     user: {
-                      manuallySuppressed: true
+                        suppressedMarketing: {
+                            value: true,
+                            reason: 'some reason'
+                        }
                     }
                 };
 
@@ -283,7 +288,8 @@ describe('User CRUD tests:', () => {
 
                         // Set assertions
                         (userUpdateRes.body.uuid).should.match(userSaveRes.body.uuid);
-                        (userUpdateRes.body.manuallySuppressed).should.be.true();
+                        (userUpdateRes.body.suppressedMarketing.value).should.be.true();
+                        (userUpdateRes.body.suppressedMarketing.reason).should.equal('some reason');
 
                         // Call the assertion callback
                         done();
@@ -310,7 +316,10 @@ describe('User CRUD tests:', () => {
                       email
                     },
                     user: {
-                      manuallySuppressed: true
+                      suppressedMarketing: {
+                        value: true,
+                        reason: 'some reason'
+                      }
                     }
                 };
 
@@ -328,7 +337,8 @@ describe('User CRUD tests:', () => {
 
                         // Set assertions
                         (userUpdateRes.body.uuid).should.match(userSaveRes.body.uuid);
-                        (userUpdateRes.body.manuallySuppressed).should.be.true();
+                        (userUpdateRes.body.suppressedMarketing.value).should.be.true();
+                        (userUpdateRes.body.suppressedMarketing.reason).should.equal('some reason');
 
                         // Call the assertion callback
                         done();
@@ -366,12 +376,15 @@ describe('User CRUD tests:', () => {
                 done();
             });
     });
-    
+
     it('throws an error if a key object is not provided', done => {
 
         let updateObj = {
             user: {
-              manuallySuppressed: true
+              suppressedMarketing: {
+                value: true,
+                reason: 'some reason'
+              }
             }
         };
 
@@ -399,7 +412,7 @@ describe('User CRUD tests:', () => {
 
         let updateObj = {
             key: {
-              uuid: user.uuid 
+              uuid: user.uuid
             }
         };
 
@@ -423,14 +436,17 @@ describe('User CRUD tests:', () => {
             });
     });
 
-    it('throws an error if key object doesnt contain an email or uuid', done => {
+    it('throws an error if key object doesnt contain an email or uuid', (done) => {
 
         let updateObj = {
             key: {
-              manuallySuppressed: true 
+              firstName: 'Bob'
             },
             user: {
-              manuallySuppressed: false
+              suppressedMarketing: {
+                value: true,
+                reason: 'some reason'
+              }
             }
         };
 
@@ -453,7 +469,7 @@ describe('User CRUD tests:', () => {
                 done();
             });
     });
-    
+
     it('should be able to get a list of users', (done) => {
 
         //Encrypt the emails, since we are going to directly save the user
@@ -507,7 +523,7 @@ describe('User CRUD tests:', () => {
 
         });
     });
-    
+
      it('searches users by email', (done) => {
 
         //Encrypt the emails, since we are going to directly save the user
@@ -519,13 +535,13 @@ describe('User CRUD tests:', () => {
             if (saveErr) {
                 done(saveErr);
             }
-            
+
             agent.post('/users/search')
                 .auth(config.authUser, config.authPassword)
                 .send({email})
                 .expect(200)
                 .end((searchErr, searchRes) => {
-                    
+
                     searchRes.body.should.have.a.lengthOf(1);
                     done(searchErr);
 

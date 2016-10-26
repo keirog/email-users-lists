@@ -40,8 +40,6 @@ module.exports = (app) => {
          * @apiSuccess {String} [user.suppressedAccount.reason] A reason for Account category suppressed users.
          * @apiSuccess {Object} user.expiredUser An object containing expired user info.
          * @apiSuccess {Boolean} user.expiredUser.value A flag for Expired users.
-         * @apiSuccess {String} [userList.frequency]   Indication on when the email has to be sent.
-         * @apiSuccess {String} [userList.products]   An array of products for the specific user-list relationship.
          * @apiSuccess {String} [userList.unsubscribeKey]   A key to be used to unsubscribe the user from this list.
          *
          * @apiSuccessExample Success-Response:
@@ -50,8 +48,6 @@ module.exports = (app) => {
          *       "email": "Freddy35@hotmail.com",
          *       "firstName": "Bob",
          *       "lastName": "Dylan",
-         *       "frequency": "immediate"
-         *       "products": ["next"],
          *       "unsubscribeKey": "SOMEKEY"
          *       "uuid": "34c6fc81-99d1-4ddd-a3b1-f778e2560a98"
          *     }]

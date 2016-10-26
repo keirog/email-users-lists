@@ -11,18 +11,10 @@ const listRelationshipSchema = new Schema({
     ref: 'List',
     index: true
   },
-  frequency: {
-    type: String,
-    trim: true
-  },
   unsubscribeKey: {
     type: String,
     required: 'Missing the unsubscribeKey'
-  },
-  products: [{
-    type: String,
-    trim: true
-  }]
+  }
 },
 {
   _id : false,
@@ -46,11 +38,6 @@ const userSchema = new Schema({
   createdOn: {
     type: Date,
     default: Date.now
-  },
-  expired: {
-    type: Boolean,
-    default: false,
-    index: true
   },
   expiredUser: {
     value: {
@@ -114,21 +101,6 @@ const userSchema = new Schema({
       type: Date
     }
   },
-  manuallySuppressed: {
-    type: Boolean,
-    default: false,
-    index: true
-  },
-  automaticallySuppressed: {
-    type: Boolean,
-    default: false,
-    index: true
-  },
-  externallySuppressed: {
-    type: Boolean,
-    default: false,
-    index: true
-  },
   email: {
     type: String,
     trim: true,
@@ -161,8 +133,5 @@ userSchema.pre('save', function (next) {
 userSchema.path('email').validate((value) => {
   return /^[0-9A-F]+$/i.test(value);
 }, 'The email to save is not encrypted');
-
-userSchema.index({  externallySuppressed: 1, automaticallySuppressed: 1, manuallySuppressed: 1, expired: 1, "lists.list": 1 });
-userSchema.index({  externallySuppressed: 1, automaticallySuppressed: 1, manuallySuppressed: 1, expired: 1 });
 
 mongoose.model('User', userSchema);

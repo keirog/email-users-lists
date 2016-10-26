@@ -3,10 +3,10 @@
 // External modules
 const should = require('should');
 const mongoose = require('mongoose');
+const tearDownDb = require('./utils/tearDownDb');
 
 // Internal Modules
 const app = require('../server');
-
 const List = mongoose.model('List');
 
 /**
@@ -18,15 +18,17 @@ var list;
  * Unit tests
  */
 describe('List Model Unit Tests:', function() {
-    beforeEach(function(done) {
-        list = new List ({
-            externalIds: {
-                eBay: "234134234234"
-            },
-            name:   'An Example List',
-            description: 'A description for the list list'
+    beforeEach(function (done) {
+        tearDownDb(() => {
+            list = new List ({
+                externalIds: {
+                    eBay: "234134234234"
+                },
+                name:   'An Example List',
+                description: 'A description for the list list'
+            });
+            done();
         });
-        done();
     });
 
     describe('Method Save', function() {
