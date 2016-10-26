@@ -267,7 +267,10 @@ describe('User CRUD tests:', () => {
                       uuid: user.uuid
                     },
                     user: {
-                      manuallySuppressed: true
+                        suppressedMarketing: {
+                            value: true,
+                            reason: 'some reason'
+                        }
                     }
                 };
 
@@ -285,7 +288,8 @@ describe('User CRUD tests:', () => {
 
                         // Set assertions
                         (userUpdateRes.body.uuid).should.match(userSaveRes.body.uuid);
-                        (userUpdateRes.body.manuallySuppressed).should.be.true();
+                        (userUpdateRes.body.suppressedMarketing.value).should.be.true();
+                        (userUpdateRes.body.suppressedMarketing.reason).should.equal('some reason');
 
                         // Call the assertion callback
                         done();
@@ -312,7 +316,10 @@ describe('User CRUD tests:', () => {
                       email
                     },
                     user: {
-                      manuallySuppressed: true
+                      suppressedMarketing: {
+                        value: true,
+                        reason: 'some reason'
+                      }
                     }
                 };
 
@@ -330,7 +337,8 @@ describe('User CRUD tests:', () => {
 
                         // Set assertions
                         (userUpdateRes.body.uuid).should.match(userSaveRes.body.uuid);
-                        (userUpdateRes.body.manuallySuppressed).should.be.true();
+                        (userUpdateRes.body.suppressedMarketing.value).should.be.true();
+                        (userUpdateRes.body.suppressedMarketing.reason).should.equal('some reason');
 
                         // Call the assertion callback
                         done();
@@ -373,7 +381,10 @@ describe('User CRUD tests:', () => {
 
         let updateObj = {
             user: {
-              manuallySuppressed: true
+              suppressedMarketing: {
+                value: true,
+                reason: 'some reason'
+              }
             }
         };
 
@@ -425,14 +436,17 @@ describe('User CRUD tests:', () => {
             });
     });
 
-    it('throws an error if key object doesnt contain an email or uuid', done => {
+    it('throws an error if key object doesnt contain an email or uuid', (done) => {
 
         let updateObj = {
             key: {
-              manuallySuppressed: true
+              firstName: 'Bob'
             },
             user: {
-              manuallySuppressed: false
+              suppressedMarketing: {
+                value: true,
+                reason: 'some reason'
+              }
             }
         };
 
