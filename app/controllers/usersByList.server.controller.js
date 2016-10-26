@@ -20,8 +20,8 @@ exports.list = (req, res) => {
     //TODO: use config for pagination defaults
     let perPage = (Number(req.query.pp) > 0 ? Number(req.query.pp) : 100);
 
-    let options = {'lists.list': listId};
-
+    let queryDefaults = {'lists.list': listId};
+    let options = {};
     /**
      * The "valid" filter
      */
@@ -45,7 +45,7 @@ exports.list = (req, res) => {
 
     let t1 = Date.now();
     logger.debug('Request received');
-
+    options = Object.assign(options, queryDefaults);
     User.count(options, (countErr, count) => {
 
         let t2 = Date.now();
