@@ -113,6 +113,15 @@ const userSchema = new Schema({
   lists: [listRelationshipSchema]
 });
 
+userSchema.index({
+  "lists.list": 1,
+  "expiredUser.value": 1,
+  "suppressedAccount.value": 1,
+  "suppressedRecommendation.value": 1,
+  "suppressedMarketing.value": 1,
+  "suppressedNewsletter.value": 1
+}, { name: "compound1", background: true });
+
 userSchema.pre('save', function (next) {
   const suppressionTypes = [
     'suppressedAccount',
