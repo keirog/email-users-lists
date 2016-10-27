@@ -54,7 +54,7 @@ exports.list = (req, res) => {
 
         res.header('X-Total-Count', count);
 
-        User.find(options, {__v: 0, createdOn: 0, _id: 0, list: 0 })
+        User.find(options, {__v: 0, createdOn: 0, _id: 0, lists: 0 })
             .limit(perPage)
             .skip(perPage * page)
             .lean()
@@ -83,7 +83,7 @@ exports.list = (req, res) => {
                                 expiredUser: { value: false },
                             };
 
-                            const userOutput = Object.assign({}, defaultUser, omit(user, 'lists'));
+                            const userOutput = Object.assign({}, defaultUser, user);
                             next(null, userOutput);
                         },
                         // Callback
