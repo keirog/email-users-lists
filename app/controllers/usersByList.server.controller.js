@@ -3,6 +3,7 @@
 // External modules
 const mongoose = require('mongoose');
 const async = require('async');
+const omit = require('lodash/omit');
 
 // Our modules
 const crypto = require('../utils/crypto.server.utils');
@@ -82,7 +83,7 @@ exports.list = (req, res) => {
                                 expiredUser: { value: false },
                             };
 
-                            const userOutput = Object.assign({}, defaultUser, user);
+                            const userOutput = Object.assign({}, defaultUser, omit(user, 'lists'));
                             next(null, userOutput);
                         },
                         // Callback
