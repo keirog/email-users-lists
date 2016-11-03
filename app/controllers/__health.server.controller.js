@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const sentry = require('../../config/sentry').init();
 
 let isDBUp = false;
 let dbUpLastUpdated;
@@ -10,11 +11,13 @@ function checkDBUp() {
   mongoose.connection.db.admin().ping().then(result => {
     if (!result) {
       isDBUp = false;
+      sentry.captureError('MongoDB Ping returned no result');
       return;
     }
     isDBUp = true;
     dbUpLastUpdated = new Date().toISOString();
   }).catch(err => {
+      sentry.captureError('MongoDB Ping returned no result', err);
     isDBUp = false;
     dbUpLastUpdated = new Date().toISOString();
   });
