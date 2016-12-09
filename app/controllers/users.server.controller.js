@@ -320,11 +320,8 @@ exports.updateOne = (req, res, next) => {
             user = extend(user, req.body.user);
             manageUsers.manageExpiration(user);
             user.email = crypto.encrypt(user.email);
-            user = user.toObject();
-            delete user._id;
 
-            User.findOneAndUpdate(searchObj, user,
-                { runValidators: true, new: true }, (updateErr, updatedUser) => {
+            user.save(user, (updateErr) => {
 
                     /* istanbul ignore if */
                     if (updateErr) {
@@ -335,8 +332,8 @@ exports.updateOne = (req, res, next) => {
                         });
                     }
                     else {
-                        updatedUser.email = crypto.decrypt(updatedUser.email);
-                        res.json(updatedUser);
+                        user.email = crypto.decrypt(user.email);
+                        res.json(user);
                     }
                 });
         }
