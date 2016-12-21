@@ -17,11 +17,11 @@ module.exports = () => {
 
     app.use(bodyParser.urlencoded({
         extended: true,
-        limit:'10mb'
+        limit:'50mb'
     }));
 
     app.use(bodyParser.json({
-        limit:'10mb'
+        limit:'50mb'
     }));
 
     // NOTE: we expose the public folder before adding basic authentication!
