@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 const sentry = require('../../config/sentry').init();
 
-let isDBUp = false;
+let isDBUp = true;
 let dbUpLastUpdated;
 
 /* istanbul ignore next */
@@ -37,7 +37,7 @@ exports.handle = (req, res) => {
 		let dbCheckObj = {
 						name: 'mongodDb is Up',
 						id: 'email-users-lists-db-check',
-						ok: false, //defaults to false
+						ok: true, //defaults to false
 						severity: 1,
 						businessImpact: 'Will not be able to send emails via simple send service, nor access user preferences and suppressions.',
 						technicalSummary: 'Pings the Db connection to ensure proper response and connectivity',
