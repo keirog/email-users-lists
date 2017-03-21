@@ -1,4 +1,4 @@
-'use strict';
+
 
 // External modules
 const mongoose = require('mongoose');
@@ -9,118 +9,124 @@ const listRelationshipSchema = new Schema({
   list: {
     type: Schema.Types.ObjectId,
     ref: 'List',
-    index: true
+    index: true,
+  },
+  byTool: {
+    enum: ['userOptIn', 'forceOptIn'],
+    type: String,
+    trim: true,
   },
   unsubscribeKey: {
     type: String,
-    required: 'Missing the unsubscribeKey'
-  }
+    required: 'Missing the unsubscribeKey',
+  },
 },
-{
-  _id : false,
-  read: 'secondaryPreferred'
-});
+  {
+    _id: false,
+    read: 'secondaryPreferred',
+    timestamps: true,
+  });
 
 const userSchema = new Schema({
   uuid: {
     type: String,
     trim: true,
-    index: {unique: true, sparse: true}
+    index: { unique: true, sparse: true },
   },
   firstName: {
     type: String,
-    trim: true
+    trim: true,
   },
   lastName: {
     type: String,
-    trim: true
+    trim: true,
   },
   createdOn: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   expiredUser: {
     value: {
       type: Boolean,
       default: false,
-      index: true
+      index: true,
     },
     updatedAt: {
-      type: Date
-    }
+      type: Date,
+    },
   },
   suppressedNewsletter: {
     value: {
       type: Boolean,
       default: false,
-      index: true
+      index: true,
     },
     reason: {
-      type: String
+      type: String,
     },
     updatedAt: {
-      type: Date
-    }
+      type: Date,
+    },
   },
   suppressedMarketing: {
     value: {
       type: Boolean,
       default: false,
-      index: true
+      index: true,
     },
     reason: {
-      type: String
+      type: String,
     },
     updatedAt: {
-      type: Date
-    }
+      type: Date,
+    },
   },
   suppressedRecommendation: {
     value: {
       type: Boolean,
       default: false,
-      index: true
+      index: true,
     },
     reason: {
-      type: String
+      type: String,
     },
     updatedAt: {
-      type: Date
-    }
+      type: Date,
+    },
   },
   suppressedAccount: {
     value: {
       type: Boolean,
       default: false,
-      index: true
+      index: true,
     },
     reason: {
-      type: String
+      type: String,
     },
     updatedAt: {
-      type: Date
-    }
+      type: Date,
+    },
   },
   email: {
     type: String,
     trim: true,
     index: { unique: true },
-    required: 'email cannot be blank'
+    required: 'email cannot be blank',
   },
   metadata: {
-    type: {}
+    type: {},
   },
-  lists: [listRelationshipSchema]
+  lists: [listRelationshipSchema],
 });
 
 userSchema.index({
-  "lists.list": 1,
-  "expiredUser.value": 1,
-  "suppressedAccount.value": 1,
-  "suppressedRecommendation.value": 1,
-  "suppressedMarketing.value": 1,
-  "suppressedNewsletter.value": 1
-}, { name: "compound1", background: true });
+  'lists.list': 1,
+  'expiredUser.value': 1,
+  'suppressedAccount.value': 1,
+  'suppressedRecommendation.value': 1,
+  'suppressedMarketing.value': 1,
+  'suppressedNewsletter.value': 1,
+}, { name: 'compound1', background: true });
 
 userSchema.pre('save', function (next) {
   const suppressionTypes = [
@@ -128,7 +134,7 @@ userSchema.pre('save', function (next) {
     'suppressedRecommendation',
     'suppressedMarketing',
     'suppressedNewsletter',
-    'expiredUser'
+    'expiredUser',
   ];
   for (const suppressionType of suppressionTypes) {
     if (this.isModified(suppressionType)) {
@@ -138,9 +144,7 @@ userSchema.pre('save', function (next) {
   next();
 });
 
-//We always want emails to be encrypted
-userSchema.path('email').validate((value) => {
-  return /^[0-9A-F]+$/i.test(value);
-}, 'The email to save is not encrypted');
+// We always want emails to be encrypted
+userSchema.path('email').validate((value) => /^[0-9A-F]+$/i.test(value), 'The email to save is not encrypted');
 
 mongoose.model('User', userSchema);
