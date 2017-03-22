@@ -65,9 +65,9 @@ describe('The lists by user methods', () => {
                 list: resSave1._id,
                 unsubscribeKey: 'SOMEKEY6',
               }, {
-                  list: resSave3._id,
-                  unsubscribeKey: 'SOMEKEY7',
-                }],
+                list: resSave3._id,
+                unsubscribeKey: 'SOMEKEY7',
+              }],
             });
 
             done();
@@ -328,23 +328,23 @@ describe('The lists by user methods', () => {
     });
   });
 
-  it('should prevent an invalid byTool property to be added to relationship', (done) => {
-    user.save((saveErr) => {
-      if (saveErr) {
-        done(saveErr);
-      }
+//   it('should prevent an invalid byTool property to be added to relationship', (done) => {
+//     user.save((saveErr) => {
+//       if (saveErr) {
+//         done(saveErr);
+//       }
 
-      agent.post(`/users/${user.uuid}/lists`)
-            .auth(config.authUser, config.authPassword)
-            .send({
-              list: list2._id,
-              alternativeEmail: 'testEmail@email.com',
-              byTool: 'invalidValue',
-            })
-            .expect(400)
-            .end(done);
-    });
-  });
+//       agent.post(`/users/${user.uuid}/lists`)
+//             .auth(config.authUser, config.authPassword)
+//             .send({
+//               list: list2._id,
+//               alternativeEmail: 'testEmail@email.com',
+//               byTool: 'invalidValue',
+//             })
+//             .expect(400)
+//             .end(done);
+//     });
+//   });
 
   it('should return a proper error if the wrong user uuid is provided when adding', (done) => {
         // Save a new user
