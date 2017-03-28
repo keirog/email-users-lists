@@ -32,6 +32,7 @@ exports.list = (req, res) => {
         });
 };
 
+
 exports.add = (req, res) => {
     // We have a valid user uuid and list _id
   const user = req.user;
@@ -51,7 +52,7 @@ exports.add = (req, res) => {
     const newRelationship = {
       list: listId,
     };
-    newRelationship.byTool = bodyListRelationship.byTool;
+    newRelationship.signUpType = bodyListRelationship.signUpType;
     newRelationship.unsubscribeKey = unsubscribeEncryption.encrypt({
       uuid: user.uuid,
       listId,
@@ -80,8 +81,8 @@ exports.add = (req, res) => {
       if (updateErr) {
         return res.status(400).json({
                     // TODO: errorHandler.getErrorMessage(err)
-            message: updateErr,
-          });
+          message: updateErr,
+        });
       }
 
       res.json(decryptedUser.lists);

@@ -11,7 +11,7 @@ const listRelationshipSchema = new Schema({
     ref: 'List',
     index: true,
   },
-  byTool: {
+  signUpType: {
     type: String,
     trim: true,
   },

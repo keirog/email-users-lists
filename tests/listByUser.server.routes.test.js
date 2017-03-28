@@ -1,5 +1,3 @@
-
-
 // Our modules
 const app = require('../server');
 const crypto = require('../app/utils/crypto.server.utils');
@@ -285,7 +283,7 @@ describe('The lists by user methods', () => {
     });
   });
 
-  it('should add a byTool property to relationship', (done) => {
+  it('should add a signUpType property to relationship', (done) => {
     user.save((saveErr) => {
       if (saveErr) {
         done(saveErr);
@@ -296,7 +294,7 @@ describe('The lists by user methods', () => {
                 .send({
                   list: list2._id,
                   alternativeEmail: 'testEmail@email.com',
-                  byTool: 'userOptIn',
+                  signUpType: 'userSignUp',
                 })
                 .expect(200)
                 .end((listAddErr) => {
@@ -320,31 +318,13 @@ describe('The lists by user methods', () => {
 
                             // Set assertions
                           const newRelationship = lists[2];
-                          newRelationship.should.have.property('byTool', 'userOptIn');
+                          newRelationship.should.have.property('signUpType', 'userSignUp');
                             // Call the assertion callback
                           done();
                         });
                 });
     });
   });
-
-//   it('should prevent an invalid byTool property to be added to relationship', (done) => {
-//     user.save((saveErr) => {
-//       if (saveErr) {
-//         done(saveErr);
-//       }
-
-//       agent.post(`/users/${user.uuid}/lists`)
-//             .auth(config.authUser, config.authPassword)
-//             .send({
-//               list: list2._id,
-//               alternativeEmail: 'testEmail@email.com',
-//               byTool: 'invalidValue',
-//             })
-//             .expect(400)
-//             .end(done);
-//     });
-//   });
 
   it('should return a proper error if the wrong user uuid is provided when adding', (done) => {
         // Save a new user
