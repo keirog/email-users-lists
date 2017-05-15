@@ -59,16 +59,16 @@ module.exports = (app) => {
          * @apiParam {String} lastName The last name of the User.
          * @apiParam {Object} user Object containing the properties of the user to be updated
          * @apiParam {Object} [user.suppressedNewsletter] An object containing newsletter category suppressions.
-         * @apiParam {Boolean} [user.suppressedNewsletter.value=flase] A flag for Newsletter category suppressed users.
+         * @apiParam {Boolean} [user.suppressedNewsletter.value=false] A flag for Newsletter category suppressed users.
          * @apiParam {String} [user.suppressedNewsletter.reason] A reason for Newsletter category suppressed users.
          * @apiParam {Object} [user.suppressedMarketing] An object containing marketing category suppressions.
-         * @apiParam {Boolean} [user.suppressedMarketing.value=flase] A flag for Marketing category suppressed users.
+         * @apiParam {Boolean} [user.suppressedMarketing.value=false] A flag for Marketing category suppressed users.
          * @apiParam {String} [user.suppressedMarketing.reason] A reason for Marketing category suppressed users.
          * @apiParam {Object} [user.suppressedRecommendation] An object containing recommendation category suppressions.
-         * @apiParam {Boolean} [user.suppressedRecommendation.value=flase] A flag for Recommendation category suppressed users.
+         * @apiParam {Boolean} [user.suppressedRecommendation.value=false] A flag for Recommendation category suppressed users.
          * @apiParam {String} [user.suppressedRecommendation.reason] A reason for Recommendation category suppressed users.
          * @apiParam {Object} [user.suppressedAccount] An object containing account category suppressions.
-         * @apiParam {Boolean} [user.suppressedAccount.value=flase] A flag for Account category suppressed users.
+         * @apiParam {Boolean} [user.suppressedAccount.value=false] A flag for Account category suppressed users.
          * @apiParam {String} [user.suppressedAccount.reason] A reason for Account category suppressed users.
          * @apiParam {Object} [user.expiredUser] An object containing expired user info.
          * @apiParam {Boolean} [user.expiredUser.value=false] A flag for Expired users.
@@ -211,16 +211,16 @@ module.exports = (app) => {
          * @apiParam {String} [key.email] The email of the user to edit
          * @apiParam {Object} user Object containing the properties of the user to be updated
          * @apiParam {Object} [user.suppressedNewsletter] An object containing newsletter category suppressions.
-         * @apiParam {Boolean} [user.suppressedNewsletter.value=flase] A flag for Newsletter category suppressed users.
+         * @apiParam {Boolean} [user.suppressedNewsletter.value=false] A flag for Newsletter category suppressed users.
          * @apiParam {String} [user.suppressedNewsletter.reason] A reason for Newsletter category suppressed users.
          * @apiParam {Object} [user.suppressedMarketing] An object containing marketing category suppressions.
-         * @apiParam {Boolean} [user.suppressedMarketing.value=flase] A flag for Marketing category suppressed users.
+         * @apiParam {Boolean} [user.suppressedMarketing.value=false] A flag for Marketing category suppressed users.
          * @apiParam {String} [user.suppressedMarketing.reason] A reason for Marketing category suppressed users.
          * @apiParam {Object} [user.suppressedRecommendation] An object containing recommendation category suppressions.
-         * @apiParam {Boolean} [user.suppressedRecommendation.value=flase] A flag for Recommendation category suppressed users.
+         * @apiParam {Boolean} [user.suppressedRecommendation.value=false] A flag for Recommendation category suppressed users.
          * @apiParam {String} [user.suppressedRecommendation.reason] A reason for Recommendation category suppressed users.
          * @apiParam {Object} [user.suppressedAccount] An object containing account category suppressions.
-         * @apiParam {Boolean} [user.suppressedAccount.value=flase] A flag for Account category suppressed users.
+         * @apiParam {Boolean} [user.suppressedAccount.value=false] A flag for Account category suppressed users.
          * @apiParam {String} [user.suppressedAccount.reason] A reason for Account category suppressed users.
          * @apiParam {Object} [user.expiredUser] An object containing expired user info.
          * @apiParam {Boolean} [user.expiredUser.value=false] A flag for Expired users.
@@ -326,16 +326,16 @@ module.exports = (app) => {
          * @apiParam {String} [firstName] The first name of the User.
          * @apiParam {String} [lastName] The last name of the User.
          * @apiParam {Object} [user.suppressedNewsletter] An object containing newsletter category suppressions.
-         * @apiParam {Boolean} [user.suppressedNewsletter.value=flase] A flag for Newsletter category suppressed users.
+         * @apiParam {Boolean} [user.suppressedNewsletter.value=false] A flag for Newsletter category suppressed users.
          * @apiParam {String} [user.suppressedNewsletter.reason] A reason for Newsletter category suppressed users.
          * @apiParam {Object} [user.suppressedMarketing] An object containing marketing category suppressions.
-         * @apiParam {Boolean} [user.suppressedMarketing.value=flase] A flag for Marketing category suppressed users.
+         * @apiParam {Boolean} [user.suppressedMarketing.value=false] A flag for Marketing category suppressed users.
          * @apiParam {String} [user.suppressedMarketing.reason] A reason for Marketing category suppressed users.
          * @apiParam {Object} [user.suppressedRecommendation] An object containing recommendation category suppressions.
-         * @apiParam {Boolean} [user.suppressedRecommendation.value=flase] A flag for Recommendation category suppressed users.
+         * @apiParam {Boolean} [user.suppressedRecommendation.value=false] A flag for Recommendation category suppressed users.
          * @apiParam {String} [user.suppressedRecommendation.reason] A reason for Recommendation category suppressed users.
          * @apiParam {Object} [user.suppressedAccount] An object containing account category suppressions.
-         * @apiParam {Boolean} [user.suppressedAccount.value=flase] A flag for Account category suppressed users.
+         * @apiParam {Boolean} [user.suppressedAccount.value=false] A flag for Account category suppressed users.
          * @apiParam {String} [user.suppressedAccount.reason] A reason for Account category suppressed users.
          * @apiParam {Object} [user.expiredUser] An object containing expired user info.
          * @apiParam {Boolean} [user.expiredUser.value=false] A flag for Expired users.
