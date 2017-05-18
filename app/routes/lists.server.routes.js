@@ -23,8 +23,8 @@ module.exports = (app) => {
      * @apiSuccess {Boolean} [inactive=false]   The list is not active.
      * @apiSuccess {Object} externalIds External IDs.
      * @apiSuccess {String} [externalIds.eBay] eBay ID.
-     * @apiParam {String} [imageURL]   The URL for the list image.
-     * @apiParam {String} [frequency]   The send frequency for the list.
+     * @apiSuccess {String} [imageURL]   The URL for the list image.
+     * @apiSuccess {String} [frequency]   The send frequency for the list.
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
