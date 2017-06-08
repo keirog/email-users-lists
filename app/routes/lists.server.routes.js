@@ -57,6 +57,8 @@ module.exports = (app) => {
      * @apiSuccess {String} [list.externalIds.eBay] eBay ID.
      * @apiSuccess {String} list.description   The description for the List.
      * @apiSuccess {Boolean} [list.inactive=false]   The list is not active.
+     * @apiSuccess {String} [imageURL]   The URL for the list image.
+     * @apiSuccess {String} [frequency]   The send frequency for the list.
      *
      * @apiSuccessExample Success-Response:
      *     HTTP/1.1 200 OK
@@ -65,7 +67,9 @@ module.exports = (app) => {
      *       "externalIds": {},
      *       "name": "a eaque aut accusamus voluptatem pariatur",
      *       "description": "ipsam facere laboriosam rerum ut ab incidunt\ excepturi incidunt tempora ut in\ debitis placeat incidunt architecto distinctio non vitae vel maxime voluptatem\ at ad repellendus quos doloribus laudantium\ qui consequatur eos\ quam esse saepe",
-     *       "inactive": true
+     *       "inactive": true,
+     *       "imageURL": "http://www.example.com/image001.jpg",
+     *       "frequency": "Weekly"
      *     },
      *     {
      *       "_id": "55719bbc18ef0a030084048a",
@@ -74,7 +78,9 @@ module.exports = (app) => {
      *       },
      *       "name": "commodi officiis natus",
      *       "description": "doloribus sunt qui qui voluptatem cumque voluptatem\nasperiores labore voluptatem saepe ratione\nea provident velit maiores non omnis quos temporibus\neum occaecati nostrum deserunt\neaque dicta cupiditate labore hic fugiat",
-     *       "inactive": false
+     *       "inactive": false,
+     *       "imageURL": "http://www.example.com/image001.jpg",
+     *       "frequency": "Weekly"
      *     }]
      *
      **/
