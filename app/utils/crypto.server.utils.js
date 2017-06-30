@@ -1,10 +1,12 @@
 'use strict';
 
 const crypto = require("crypto");
+const config = require('../../config/config');
+
 const algorithm = 'aes-256-ctr';
 const password = process.env.EMAIL_SIGNING_KEY;
-const ivPassword = process.env.ENCRYPTION_KEY;
-const hmacKey = process.env.HMAC_KEY;
+const ivPassword = config.encryptionKey;
+const hmacKey = config.hmacKey; 
 const IV_LENGTH = 16;
 
 module.exports.encrypt = (text) => {

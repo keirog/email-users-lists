@@ -8,5 +8,7 @@ const authUser = process.env.BASIC_AUTH_USER;
 const authPassword = process.env.BASIC_AUTH_PASSWORD;
 const unsubscribeSecret = process.env.UNSUBSCRIBE_SECRET;
 const sentryDSN = process.env.SENTRY_DSN;
+const encryptionKey = process.env.ENCRYPTION_KEY;
+const hmacKey = process.env.HMAC_KEY;
 
-module.exports = { port, db, processId, logLevel, authUser, authPassword, unsubscribeSecret, sentryDSN };
+module.exports = { port, db, processId, logLevel, authUser, authPassword, unsubscribeSecret, sentryDSN, encryptionKey, hmacKey };
