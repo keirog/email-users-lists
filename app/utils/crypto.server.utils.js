@@ -1,9 +1,13 @@
 'use strict';
 
 const crypto = require("crypto");
-const algorithm = 'aes-256-ctr';
-const password = process.env.EMAIL_SIGNING_KEY;
+const config = require('../../config/config');
 
+const algorithm = 'aes-256-ctr';
+const password = config.emailSigningKey;
+const ivPassword = config.encryptionKey;
+const hmacKey = config.hmacKey; 
+const IV_LENGTH = 16;
 
 module.exports.encrypt = (text) => {
     
@@ -28,4 +32,17 @@ module.exports.decrypt = (text) => {
 
     return dec;
 
+};
+
+module.exports.ivEncrypt = (text) => {
+  text = text.toLowerCase();
+  const iv = crypto.randomBytes(IV_LENGTH);
+  const cipher = crypto.createCipheriv(algorithm, ivPassword, iv);
+  let crypted = cipher.update(text, 'utf8', 'hex');
+  crypted += cipher.final('hex');
+  return `${iv.toString('hex')}:${crypted}`;
+};
+
+module.exports.hmacDigest = (text) => {
+  return crypto.createHmac('sha256', hmacKey).update(text).digest('hex');
 };

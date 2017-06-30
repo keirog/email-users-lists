@@ -4,6 +4,7 @@
 const mongoose = require('mongoose');
 const extend = require('extend');
 const async = require('async');
+const omit = require('lodash/omit');
 
 // Our modules
 const crypto = require('../utils/crypto.server.utils');
@@ -29,7 +30,10 @@ exports.create = (req, res) => {
     manageUsers.manageExpiration(userObj);
 
     // Encrypt the email
-    userObj.email = crypto.encrypt(userObj.email);
+    const email = userObj.email;
+    userObj.email = crypto.encrypt(email);
+    userObj.encryptedEmail = crypto.ivEncrypt(email);
+    userObj.emailBlindIdx = crypto.hmacDigest(email);
 
     let user = new User(userObj);
     user.save((saveErr) => {
@@ -43,7 +47,7 @@ exports.create = (req, res) => {
 
         // Send the decrypted emails back
         user.email = crypto.decrypt(userObj.email);
-        return res.json(user);
+        return res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
 
     });
 };
@@ -117,7 +121,7 @@ exports.list = (req, res) => {
                         // Iterator
                         (user, next) => {
                             user.email = crypto.decrypt(user.email);
-                            next(null, user);
+                            next(null, omit(user, 'encryptedEmail', 'emailBlindIdx'));
                         },
                         // Callback
                         (encryptErr, decryptedUsers) => {
@@ -213,7 +217,7 @@ exports.search = (req, res) => {
                         // Iterator
                         (user, next) => {
                             user.email = crypto.decrypt(user.email);
-                            next(null, user);
+                            next(null, omit(user, 'encryptedEmail', 'emailBlindIdx'));
                         },
                         // Callback
                         (encryptErr, decryptedUsers) => {
@@ -239,7 +243,7 @@ exports.search = (req, res) => {
 };
 
 exports.read = (req, res) => {
-    return res.json(req.user);
+    return res.json(omit(req.user, 'encryptedEmail', 'emailBlindIdx'));
 };
 
 exports.patch = (req, res, next) => {
@@ -262,7 +266,10 @@ exports.patch = (req, res, next) => {
     manageUsers.manageExpiration(user);
 
     if (user.email) {
-        user.email = crypto.encrypt(user.email);
+      const email = user.email;
+      user.email = crypto.encrypt(email);
+      user.encryptedEmail = crypto.ivEncrypt(email);
+      user.emailBlindIdx = crypto.hmacDigest(email);
     }
 
     // Update
@@ -278,7 +285,7 @@ exports.patch = (req, res, next) => {
         }
         else {
             user.email = crypto.decrypt(user.email);
-            res.json(user);
+            res.json(omit(user, 'encryptedEmail', 'emailBlindIdx'));
         }
     });
 };
@@ -315,11 +322,14 @@ exports.updateOne = (req, res, next) => {
             return next(findErr);
         }
         else if (user) {
-            user.email = crypto.decrypt(user.email);
+            const email = user.email;
+            user.email = crypto.decrypt(email);
             manageUsers.manageSuppression(user, req.body.user);
             user = extend(user, req.body.user);
             manageUsers.manageExpiration(user);
-            user.email = crypto.encrypt(user.email);
+            user.email = crypto.encrypt(email);
+            user.encryptedEmail = crypto.ivEncrypt(email);
+            user.emailBlindIdx = crypto.hmacDigest(email);
 
             user.save(user, (updateErr) => {
 
@@ -333,7 +343,7 @@ exports.updateOne = (req, res, next) => {
                     }
                     else {
                         user.email = crypto.decrypt(user.email);
-                        res.json(user);
+                        res.json(omit(user, 'encryptedEmail', 'emailBlindIdx'));
                     }
                 });
         }
