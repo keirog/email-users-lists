@@ -3,6 +3,7 @@
 const crypto = require("crypto");
 const algorithm = 'aes-256-ctr';
 const password = process.env.EMAIL_SIGNING_KEY;
+const ivPassword = process.env.ENCRYPTION_KEY;
 
 
 module.exports.encrypt = (text) => {
@@ -28,4 +29,17 @@ module.exports.decrypt = (text) => {
 
     return dec;
 
+};
+
+module.exports.ivEncrypt = (text) => {
+  text = text.toLowerCase();
+  const iv = crypto.randomBytes(IV_LENGTH);
+  const cipher = crypto.createCipheriv(algorithm, ivPassword, iv);
+  let crypted = cipher.update(text, 'utf8', 'hex');
+  crypted += cipher.final('hex');
+  return `${iv.toString('hex')}:${crypted}`;
+};
+
+module.exports.hmacDigest = (text) => {
+  return crypto.createHmac('sha256', hmacKey).update(text).digest('hex');
 };
