@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const config = require('../../config/config');
 
 const algorithm = 'aes-256-ctr';
-const password = process.env.EMAIL_SIGNING_KEY;
+const password = config.emailSigningKey;
 const ivPassword = config.encryptionKey;
 const hmacKey = config.hmacKey; 
 const IV_LENGTH = 16;
