@@ -29,7 +29,10 @@ exports.create = (req, res) => {
     manageUsers.manageExpiration(userObj);
 
     // Encrypt the email
-    userObj.email = crypto.encrypt(userObj.email);
+    const email = userObj.email;
+    userObj.email = crypto.encrypt(email);
+    userObj.encryptedEmail = crypto.ivEncrypt(email);
+    userObj.emailBlindIdx = crypto.hmacDigest(email);
 
     let user = new User(userObj);
     user.save((saveErr) => {
@@ -262,7 +265,10 @@ exports.patch = (req, res, next) => {
     manageUsers.manageExpiration(user);
 
     if (user.email) {
-        user.email = crypto.encrypt(user.email);
+      const email = user.email;
+      user.email = crypto.encrypt(email);
+      user.encryptedEmail = crypto.ivEncrypt(email);
+      user.emailBlindIdx = crypto.hmacDigest(email);
     }
 
     // Update
@@ -315,11 +321,14 @@ exports.updateOne = (req, res, next) => {
             return next(findErr);
         }
         else if (user) {
-            user.email = crypto.decrypt(user.email);
+            const email = user.email;
+            user.email = crypto.decrypt(email);
             manageUsers.manageSuppression(user, req.body.user);
             user = extend(user, req.body.user);
             manageUsers.manageExpiration(user);
-            user.email = crypto.encrypt(user.email);
+            user.email = crypto.encrypt(email);
+            user.encryptedEmail = crypto.ivEncrypt(email);
+            user.emailBlindIdx = crypto.hmacDigest(email);
 
             user.save(user, (updateErr) => {
 

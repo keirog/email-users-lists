@@ -107,6 +107,16 @@ const userSchema = new Schema({
     index: { unique: true },
     required: 'email cannot be blank'
   },
+  encryptedEmail: {
+    type: String,
+    trim: true,
+    index: { unique: true }
+  },
+  emailBlindIdx: {
+    type: String,
+    trim: true,
+    index: { unique: true }
+  },
   metadata: {
     type: {}
   },

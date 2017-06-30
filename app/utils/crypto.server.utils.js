@@ -4,7 +4,8 @@ const crypto = require("crypto");
 const algorithm = 'aes-256-ctr';
 const password = process.env.EMAIL_SIGNING_KEY;
 const ivPassword = process.env.ENCRYPTION_KEY;
-
+const hmacKey = process.env.HMAC_KEY;
+const IV_LENGTH = 16;
 
 module.exports.encrypt = (text) => {
     
