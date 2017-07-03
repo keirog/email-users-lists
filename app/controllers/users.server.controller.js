@@ -323,13 +323,15 @@ exports.updateOne = (req, res, next) => {
         }
         else if (user) {
             const email = user.email;
-            user.email = crypto.decrypt(email);
+            const decryptedEmail = crypto.decrypt(email);
+            user.email = decryptedEmail;
             manageUsers.manageSuppression(user, req.body.user);
             user = extend(user, req.body.user);
             manageUsers.manageExpiration(user);
-            user.email = crypto.encrypt(email);
-            user.encryptedEmail = crypto.ivEncrypt(email);
-            user.emailBlindIdx = crypto.hmacDigest(email);
+            const newEmail = user.email;
+            user.email = crypto.encrypt(newEmail);
+            user.encryptedEmail = crypto.ivEncrypt(newEmail);
+            user.emailBlindIdx = crypto.hmacDigest(newEmail);
 
             user.save(user, (updateErr) => {
 
