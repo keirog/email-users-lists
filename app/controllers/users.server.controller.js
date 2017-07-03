@@ -243,7 +243,7 @@ exports.search = (req, res) => {
 };
 
 exports.read = (req, res) => {
-    return res.json(omit(req.user, 'encryptedEmail', 'emailBlindIdx'));
+    return res.json(omit(req.user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
 };
 
 exports.patch = (req, res, next) => {
@@ -285,7 +285,7 @@ exports.patch = (req, res, next) => {
         }
         else {
             user.email = crypto.decrypt(user.email);
-            res.json(omit(user, 'encryptedEmail', 'emailBlindIdx'));
+            res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
         }
     });
 };
@@ -345,7 +345,7 @@ exports.updateOne = (req, res, next) => {
                     }
                     else {
                         user.email = crypto.decrypt(user.email);
-                        res.json(omit(user, 'encryptedEmail', 'emailBlindIdx'));
+                        res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
                     }
                 });
         }
