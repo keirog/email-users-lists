@@ -32,7 +32,7 @@ exports.create = (req, res) => {
     // Encrypt the email
     const email = userObj.email;
     userObj.email = crypto.encrypt(email);
-    userObj.encryptedEmail = crypto.ivEncrypt(email);
+    userObj.encryptedEmail = crypto.encrypt(email);
     userObj.emailBlindIdx = crypto.hmacDigest(email);
 
     let user = new User(userObj);
@@ -122,7 +122,7 @@ exports.list = (req, res) => {
                     async.map(users,
                         // Iterator
                         (user, next) => {
-                            user.email = crypto.decrypt(user.emailEncrypted);
+                            user.email = crypto.decrypt(user.encryptedEmail);
                             next(null, omit(user, 'encryptedEmail', 'emailBlindIdx'));
                         },
                         // Callback
@@ -218,7 +218,7 @@ exports.search = (req, res) => {
                     async.map(users,
                         // Iterator
                         (user, next) => {
-                            user.email = crypto.decrypt(user.emailEncrypted);
+                            user.email = crypto.decrypt(user.encryptedEmail);
                             next(null, omit(user, 'encryptedEmail', 'emailBlindIdx'));
                         },
                         // Callback
@@ -270,7 +270,7 @@ exports.patch = (req, res, next) => {
     if (user.email) {
       const email = user.email;
       user.email = crypto.encrypt(email);
-      user.encryptedEmail = crypto.ivEncrypt(email);
+      user.encryptedEmail = crypto.encrypt(email);
       user.emailBlindIdx = crypto.hmacDigest(email);
     }
 
@@ -286,7 +286,7 @@ exports.patch = (req, res, next) => {
             });
         }
         else {
-            user.email = email;
+            user.email = crypto.decrypt(user.encryptedEmail);
             res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
         }
     });
@@ -324,7 +324,7 @@ exports.updateOne = (req, res, next) => {
             return next(findErr);
         }
         else if (user) {
-            const email = user.emailEncrypted;
+            const email = user.encryptedEmail;
             const decryptedEmail = crypto.decrypt(email);
             user.email = decryptedEmail;
             manageUsers.manageSuppression(user, req.body.user);
@@ -332,7 +332,7 @@ exports.updateOne = (req, res, next) => {
             manageUsers.manageExpiration(user);
             const newEmail = user.email;
             user.email = crypto.encrypt(newEmail);
-            user.encryptedEmail = crypto.ivEncrypt(newEmail);
+            user.encryptedEmail = crypto.encrypt(newEmail);
             user.emailBlindIdx = crypto.hmacDigest(newEmail);
 
             user.save(user, (updateErr) => {
@@ -369,7 +369,7 @@ exports.userByUuid = (req, res, next, uuid) => {
             return next(findErr);
         }
         else if (user) {
-            user.email = crypto.decrypt(user.emailEncrypted);
+            user.email = crypto.decrypt(user.encryptedEmail);
 
             req.user = user;
             return next();
