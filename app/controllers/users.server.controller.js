@@ -46,7 +46,7 @@ exports.create = (req, res) => {
         }
 
         // Send the decrypted emails back
-        user.email = crypto.decrypt(userObj.email);
+        user.email = email;
         return res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
 
     });
@@ -86,8 +86,10 @@ exports.list = (req, res) => {
     /**
      * The "email" filter
      */
-    if (req.query.email) {
-        options.email = crypto.encrypt(req.query.email);
+
+    if (req.body.email) {
+      options.emailBlindIdx = !Array.isArray(req.body.email) ? crypto.hmacDigest(req.body.email) :
+        { $in: req.body.email.map(email => crypto.hmacDigest(email)) };
     }
 
     User.count(options, (countErr, count) => {
@@ -120,7 +122,7 @@ exports.list = (req, res) => {
                     async.map(users,
                         // Iterator
                         (user, next) => {
-                            user.email = crypto.decrypt(user.email);
+                            user.email = crypto.decrypt(user.emailEncrypted);
                             next(null, omit(user, 'encryptedEmail', 'emailBlindIdx'));
                         },
                         // Callback
@@ -182,8 +184,8 @@ exports.search = (req, res) => {
      * Single email or Array of emails
      */
     if (req.body.email) {
-        options.email = !Array.isArray(req.body.email) ? crypto.encrypt(req.body.email) :
-            { $in: req.body.email.map(email => crypto.encrypt(email)) };
+      options.emailBlindIdx = !Array.isArray(req.body.email) ? crypto.hmacDigest(req.body.email) :
+        { $in: req.body.email.map(email => crypto.hmacDigest(email)) };
     }
 
     User.count(options, (countErr, count) => {
@@ -216,7 +218,7 @@ exports.search = (req, res) => {
                     async.map(users,
                         // Iterator
                         (user, next) => {
-                            user.email = crypto.decrypt(user.email);
+                            user.email = crypto.decrypt(user.emailEncrypted);
                             next(null, omit(user, 'encryptedEmail', 'emailBlindIdx'));
                         },
                         // Callback
@@ -284,7 +286,7 @@ exports.patch = (req, res, next) => {
             });
         }
         else {
-            user.email = crypto.decrypt(user.email);
+            user.email = email;
             res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
         }
     });
@@ -307,7 +309,7 @@ exports.updateOne = (req, res, next) => {
     let searchObj = {};
 
     if (key.email) {
-        searchObj.email = crypto.encrypt(key.email);
+        searchObj.emailBlindIdx = crypto.hmacDigest(key.email);
     } else if (key.uuid) {
         searchObj.uuid = key.uuid;
     } else {
@@ -322,7 +324,7 @@ exports.updateOne = (req, res, next) => {
             return next(findErr);
         }
         else if (user) {
-            const email = user.email;
+            const email = user.emailEncrypted;
             const decryptedEmail = crypto.decrypt(email);
             user.email = decryptedEmail;
             manageUsers.manageSuppression(user, req.body.user);
@@ -344,7 +346,7 @@ exports.updateOne = (req, res, next) => {
                         });
                     }
                     else {
-                        user.email = crypto.decrypt(user.email);
+                        user.email = crypto.decrypt(user.encryptedEmail);
                         res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
                     }
                 });
@@ -367,7 +369,7 @@ exports.userByUuid = (req, res, next, uuid) => {
             return next(findErr);
         }
         else if (user) {
-            user.email = crypto.decrypt(user.email);
+            user.email = crypto.decrypt(user.emailEncrypted);
 
             req.user = user;
             return next();
