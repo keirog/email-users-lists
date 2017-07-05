@@ -4,40 +4,25 @@ const crypto = require("crypto");
 const config = require('../../config/config');
 
 const algorithm = 'aes-256-ctr';
-const password = config.emailSigningKey;
-const ivPassword = config.encryptionKey;
+const password = config.encryptionKey;
 const hmacKey = config.hmacKey; 
 const IV_LENGTH = 16;
 
-module.exports.encrypt = (text) => {
-    
-    text = text.toLowerCase();
-
-    const cipher = crypto.createCipher(algorithm,password);
-
-    let crypted = cipher.update(text, 'utf8', 'hex');
-
-    crypted += cipher.final('hex');
-
-    return crypted;
-};
-
 module.exports.decrypt = (text) => {
+  const textParts = text.split(':');
+  const iv = Buffer.from(textParts.shift(), 'hex');
+  const encryptedText = Buffer.from(textParts.join(':'), 'hex');
+  const decipher = crypto.createDecipheriv(algorithm, Buffer.from(password), iv);
+  let decrypted = decipher.update(encryptedText);
 
-    const decipher = crypto.createDecipher(algorithm,password);
-
-    let dec = decipher.update(text, 'hex', 'utf8');
-
-    dec += decipher.final('utf8');
-
-    return dec;
-
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
 };
 
-module.exports.ivEncrypt = (text) => {
+module.exports.encrypt = (text) => {
   text = text.toLowerCase();
   const iv = crypto.randomBytes(IV_LENGTH);
-  const cipher = crypto.createCipheriv(algorithm, ivPassword, iv);
+  const cipher = crypto.createCipheriv(algorithm, password, iv);
   let crypted = cipher.update(text, 'utf8', 'hex');
   crypted += cipher.final('hex');
   return `${iv.toString('hex')}:${crypted}`;

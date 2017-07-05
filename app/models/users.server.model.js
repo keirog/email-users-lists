@@ -150,7 +150,7 @@ userSchema.pre('save', function (next) {
 
 //We always want emails to be encrypted
 userSchema.path('email').validate((value) => {
-  return /^[0-9A-F]+$/i.test(value);
+  return /^[0-9A-F:]+$/i.test(value);
 }, 'The email to save is not encrypted');
 
 mongoose.model('User', userSchema);
