@@ -73,7 +73,7 @@ exports.list = (req, res) => {
                     async.map(users,
                         // Iterator
                         (user, next) => {
-                            user.email = crypto.decrypt(user.encryptedEmail);
+                            user.email = crypto.decrypt(user.email);
                             const defaultUser = {
                                 suppressedNewsletter: { value: false },
                                 suppressedMarketing: { value: false },

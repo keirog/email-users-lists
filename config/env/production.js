@@ -8,8 +8,18 @@ const authUser = process.env.BASIC_AUTH_USER;
 const authPassword = process.env.BASIC_AUTH_PASSWORD;
 const unsubscribeSecret = process.env.UNSUBSCRIBE_SECRET;
 const sentryDSN = process.env.SENTRY_DSN;
-const encryptionKey = process.env.ENCRYPTION_KEY;
-const hmacKey = process.env.HMAC_KEY;
 const emailSigningKey = process.env.EMAIL_SIGNING_KEY;
+const emailBlindIdxSigningKey = process.env.EMAIL_BLIND_IDX_SIGNING_KEY;
 
-module.exports = { port, db, processId, logLevel, authUser, authPassword, unsubscribeSecret, sentryDSN, encryptionKey, hmacKey, emailSigningKey };
+module.exports = {
+  port,
+  db,
+  processId,
+  logLevel,
+  authUser,
+  authPassword,
+  unsubscribeSecret,
+  sentryDSN,
+  emailSigningKey,
+  emailBlindIdxSigningKey
+};

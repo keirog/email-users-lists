@@ -3,13 +3,23 @@
 const port = process.env.PORT || 1337;
 const logLevel = process.env.LOG_LEVEL || 'info';
 const processId = process.env.DYNO || process.pid;
-const db = 'mongodb://localhost/app49936913';
+const db = 'mongodb://localhost/ft-email-users-lists-dev';
 const authUser = process.env.BASIC_AUTH_USER || 'development';
 const authPassword = process.env.BASIC_AUTH_PASSWORD || 'development';
 const unsubscribeSecret = process.env.UNSUBSCRIBE_SECRET || 'developmentSecret';
 const sentryDSN = process.env.SENTRY_DSN;
-const encryptionKey = process.env.ENCRYPTION_KEY || 'daf46e294fb86bb0cdeb2b1e4ff6c8d8';
-const hmacKey = process.env.HMAC_KEY || '4746ea10cbba25f6f68482112219fb3d961a502215134eb5fb4bf5fea7a4422c';
-const emailSigningKey = process.env.EMAIL_SIGNING_KEY || 'development';
+const emailSigningKey = process.env.EMAIL_SIGNING_KEY || '263c7a97a21976ceb80500028e31c6e2';
+const emailBlindIdxSigningKey = process.env.EMAIL_BLIND_IDX_SIGNING_KEY || 'db44fefcac1cb18674c60c180650c53c3e35d6df838b3322df57e94b0201d74a';
 
-module.exports = { port, db, processId, logLevel, authUser, authPassword, unsubscribeSecret, sentryDSN, encryptionKey, hmacKey, emailSigningKey };
+module.exports = {
+  port,
+  db,
+  processId,
+  logLevel,
+  authUser,
+  authPassword,
+  unsubscribeSecret,
+  sentryDSN,
+  emailSigningKey,
+  emailBlindIdxSigningKey
+};
