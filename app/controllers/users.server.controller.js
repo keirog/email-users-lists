@@ -4,6 +4,7 @@
 const mongoose = require('mongoose');
 const extend = require('extend');
 const async = require('async');
+const omit = require('lodash/omit');
 
 // Our modules
 const crypto = require('../utils/crypto.server.utils');
@@ -29,7 +30,10 @@ exports.create = (req, res) => {
     manageUsers.manageExpiration(userObj);
 
     // Encrypt the email
-    userObj.email = crypto.encrypt(userObj.email);
+    const email = userObj.email;
+    userObj.email = crypto.encrypt(email);
+    userObj.encryptedEmail = crypto.encrypt(email);
+    userObj.emailBlindIdx = crypto.hmacDigest(email);
 
     let user = new User(userObj);
     user.save((saveErr) => {
@@ -42,8 +46,8 @@ exports.create = (req, res) => {
         }
 
         // Send the decrypted emails back
-        user.email = crypto.decrypt(userObj.email);
-        return res.json(user);
+        user.email = email;
+        return res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
 
     });
 };
@@ -82,8 +86,10 @@ exports.list = (req, res) => {
     /**
      * The "email" filter
      */
-    if (req.query.email) {
-        options.email = crypto.encrypt(req.query.email);
+
+    if (req.body.email) {
+      options.emailBlindIdx = !Array.isArray(req.body.email) ? crypto.hmacDigest(req.body.email) :
+        { $in: req.body.email.map(email => crypto.hmacDigest(email)) };
     }
 
     User.count(options, (countErr, count) => {
@@ -116,8 +122,8 @@ exports.list = (req, res) => {
                     async.map(users,
                         // Iterator
                         (user, next) => {
-                            user.email = crypto.decrypt(user.email);
-                            next(null, user);
+                            user.email = crypto.decrypt(user.encryptedEmail);
+                            next(null, omit(user, 'encryptedEmail', 'emailBlindIdx'));
                         },
                         // Callback
                         (encryptErr, decryptedUsers) => {
@@ -178,8 +184,8 @@ exports.search = (req, res) => {
      * Single email or Array of emails
      */
     if (req.body.email) {
-        options.email = !Array.isArray(req.body.email) ? crypto.encrypt(req.body.email) :
-            { $in: req.body.email.map(email => crypto.encrypt(email)) };
+      options.emailBlindIdx = !Array.isArray(req.body.email) ? crypto.hmacDigest(req.body.email) :
+        { $in: req.body.email.map(email => crypto.hmacDigest(email)) };
     }
 
     User.count(options, (countErr, count) => {
@@ -212,8 +218,8 @@ exports.search = (req, res) => {
                     async.map(users,
                         // Iterator
                         (user, next) => {
-                            user.email = crypto.decrypt(user.email);
-                            next(null, user);
+                            user.email = crypto.decrypt(user.encryptedEmail);
+                            next(null, omit(user, 'encryptedEmail', 'emailBlindIdx'));
                         },
                         // Callback
                         (encryptErr, decryptedUsers) => {
@@ -239,7 +245,7 @@ exports.search = (req, res) => {
 };
 
 exports.read = (req, res) => {
-    return res.json(req.user);
+    return res.json(omit(req.user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
 };
 
 exports.patch = (req, res, next) => {
@@ -262,7 +268,10 @@ exports.patch = (req, res, next) => {
     manageUsers.manageExpiration(user);
 
     if (user.email) {
-        user.email = crypto.encrypt(user.email);
+      const email = user.email;
+      user.email = crypto.encrypt(email);
+      user.encryptedEmail = crypto.encrypt(email);
+      user.emailBlindIdx = crypto.hmacDigest(email);
     }
 
     // Update
@@ -277,8 +286,8 @@ exports.patch = (req, res, next) => {
             });
         }
         else {
-            user.email = crypto.decrypt(user.email);
-            res.json(user);
+            user.email = crypto.decrypt(user.encryptedEmail);
+            res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
         }
     });
 };
@@ -300,7 +309,7 @@ exports.updateOne = (req, res, next) => {
     let searchObj = {};
 
     if (key.email) {
-        searchObj.email = crypto.encrypt(key.email);
+        searchObj.emailBlindIdx = crypto.hmacDigest(key.email);
     } else if (key.uuid) {
         searchObj.uuid = key.uuid;
     } else {
@@ -315,11 +324,16 @@ exports.updateOne = (req, res, next) => {
             return next(findErr);
         }
         else if (user) {
-            user.email = crypto.decrypt(user.email);
+            const email = user.encryptedEmail;
+            const decryptedEmail = crypto.decrypt(email);
+            user.email = decryptedEmail;
             manageUsers.manageSuppression(user, req.body.user);
             user = extend(user, req.body.user);
             manageUsers.manageExpiration(user);
-            user.email = crypto.encrypt(user.email);
+            const newEmail = user.email;
+            user.email = crypto.encrypt(newEmail);
+            user.encryptedEmail = crypto.encrypt(newEmail);
+            user.emailBlindIdx = crypto.hmacDigest(newEmail);
 
             user.save(user, (updateErr) => {
 
@@ -332,8 +346,8 @@ exports.updateOne = (req, res, next) => {
                         });
                     }
                     else {
-                        user.email = crypto.decrypt(user.email);
-                        res.json(user);
+                        user.email = crypto.decrypt(user.encryptedEmail);
+                        res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
                     }
                 });
         }
@@ -355,7 +369,7 @@ exports.userByUuid = (req, res, next, uuid) => {
             return next(findErr);
         }
         else if (user) {
-            user.email = crypto.decrypt(user.email);
+            user.email = crypto.decrypt(user.encryptedEmail);
 
             req.user = user;
             return next();

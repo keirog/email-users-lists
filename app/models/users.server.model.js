@@ -107,6 +107,16 @@ const userSchema = new Schema({
     index: { unique: true },
     required: 'email cannot be blank'
   },
+  encryptedEmail: {
+    type: String,
+    trim: true,
+    index: { unique: true }
+  },
+  emailBlindIdx: {
+    type: String,
+    trim: true,
+    index: { unique: true }
+  },
   metadata: {
     type: {}
   },
@@ -140,7 +150,7 @@ userSchema.pre('save', function (next) {
 
 //We always want emails to be encrypted
 userSchema.path('email').validate((value) => {
-  return /^[0-9A-F]+$/i.test(value);
+  return /^[0-9A-F:]+$/i.test(value);
 }, 'The email to save is not encrypted');
 
 mongoose.model('User', userSchema);
