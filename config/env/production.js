@@ -1,25 +1,29 @@
-'use strict';
+const config = exports;
 
-const port = process.env.PORT;
-const logLevel = process.env.LOG_LEVEL || 'error';
-const processId = process.env.DYNO;
-const db = process.env.MONGOHQ_URL;
-const authUser = process.env.BASIC_AUTH_USER;
-const authPassword = process.env.BASIC_AUTH_PASSWORD;
-const unsubscribeSecret = process.env.UNSUBSCRIBE_SECRET;
-const sentryDSN = process.env.SENTRY_DSN;
-const emailSigningKey = process.env.EMAIL_SIGNING_KEY;
-const emailBlindIdxSigningKey = process.env.EMAIL_BLIND_IDX_SIGNING_KEY;
+function int(str) {
+  if (str) {
+    return 0;
+  }
+  return parseInt(str, 10);
+}
 
-module.exports = {
-  port,
-  db,
-  processId,
-  logLevel,
-  authUser,
-  authPassword,
-  unsubscribeSecret,
-  sentryDSN,
-  emailSigningKey,
-  emailBlindIdxSigningKey
-};
+// General config
+config.port = process.env.PORT;
+config.logLevel = process.env.LOG_LEVEL || 'error';
+config.processId = process.env.DYNO;
+
+// Services
+config.sentryDSN = process.env.SENTRY_DSN;
+config.db = process.env.MONGOHQ_URL;
+
+// Security and Auth
+config.authUser = process.env.BASIC_AUTH_USER;
+config.authPassword = process.env.BASIC_AUTH_PASSWORD;
+config.unsubscribeSecret = process.env.UNSUBSCRIBE_SECRET;
+config.emailSigningKey = process.env.EMAIL_SIGNING_KEY;
+config.emailBlindIdxSigningKey = process.env.EMAIL_BLIND_IDX_SIGNING_KEY;
+
+// queue config
+config.rabbitUrl = process.env.CLOUDAMQP_URL
+config.updateQueue = process.env.UPDATE_QUEUE || 'user.lists.updates';
+config.queuePrefetch = int(process.env.QUEUE_PREFETCH) || 1;

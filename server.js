@@ -14,18 +14,21 @@ const shutdown = require('./app/utils/shutdown.server.utils');
 const logger = require('./config/logger');
 const sentry = require('./config/sentry').init();
 
+// Open queue connection
+const queue = require('./app/services/queueApp.server.service');
+
 const loggerId = 'SERVER:' + config.processId;
 
 /* istanbul ignore next */
 process.on('SIGTERM', () => {
-    shutdown(loggerId);
+  shutdown(loggerId, queue);
 });
 
 let db = mongoose();
 let app = express();
 
-app.listen(config.port);
+app.listen(config.port, () => {
+  logger.info(loggerId, process.env.NODE_ENV + ' server running', { location: 'http://localhost:' + config.port});
+});
 
 module.exports = app;
-
-logger.info(loggerId, process.env.NODE_ENV + ' server running', { location: 'http://localhost:' + config.port});
