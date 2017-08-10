@@ -1,7 +1,5 @@
-'use strict';
-
-// External modules
 const mongoose = require('mongoose');
+const updateEmitter = require('../utils/events.server.utils');
 
 const Schema = mongoose.Schema;
 
@@ -141,6 +139,10 @@ userSchema.pre('save', function (next) {
     }
   }
   next();
+});
+
+userSchema.post('save', (user) => {
+  updateEmitter.emit('user-update', user);
 });
 
 //We always want emails to be encrypted
