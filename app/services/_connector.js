@@ -44,23 +44,24 @@ class Connector extends EventEmitter {
     });
   }
 
-	assertQueue(queue) {
-   return this.channel.assertQueue(queue);
+	assertQueue(queue, options) {
+   return this.channel.assertQueue(queue, options);
+  }
+
+	assertExchange(exchange, options) {
+   return this.channel.assertExchange(exchange, options);
+  }
+
+	bindQueue(queue, exchange, pattern, args) {
+   return this.channel.bindQueue(queue, exchange, pattern, args);
   }
 
   setPrefetch(amount) {
     return this.channel.prefetch(amount);
   }
 
-  sendToQueue(task, queueName) {
-    return new Promise((resolve, reject) => {
-      this.channel.sendToQueue(queueName, new Buffer(task), { persistent: true }, (err, ok) => {
-          if (err) {
-            return reject(err);
-          }
-          resolve();
-        });
-    });
+  publish(exchange, routingKey, task) {
+    return this.channel.publish(exchange, routingKey, new Buffer(task), { persistent: true });
   }
 
   consume(queueName, cb) {

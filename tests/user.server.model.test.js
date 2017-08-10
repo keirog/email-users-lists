@@ -57,7 +57,7 @@ describe('User Model Unit Tests:', () => {
     describe('Method Save', () => {
 
         it('should be able to save without problems', (done) => {
-            return user.save((err) => {
+            user.save((err) => {
                 should.not.exist(err);
                 done();
             });
@@ -66,7 +66,7 @@ describe('User Model Unit Tests:', () => {
         it('should throw an error trying to save without email', (done) => {
             user.email = '';
 
-            return user.save((err) => {
+            user.save((err) => {
                 should.exist(err);
                 done();
             });
@@ -75,7 +75,7 @@ describe('User Model Unit Tests:', () => {
         it('should throw an error trying to save without email blind index', (done) => {
             user.emailBlindIdx = '';
 
-            return user.save((err) => {
+            user.save((err) => {
                 should.exist(err);
                 done();
             });
@@ -85,7 +85,7 @@ describe('User Model Unit Tests:', () => {
 
             user.uuid = '';
 
-            return user.save((err) => {
+            user.save((err) => {
                 should.not.exist(err);
                 done();
             });

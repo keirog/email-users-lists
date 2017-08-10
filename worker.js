@@ -10,7 +10,7 @@ const loggerId = 'SERVER:' + config.processId;
 function start() {
   logger.info('starting event worker');
 
-  const instance = new Queue(config, config.eventPrefetchLimit);
+  const instance = new Queue(config, config.queuePrefetch);
 
   instance.on('ready', beginWork);
   process.on('SIGTERM', () => shutdown(loggerId, instance));

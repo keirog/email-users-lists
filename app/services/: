@@ -7,8 +7,8 @@ const { sendEvent } = require('./events');
 
 class QueueApp extends EventEmitter {
   constructor(config, prefetch) {
-    if (!config.updateQueue || !config.updateExchange) {
-      throw new Error('Missing necessary message queue information');
+    if (!config.updateQueue) {
+      throw new Error('No queue name specified');
     }
     super();
     this.config = config;
@@ -87,6 +87,7 @@ class QueueApp extends EventEmitter {
     }
     this.emit('processing-task', 'queue: ' + task.fields.routingKey);
     let e = JSON.parse(task.content.toString());
+    console.log(e)
     if (!e) {
       return this.connection.ack(task);
     }
@@ -97,7 +98,7 @@ class QueueApp extends EventEmitter {
     } catch (err) {
       logger.error(`Couldn't send event: ${err}`);
       try {
-        await this.publish(this.config.deadLetterQueue, e);
+        await this.publish(this.config.deadLetterQueue, task);
       } catch (err) {
         logger.error(`Could not publish to DL Queue: ${err}`);
       }

@@ -1,4 +1,4 @@
-const EventEmitter = require('events')
+const EventEmitter = require('events');
 const logger = require('../../config/logger');
 
 const updateEmitter = new EventEmitter();

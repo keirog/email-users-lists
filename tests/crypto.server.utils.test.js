@@ -1,5 +1,3 @@
-'use strict';
-
 require('dotenv').load({silent: true});
 const should = require('should');
 
