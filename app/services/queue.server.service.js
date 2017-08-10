@@ -81,7 +81,6 @@ class QueueApp extends EventEmitter {
   }
 
   async onTask(task) {
-    console.log(task);
     if (!this.eventConsumer) {
       this.eventConsumer = task.fields.consumerTag;
     }
