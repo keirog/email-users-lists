@@ -13,11 +13,12 @@ function selectEventProperties(event) {
 }
 
 module.exports = (event) => {
+  console.log(event);
   return {
     body: JSON.stringify(selectEventProperties(event)),
     contentType: 'application/json',
     messageId: uuidv4(),
     messageTimestamp: new Date(),
-    messageType: 'UserPreferenceUpdated'
+    messageType: event.messageType
   };
 };
