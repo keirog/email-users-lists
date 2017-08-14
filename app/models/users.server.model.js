@@ -138,11 +138,16 @@ userSchema.pre('save', function (next) {
       this[suppressionType].updatedAt = new Date();
     }
   }
+
+  // Save isNew bool for post save hook
+  this.wasNew = this.isNew;
   next();
 });
 
 userSchema.post('save', (user) => {
-  updateEmitter.emit('user-update', user);
+  const messageType = user.wasNew ? 'UserPreferenceCreated': 'UserPreferenceUpdated';
+  const updatedUser = Object.assign({}, user.toObject(), { messageType });
+  updateEmitter.emit('user-update', updatedUser);
 });
 
 //We always want emails to be encrypted
