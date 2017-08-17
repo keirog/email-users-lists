@@ -1,7 +1,7 @@
 const config = exports;
 
 function int(str) {
-  if (str) {
+  if (!str) {
     return 0;
   }
   return parseInt(str, 10);
