@@ -22,220 +22,222 @@ const crypto = require('../app/utils/crypto.server.utils');
 let list, user1, user2;
 
 describe('The users by list methods', () => {
-    beforeEach((done) => {
+  beforeEach((done) => {
 
-        tearDownDb(() => {
-            // Create new list
-            list = new List({
-                externalIds: {
-                    eBay: "234134234234"
-                },
-                name: 'An Example List',
-                description: 'A description for the example list'
-            });
+    tearDownDb(() => {
+      // Create new list
+      list = new List({
+        externalIds: {
+          eBay: "234134234234"
+        },
+        name: 'An Example List',
+        description: 'A description for the example list'
+      });
 
 
-            list.save((errListSave, resListSave) => {
-                let email = crypto.encrypt('email@email.com');
-                let email2 = crypto.encrypt('email2@email.com');
+      list.save((errListSave, resListSave) => {
+        let email = crypto.encrypt('email@email.com');
+        let email2 = crypto.encrypt('email2@email.com');
 
-                // Create a new user
-                user1 = new User({
-                    uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
-                    email: email,
-                    firstName: 'Bob',
-                    lastName: 'Dylan',
-                    lists: [{
-                        list: resListSave._id,
-                        unsubscribeKey: 'SOMEKEY3'
-                    }]
-                });
+        // Create a new user
+        user1 = new User({
+          uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
+          email: email,
+          emailBlindIdx: email,
+          firstName: 'Bob',
+          lastName: 'Dylan',
+          lists: [{
+            list: resListSave._id,
+            unsubscribeKey: 'SOMEKEY3'
+          }]
+        });
 
-                user1.save(() => {
-                    // Create a new user
-                    user2 = new User({
-                        uuid: '849f3554-0acf-11e5-a6c0-1697f925ec7b',
-                        email: email2,
-                        lists: []
-                    });
+        user1.save(() => {
+          // Create a new user
+          user2 = new User({
+            uuid: '849f3554-0acf-11e5-a6c0-1697f925ec7b',
+            email: email2,
+            emailBlindIdx: email2,
+            lists: []
+          });
 
-                    done();
+          done();
 
-                });
+        });
 
-            });
+      });
+    });
+
+  });
+
+  it('lists the user members of the provided list', (done) => {
+
+    // Create new user model instance
+    let userObj = new User(user2);
+
+    // Save the user
+    userObj.save(() => {
+
+      // Request users
+      request(app).get('/lists/' + list._id + '/users')
+        .auth(config.authUser, config.authPassword)
+        .end((req, res) => {
+
+          // Set assertion
+          res.body.should.have.a.lengthOf(1);
+
+          // Call the assertion callback
+          done();
         });
 
     });
 
-    it('lists the user members of the provided list', (done) => {
+  });
 
-        // Create new user model instance
-        let userObj = new User(user2);
+  it('allows to specify the maximum number of items returned', (done) => {
 
-        // Save the user
-        userObj.save(() => {
+    // Add the list to the second user
+    user2.lists.push({ list: list._id });
 
-            // Request users
-            request(app).get('/lists/' + list._id + '/users')
-                .auth(config.authUser, config.authPassword)
-                .end((req, res) => {
+    // Create new user model instance
+    let userObj = new User(user2);
 
-                    // Set assertion
-                    res.body.should.have.a.lengthOf(1);
+    // Save the user
+    userObj.save(() => {
 
-                    // Call the assertion callback
-                    done();
-                });
+      // Request users
+      request(app).get('/lists/' + list._id + '/users?pp=1')
+        .auth(config.authUser, config.authPassword)
+        .end((req, res) => {
 
+          // Set assertion
+          res.body.should.have.a.lengthOf(1);
+
+          // Call the assertion callback
+          done();
         });
 
     });
 
-    it('allows to specify the maximum number of items returned', (done) => {
+  });
 
-        // Add the list to the second user
-        user2.lists.push({ list: list._id });
+  it('allows to specify a specific pagination returned', (done) => {
 
-        // Create new user model instance
-        let userObj = new User(user2);
+    // Add the list to the second user
+    user2.lists.push({ list: list._id, unsubscribeKey: 'SOMEKEY4' });
 
-        // Save the user
-        userObj.save(() => {
+    // Create new user model instance
+    let userObj = new User(user2);
 
-            // Request users
-            request(app).get('/lists/' + list._id + '/users?pp=1')
-                .auth(config.authUser, config.authPassword)
-                .end((req, res) => {
+    // Save the user
+    userObj.save(() => {
 
-                    // Set assertion
-                    res.body.should.have.a.lengthOf(1);
+      // Request users
+      request(app).get('/lists/' + list._id + '/users?pp=1&p=2')
+        .auth(config.authUser, config.authPassword)
+        .end((req, res) => {
 
-                    // Call the assertion callback
-                    done();
-                });
+          // Set assertion
+          res.body.should.have.a.lengthOf(1);
 
+          // Call the assertion callback
+          done();
         });
 
     });
 
-    it('allows to specify a specific pagination returned', (done) => {
+  });
 
-        // Add the list to the second user
-        user2.lists.push({ list: list._id, unsubscribeKey: 'SOMEKEY4' });
+  it('allows to return only the valid users', (done) => {
 
-        // Create new user model instance
-        let userObj = new User(user2);
+    user2.expiredUser = { value: true };
 
-        // Save the user
-        userObj.save(() => {
+    // Add the list to the second user
+    user2.lists.push({ list: list._id, unsubscribeKey: 'SOMEKEY5' });
 
-            // Request users
-            request(app).get('/lists/' + list._id + '/users?pp=1&p=2')
-                .auth(config.authUser, config.authPassword)
-                .end((req, res) => {
+    // Create new user model instance
+    let userObj = new User(user2);
 
-                    // Set assertion
-                    res.body.should.have.a.lengthOf(1);
+    // Save the user
+    userObj.save(() => {
 
-                    // Call the assertion callback
-                    done();
-                });
+      // Request users
+      request(app).get('/lists/' + list._id + '/users?valid')
+        .auth(config.authUser, config.authPassword)
+        .end((req, res) => {
 
-        });
+          // Set assertion
+          res.body.should.have.a.lengthOf(1);
 
-    });
-
-    it('allows to return only the valid users', (done) => {
-
-        user2.expiredUser = { value: true };
-
-        // Add the list to the second user
-        user2.lists.push({ list: list._id, unsubscribeKey: 'SOMEKEY5' });
-
-        // Create new user model instance
-        let userObj = new User(user2);
-
-        // Save the user
-        userObj.save(() => {
-
-            // Request users
-            request(app).get('/lists/' + list._id + '/users?valid')
-                .auth(config.authUser, config.authPassword)
-                .end((req, res) => {
-
-                    // Set assertion
-                    res.body.should.have.a.lengthOf(1);
-
-                    // Call the assertion callback
-                    done();
-                });
+          // Call the assertion callback
+          done();
         });
     });
+  });
 
-    it('allows to return only the invalid users', (done) => {
+  it('allows to return only the invalid users', (done) => {
 
-        user2.expiredUser = { value: true };
+    user2.expiredUser = { value: true };
 
-        // Add the list to the second user
-        user2.lists.push({ list: list._id, unsubscribeKey: 'SOMEKEY6' });
+    // Add the list to the second user
+    user2.lists.push({ list: list._id, unsubscribeKey: 'SOMEKEY6' });
 
-        // Create new user model instance
-        let userObj = new User(user2);
+    // Create new user model instance
+    let userObj = new User(user2);
 
-        // Save the user
-        userObj.save(() => {
+    // Save the user
+    userObj.save(() => {
 
-            // Request users
-            request(app).get('/lists/' + list._id + '/users?valid=false')
-                .auth(config.authUser, config.authPassword)
-                .end((req, res) => {
+      // Request users
+      request(app).get('/lists/' + list._id + '/users?valid=false')
+        .auth(config.authUser, config.authPassword)
+        .end((req, res) => {
 
-                    // Set assertion
-                    res.body.should.have.a.lengthOf(1);
+          // Set assertion
+          res.body.should.have.a.lengthOf(1);
 
-                    // Call the assertion callback
-                    done();
-                });
+          // Call the assertion callback
+          done();
         });
     });
+  });
 
-    it('allows to return only the valid users for all specific categories', (done) => {
-        const validCategories = ['newsletter', 'marketing', 'recommendation', 'account'];
-        user2.suppressedNewsletter = { value: true };
-        user2.suppressedMarketing = { value: true };
-        user2.suppressedRecommendation = { value: true };
-        user2.suppressedAccount = { value: true };
-        // Add the list to the second user
-        user2.lists.push({ list: list._id, unsubscribeKey: 'SOMEKEY10' });
-        // Create new user model instance
-        let userObj = new User(user2);
+  it('allows to return only the valid users for all specific categories', (done) => {
+    const validCategories = ['newsletter', 'marketing', 'recommendation', 'account'];
+    user2.suppressedNewsletter = { value: true };
+    user2.suppressedMarketing = { value: true };
+    user2.suppressedRecommendation = { value: true };
+    user2.suppressedAccount = { value: true };
+    // Add the list to the second user
+    user2.lists.push({ list: list._id, unsubscribeKey: 'SOMEKEY10' });
+    // Create new user model instance
+    let userObj = new User(user2);
 
-        // Save the user
-        userObj.save(() => {
+    // Save the user
+    userObj.save(() => {
 
-            async.eachSeries(validCategories, (c, next) => {
-                request(app).get(`/lists/${list._id}/users?valid&categories=${c}`)
-                    .auth(config.authUser, config.authPassword)
-                    .end((req, res) => {
+      async.eachSeries(validCategories, (c, next) => {
+        request(app).get(`/lists/${list._id}/users?valid&categories=${c}`)
+          .auth(config.authUser, config.authPassword)
+          .end((req, res) => {
 
-                        // Set assertion
-                        res.body.should.have.a.lengthOf(1);
+            // Set assertion
+            res.body.should.have.a.lengthOf(1);
 
-                        // Call the assertion callback
-                        next();
-                    });
-            }, done);
-            // Request users
-        });
+            // Call the assertion callback
+            next();
+          });
+      }, done);
+      // Request users
+    });
+  });
+
+  afterEach((done) => {
+
+    User.remove().exec(() => {
+      List.remove().exec(done);
     });
 
-    afterEach((done) => {
-
-        User.remove().exec(() => {
-            List.remove().exec(done);
-        });
-
-    });
+  });
 
 });

@@ -23,6 +23,7 @@
     "url": "http://email-webservices.ft.com"
   },
   "dependencies": {
+    "amqplib": "^0.5.1",
     "async": "^2.1.2",
     "basic-auth-connect": "^1.0.0",
     "body-parser": "^1.14.1",
@@ -35,14 +36,16 @@
     "ft-encryption": "^1.0.2",
     "gulp": "^3.9.0",
     "gulp-apidoc": "^0.2.0",
-    "gulp-istanbul": "^0.10.2",
     "gulp-jshint": "^1.12.0",
-    "gulp-mocha": "^2.1.3",
+    "gulp-istanbul": "^1.1.2",
+    "gulp-mocha": "^4.3.1",
     "lodash": "^4.16.4",
     "mongoose": "^4.2.5",
     "mongoose-fakery": "^0.1.7",
+    "node-fetch": "^1.7.2",
     "nodemon": "^1.11.0",
     "raven": "^0.8.1",
+    "uuid": "^3.1.0",
     "winston": "^2.1.0",
     "winston-sentry": "0.1.1"
   },
@@ -51,6 +54,6 @@
     "supertest": "^1.1.0"
   },
   "engines": {
-    "node": "^6.0.0"
+    "node": "^8.2.1"
   }
 }

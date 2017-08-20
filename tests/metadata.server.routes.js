@@ -43,6 +43,20 @@ describe('The metadata by list method', () => {
 
     });
 
+    it('returns empty fields array if no metadata', (done) => {
+      // Request users
+      request(app).get('/users/metadata')
+        .auth(config.authUser, config.authPassword)
+        .end((req, res) => {
+
+          // Set assertion
+          res.body.fields.should.have.a.lengthOf(0);
+
+          // Call the assertion callback
+          done();
+        });
+    });
+
     afterEach((done) => {
 
         Metadata.remove().exec(() => {

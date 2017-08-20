@@ -4,8 +4,8 @@ const crypto = require("crypto");
 const config = require('../../config/config');
 
 const algorithm = 'aes-256-ctr';
-const password = config.encryptionKey;
-const hmacKey = config.hmacKey; 
+const password = config.emailSigningKey;
+const hmacKey = config.emailBlindIdxSigningKey;
 const IV_LENGTH = 16;
 
 module.exports.decrypt = (text) => {

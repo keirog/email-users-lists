@@ -29,10 +29,8 @@ exports.create = (req, res) => {
 
     manageUsers.manageExpiration(userObj);
 
-    // Encrypt the email
     const email = userObj.email;
     userObj.email = crypto.encrypt(email);
-    userObj.encryptedEmail = crypto.encrypt(email);
     userObj.emailBlindIdx = crypto.hmacDigest(email);
 
     let user = new User(userObj);
@@ -47,7 +45,7 @@ exports.create = (req, res) => {
 
         // Send the decrypted emails back
         user.email = email;
-        return res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
+        return res.json(omit(user.toObject(), 'emailBlindIdx'));
 
     });
 };
@@ -122,8 +120,8 @@ exports.list = (req, res) => {
                     async.map(users,
                         // Iterator
                         (user, next) => {
-                            user.email = crypto.decrypt(user.encryptedEmail);
-                            next(null, omit(user, 'encryptedEmail', 'emailBlindIdx'));
+                            user.email = crypto.decrypt(user.email);
+                            next(null, omit(user, 'emailBlindIdx'));
                         },
                         // Callback
                         (encryptErr, decryptedUsers) => {
@@ -182,6 +180,7 @@ exports.search = (req, res) => {
     /**
      * The "email" search filter
      * Single email or Array of emails
+     * Searches on blind index hash
      */
     if (req.body.email) {
       options.emailBlindIdx = !Array.isArray(req.body.email) ? crypto.hmacDigest(req.body.email) :
@@ -218,8 +217,8 @@ exports.search = (req, res) => {
                     async.map(users,
                         // Iterator
                         (user, next) => {
-                            user.email = crypto.decrypt(user.encryptedEmail);
-                            next(null, omit(user, 'encryptedEmail', 'emailBlindIdx'));
+                            user.email = crypto.decrypt(user.email);
+                            next(null, omit(user, 'emailBlindIdx'));
                         },
                         // Callback
                         (encryptErr, decryptedUsers) => {
@@ -245,7 +244,7 @@ exports.search = (req, res) => {
 };
 
 exports.read = (req, res) => {
-    return res.json(omit(req.user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
+    return res.json(omit(req.user.toObject(), 'emailBlindIdx'));
 };
 
 exports.patch = (req, res, next) => {
@@ -267,11 +266,11 @@ exports.patch = (req, res, next) => {
 
     manageUsers.manageExpiration(user);
 
+    // Encrypt the email and digest
     if (user.email) {
       const email = user.email;
-      user.email = crypto.encrypt(email);
-      user.encryptedEmail = crypto.encrypt(email);
       user.emailBlindIdx = crypto.hmacDigest(email);
+      user.email = crypto.encrypt(email);
     }
 
     // Update
@@ -286,8 +285,8 @@ exports.patch = (req, res, next) => {
             });
         }
         else {
-            user.email = crypto.decrypt(user.encryptedEmail);
-            res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
+            user.email = crypto.decrypt(user.email);
+            res.json(omit(user.toObject(), 'emailBlindIdx'));
         }
     });
 };
@@ -324,15 +323,13 @@ exports.updateOne = (req, res, next) => {
             return next(findErr);
         }
         else if (user) {
-            const email = user.encryptedEmail;
-            const decryptedEmail = crypto.decrypt(email);
-            user.email = decryptedEmail;
+            const email = user.email;
+            user.email = crypto.decrypt(email);
             manageUsers.manageSuppression(user, req.body.user);
             user = extend(user, req.body.user);
             manageUsers.manageExpiration(user);
             const newEmail = user.email;
             user.email = crypto.encrypt(newEmail);
-            user.encryptedEmail = crypto.encrypt(newEmail);
             user.emailBlindIdx = crypto.hmacDigest(newEmail);
 
             user.save(user, (updateErr) => {
@@ -346,8 +343,8 @@ exports.updateOne = (req, res, next) => {
                         });
                     }
                     else {
-                        user.email = crypto.decrypt(user.encryptedEmail);
-                        res.json(omit(user.toObject(), 'encryptedEmail', 'emailBlindIdx'));
+                        user.email = crypto.decrypt(user.email);
+                        res.json(omit(user.toObject(), 'emailBlindIdx'));
                     }
                 });
         }
@@ -369,7 +366,7 @@ exports.userByUuid = (req, res, next, uuid) => {
             return next(findErr);
         }
         else if (user) {
-            user.email = crypto.decrypt(user.encryptedEmail);
+            user.email = crypto.decrypt(user.email);
 
             req.user = user;
             return next();

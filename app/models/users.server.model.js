@@ -1,7 +1,5 @@
-'use strict';
-
-// External modules
 const mongoose = require('mongoose');
+const updateEmitter = require('../utils/events.server.utils');
 
 const Schema = mongoose.Schema;
 
@@ -104,18 +102,13 @@ const userSchema = new Schema({
   email: {
     type: String,
     trim: true,
-    index: { unique: true },
     required: 'email cannot be blank'
-  },
-  encryptedEmail: {
-    type: String,
-    trim: true,
-    index: { unique: true }
   },
   emailBlindIdx: {
     type: String,
     trim: true,
-    index: { unique: true }
+    index: { unique: true },
+    required: 'email blind index cannot be blank'
   },
   metadata: {
     type: {}
@@ -145,7 +138,16 @@ userSchema.pre('save', function (next) {
       this[suppressionType].updatedAt = new Date();
     }
   }
+
+  // Save isNew bool for post save hook
+  this.wasNew = this.isNew;
   next();
+});
+
+userSchema.post('save', (user) => {
+  const messageType = user.wasNew ? 'UserPreferenceCreated': 'UserPreferenceUpdated';
+  const updatedUser = Object.assign({}, user.toObject(), { messageType });
+  updateEmitter.emit('user-update', updatedUser);
 });
 
 //We always want emails to be encrypted

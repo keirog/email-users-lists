@@ -61,6 +61,7 @@ describe('The lists by user methods', () => {
                         user = new User({
                             uuid: '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
                             email: email,
+                            emailBlindIdx: email,
                             lists: [{
                                 list: resSave1._id,
                                 unsubscribeKey: 'SOMEKEY6'

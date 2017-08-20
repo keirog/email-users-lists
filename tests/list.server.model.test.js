@@ -33,7 +33,7 @@ describe('List Model Unit Tests:', function() {
 
     describe('Method Save', function() {
         it('should be able to save without problems', function(done) {
-            return list.save(function(err) {
+            list.save(function(err) {
                 should.not.exist(err);
                 done();
             });
@@ -42,7 +42,7 @@ describe('List Model Unit Tests:', function() {
         it('should be able to show an error trying to save without name', function(done) {
             list.name = '';
 
-            return list.save(function(err) {
+            list.save(function(err) {
                 should.exist(err);
                 done();
             });

@@ -41,6 +41,7 @@ describe('User Model Unit Tests:', () => {
                 user = new User ({
                     uuid:     '02fd837c-0a96-11e5-a6c0-1697f925ec7b',
                     email:    crypto.encrypt('email@list.com'),
+                    emailBlindIdx:    crypto.hmacDigest('email@list.com'),
                     firstName: "Bob",
                     lastName: "Dylan",
                     lists: [{
@@ -56,7 +57,7 @@ describe('User Model Unit Tests:', () => {
     describe('Method Save', () => {
 
         it('should be able to save without problems', (done) => {
-            return user.save((err) => {
+            user.save((err) => {
                 should.not.exist(err);
                 done();
             });
@@ -65,7 +66,16 @@ describe('User Model Unit Tests:', () => {
         it('should throw an error trying to save without email', (done) => {
             user.email = '';
 
-            return user.save((err) => {
+            user.save((err) => {
+                should.exist(err);
+                done();
+            });
+        });
+
+        it('should throw an error trying to save without email blind index', (done) => {
+            user.emailBlindIdx = '';
+
+            user.save((err) => {
                 should.exist(err);
                 done();
             });
@@ -75,7 +85,7 @@ describe('User Model Unit Tests:', () => {
 
             user.uuid = '';
 
-            return user.save((err) => {
+            user.save((err) => {
                 should.not.exist(err);
                 done();
             });
