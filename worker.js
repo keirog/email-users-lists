@@ -13,7 +13,8 @@ function start() {
   const instance = new Queue(config, config.queuePrefetch);
 
   instance.on('ready', beginWork);
-  process.on('SIGTERM', () => shutdown(loggerId, instance));
+  process.on('SIGTERM', () => shutdown(loggerId, null, instance));
+  process.on('SIGINT', () => shutdown(loggerId, null, instance));
 
   function beginWork() {
     logger.info('worker ready to process queue');
