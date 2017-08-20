@@ -19,13 +19,17 @@ const queue = require('./app/services/queueApp.server.service');
 
 const loggerId = 'SERVER:' + config.processId;
 
-/* istanbul ignore next */
-process.on('SIGTERM', () => {
-  shutdown(loggerId, queue);
-});
-
 let db = mongoose();
 let app = express();
+
+/* istanbul ignore next */
+process.on('SIGTERM', () => {
+  shutdown(loggerId, db, queue);
+});
+process.on('SIGINT', () => {
+  shutdown(loggerId, db, queue);
+});
+
 
 app.listen(config.port, () => {
   logger.info(loggerId, process.env.NODE_ENV + ' server running', { location: 'http://localhost:' + config.port});
